@@ -1,0 +1,102 @@
+<div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Sản phẩm</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+              <li class="breadcrumb-item"><a href="/admin/product">Sản phẩm</a></li>
+              <li class="breadcrumb-item active">Chi tiết sản phẩm</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                Chi tiết sản phẩm. 
+                <a href="/admin/product" class="btn btn-outline-primary ml-auto">Quay về</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    {{#each detail}}
+                        <tr>
+                            <th style="width: 20%" class="text-center" scope="col">Mã sản phẩm:</th>
+                            <td>{{this.masp}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Tên sản phẩm:</th>
+                            <td>{{this.tensp}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Giá gốc:</th>
+                            <td>{{formatCurrency this.giagoc}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Giá giảm:</th>
+                            <td>{{formatCurrency this.giagiam}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Giá bán:</th>
+                            <td>{{formatCurrency this.giaban}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Loại:</th>
+                            <td>{{this.tenloai}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Thương hiệu:</th>
+                            <td>{{this.tenth}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Mã giảm giá:</th>
+                            <td>{{this.magg}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Bảo hành:</th>
+                            <td>{{this.baohanh}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Xuất xứ:</th>
+                            <td>{{this.xuatxu}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Mô tả:</th>
+                            <td>{{this.mota}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Số lượng:</th>
+                            <td>{{this.soluong}}</td>
+                        </tr>
+                    {{/each}}
+                    <tr>
+                        <th class="text-center" scope="col">Màu sắc:</th>
+                        <td>{{#each color}} {{this.tenmau}}, {{/each}}</td>
+                    </tr>
+                </table>
+                <table class="table table-bordered table-hover">
+                    <h5 class="mt-4 text-center bordered" for="thongso">Thông số kỹ thuật:</h5>
+                    {{#each specification}}
+                        <tr>
+                            <th style="width: 20%" class="text-center" scope="col">{{this.tents}}</th>
+                            <td>{{this.giatrits}}</td>
+                        </tr>
+                    {{/each}}
+                </table>
+                <table class="table table-bordered table-hover">
+                    <h5 class="mt-4 text-center bordered" for="hinhanh">Hình ảnh:</h5>
+                    <tr>
+                        {{#each images}}
+                            <img width="15%" src="/images/products/{{this.tenhinh}}" alt="{{this.tenhinh}}"> &nbsp;
+                        {{/each}}
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Mã giảm giá</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+          <li class="breadcrumb-item"><a href="/admin/coupon">Mã giảm giá</a></li>
+          <li class="breadcrumb-item active">Sửa mã giảm giá</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="container-fluid">
+    {{#if error}} 
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" aria-label="Close">×</button>
+        <h5><strong>Cảnh báo!</strong></h5>
+        {{errdate}}
+      </div>
+    {{/if}}
+    <div class="card">
+      <div class="card-header d-flex align-items-center">
+        Sửa mã giảm giá
+        <a href="/admin/coupon" class="btn btn-outline-primary ml-auto">Quay về</a>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/admin/coupon/{{coupon.magg}}?_method=PUT">
+          <div class="form-group">
+            <label for="magg">Mã giảm giá</label>
+            <input type="text" class="form-control" value="{{#if error}}{{error.magg}}{{else}}{{coupon.magg}}{{/if}}" name="magg" readonly="true">
+          </div>
+          <div class="form-group">
+            <label for="tenmagg">Tên mã giảm giá</label>
+            <input type="text" class="form-control" value="{{#if error}}{{error.tenmagg}}{{else}}{{coupon.tenmagg}}{{/if}}" name="tenmagg" required>
+          </div>
+          <div class="form-group">
+            <label for="ngayapdung">Ngày áp dụng</label>
+            <input type="date" class="form-control" {{#if error}} value="{{error.ngayapdung}}"{{else}} value="{{dateFormat coupon.ngayapdung "yyyy-MM-DD"}}" {{/if}} name="ngayapdung" required>
+          </div>
+          <div class="form-group">
+            <label for="ngayketthuc">Ngày kết thúc</label>
+            <input type="date" class="form-control" {{#if error}} value="{{error.ngayketthuc}}" {{else}} value="{{dateFormat coupon.ngayketthuc "yyyy-MM-DD"}}"{{/if}} name="ngayketthuc" required >
+          </div>
+          <div class="form-group">
+            <label for="hinhthucgiam">Hình thức giảm</label>
+            <select class="form-control" name="hinhthucgiam">
+            <option value="0">%</option>
+            <option value="1" {{sosanhHT coupon.hinhthucgiam}} {{sosanhHT error.hinhthucgiam}} >VNĐ</option>
+              </select>
+          </div>
+          <div class="form-group">
+            <label for="mucdo">Mức độ</label>
+            <input type="number" class="form-control" {{#if error}}value="{{error.mucdo}}"{{else}}value="{{coupon.mucdo}}" {{/if}} name="mucdo" placeholder="Nhập mức độ" required >
+          </div>
+          <button type="submit" class="btn btn-primary">Lưu lại</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

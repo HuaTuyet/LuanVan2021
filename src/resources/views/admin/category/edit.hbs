@@ -1,0 +1,40 @@
+<div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Loại sản phẩm</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+              <li class="breadcrumb-item"><a href="/admin/category">Loại sản phẩm</a></li>
+              <li class="breadcrumb-item active">Sửa loại sản phẩm</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+              Sửa loại sản phẩm
+              <a href="/admin/category" class="btn btn-outline-primary ml-auto">Quay về</a>
+            </div>
+            <div class="card-body">
+                    <form method="POST" action="/admin/category/{{category.maloai}}?_method=PUT">
+                        <div class="form-group">
+                            <label for="maloai">Mã loại</label>
+                            <input type="text" class="form-control" value="{{category.maloai}}" name="maloai" readonly="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="tenloai">Tên loại</label>
+                            <input type="text" class="form-control" value="{{category.tenloai}}" name="tenloai" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lưu lại</button>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>

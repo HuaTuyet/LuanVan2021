@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pdf Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+</head>
+<body>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="10%" align="left" style="background-color:#fff; opacity: 10;">
+                <img height="150" width="150" src="file:///D://VisualStudio//HK_II_2020-2021//Luan_van//code_LV//luanvan//src//public//dist//img//logo.jpg" alt="">
+            </td>
+            <td width="50%" align="right">
+                <h2>HÓA ĐƠN</h2>
+                <b>Cửa hàng máy ảnh</b>
+                <p>
+                    180 Cao Lỗ, phường 4, quận 8 <br />
+                    70000, Hồ Chí Minh, Việt Nam
+                </p>           
+            </td>
+            <td width="20%" align="left">
+            </td>
+        </tr>
+    </table>
+    <hr class="mt-4" style= "background-color:gray; color:gray; border-width:1;">
+    <table class="mb-5" width="95%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="30%" align="left" valign="top">
+                <p class="font-weight-bold">{{products.tenkh}}</p>
+                <p>
+                    {{products.diachi}}<br/>
+                    70000, Hồ Chí Minh, Việt Nam
+                </p>
+            </td>
+            <td width="50%" align="right">
+                <table>
+                    <tr>
+                        <td class="font-weight-bold" width="80%" align="right">Số hóa đơn: &emsp; </td>
+                        <td width="20%" align="right">{{products.madh}}</td>
+                   </tr>
+                   <tr>
+                        <td class="font-weight-bold" width="80%" align="right">Ngày đặt: &emsp; </td>
+                        <td width="20%" align="right">{{products.ngaydat}}</td>
+                    </tr>
+                </table>           
+            </td>
+            <td width="20%" align="left"></td>
+        </tr>
+    </table>
+    <br class="mt-5">
+    <table class="table" width="95%">
+        <thead>
+            <tr>
+                <th scope="col">Sản phẩm</th>
+                <th class="text-center" scope="col">Số lượng</th>
+                <th class="text-right" scope="col">Giá</th>
+                <th class="text-right" scope="col">Thành tiền</th>
+                <th class="text-right" scope="col"></th>
+                <th class="text-right" scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each products.prodlist}}
+                <tr>
+                    <td width="30%">{{this.tensp}}</td>
+                    <td class="text-center" width="10%">{{this.soluong}}</td>
+                    <td class="text-right" width="10%">{{formatCurrency this.dongia}}</td>
+                    <td class="text-right" width="15%">{{formatCurrency this.tong}}</td>
+                    <td class="text-right" width="10%"></td>
+                    <td class="text-right" width="10%"></td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    <hr class="mt-2" >
+    <table width="95%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="30%" align="left"></td>
+            <td width="50%" align="right">
+                <table>
+                    <tr>
+                        <td class="font-weight-bold" width="80%" align="right">Tổng tiền hàng: &emsp;</td>
+                        <td width="20%" align="right">{{formatCurrency products.subtotal}}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold" width="80%" align="right">Phí vận chuyển: &emsp; </td>
+                        <td width="20%" align="right">{{formatCurrency products.phivc}}</td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold" width="80%" align="right">Giảm giá: &emsp; </td>
+                        <td width="20%" align="right">-{{formatCurrency products.giamgia}}</td>
+                    </tr>
+                </table>       
+            </td>
+            <td width="20%" align="left"></td>
+        </tr>
+    </table>
+    <hr style= "background-color:gray; color:gray; border-width:1; width: 250px; margin-right: 238px;">
+    <table width="95%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td width="30%" align="left"></td>
+            <td width="50%" align="right">
+                <table>
+                    <tr>
+                        <td class="font-weight-bold" width="90%" align="right">Thành tiền: &emsp; </td>
+                        <td width="10%" align="right">{{formatCurrency products.thanhtien}}</h2></td>
+                   </tr>
+                </table>
+            </td>
+            <td width="20%" align="left">
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

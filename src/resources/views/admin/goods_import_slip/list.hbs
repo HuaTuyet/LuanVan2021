@@ -1,0 +1,61 @@
+<div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Phiếu nhập hàng</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+              <li class="breadcrumb-item active">Phiếu nhập hàng</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                    Danh sách phiếu nhập hàng. 
+                    <a href="/admin/goodsimportslip/create" class="btn btn-link ml-auto">Thêm phiếu nhập</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th class="text-center" scope="col">Mã phiếu nhập hàng</th>
+                            <th class="text-center" scope="col">Tên nhà cung cấp</th>
+                            <th class="text-center" scope="col">Ngày nhập</th>
+                            <th class="text-center" scope="col">Tổng tiền</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each list}}
+                        <tr>
+                            <td>{{sum @index 1}}</td>
+                            <td>{{this.mapn}}</td>
+                            <td>{{this.tenncc}}</td>
+                            <td>{{dateFormat this.ngaynhap "DD-MM-yyyy HH:mm"}}</td>
+                            <td>{{formatCurrency this.tongtien}}</td>
+                            <td>
+                                <a href="/admin/goodsimportslip/{{this.mapn}}/detail" class="btn btn-link">Xem chi tiết</a>|
+                                <a href="/admin/goodsimportslip/{{this.mapn}}/edit" class="btn btn-link">Sửa</a>
+                            </td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                Bạn chưa có phiếu nhập nào cả.
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

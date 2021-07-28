@@ -1,0 +1,119 @@
+<div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Mã giảm giá</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+              <li class="breadcrumb-item active">Mã giảm giá</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        {{#if error}} 
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true" aria-label="Close">×</button>
+            <h5><strong>Cảnh báo!</strong></h5>
+            {{error}}
+        </div>
+        {{/if}}
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                    Danh sách mã giảm giá. 
+                {{#each count_deleted}}
+                <a href="/admin/coupon/trash" class="ml-2">Thùng rác ({{this.deletedCount}})</a>
+                {{/each}}
+                <a href="/admin/coupon/create" class="btn btn-link ml-auto">Thêm mã giảm giá</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th class="text-center" scope="col">Mã giảm giá</th>
+                            <th class="text-center" scope="col">Tên mã giảm giá</th>
+                            <th class="text-center" scope="col">Ngày áp dụng</th>
+                            <th class="text-center" scope="col">Ngày kết thúc</th>
+                            <th class="text-center" scope="col">Hình thức giảm</th>
+                            <th class="text-center" scope="col">Mức độ</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each list}}
+                        <tr>
+                            <td>{{sum @index 1}}</td>
+                            <td>{{this.magg}}</td>
+                            <td>{{this.tenmagg}}</td>
+                            <td>{{dateFormat this.ngayapdung "DD-MM-yyyy"}}</td>
+                            <td>{{dateFormat this.ngayketthuc "DD-MM-yyyy"}}</td>
+                            <td>{{hinhthuc this.hinhthucgiam}}</td>
+                            <td>{{this.mucdo}}</td>
+                            <td>
+                                <a href="/admin/coupon/{{this.magg}}/edit" class="btn btn-link">Sửa</a> |
+                                <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this.magg}}" data-target="#delete-coupon-modal">Xóa</a>
+                            </td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                Bạn chưa thêm mã giảm giá nào cả. 
+                                <a href="/admin/coupon/create">Thêm mã giảm giá</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                {{!-- Confirm delete coupon ---}}
+                <div class="modal fade" id="delete-coupon-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Xóa mã giảm giá</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Bạn có chắc là muốn xóa bỏ mã giảm giá này?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="btn-delete-coupon" class="btn btn-danger">Xóa bỏ</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form name="delete-coupon-form" method="POST"></form>
+
+<script>
+    document.addEventListener("DOMContentLoaded",function(){
+        var btnDeleteCoupon = document.getElementById("btn-delete-coupon");
+        var couponId;
+        var deleteForm = document.forms['delete-coupon-form'];
+
+        //When dialog confirm clicked
+        $('#delete-coupon-modal').on('shown.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            couponId = button.data("id");
+            //console.log(id);
+        })
+        //console.log(btnDeleteBrand);
+        
+        btnDeleteCoupon.onclick = function() {
+            deleteForm.action = '/admin/coupon/' + couponId + '?_method=DELETE';
+            deleteForm.submit();
+        }
+    })
+</script>

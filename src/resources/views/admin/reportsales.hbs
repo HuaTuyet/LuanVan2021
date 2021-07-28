@@ -1,0 +1,98 @@
+<div id="id">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">Thống kê</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Thống kê</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="card">
+                <div class="card-header align-items-center">
+                    Thống kê doanh thu
+                </div>
+                <div class="card-body">
+                    <form id="calculate-form" method="post" class="d-flex justify-content-center align-items-center">
+                        <label for="month" class="mr-2">Tháng:</label>
+                        <input type="number" id="month" {{#if test1}}value="{{test1}}"{{else}}value="{{getmonth 1}}"{{/if}} min="1" max="12"  maxlength="2" required/>
+                        <label for="year" class="mr-2 ml-4">Năm:</label><br>
+                        <input type="number" id="year" min="1000" max="9999" maxlength="4" {{#if test2}}value="{{test2}}"{{else}}value="{{getyear 1}}"{{/if}} required/>
+                        {{!-- <input type="text" name="pincode" maxlength="4"  id="pin" pattern="\d{4}" required/> --}}
+                        <button type="submit" class="btn btn-primary ml-4">Lập thống kê</button>
+                    </form>
+                    <hr>
+                    <h5>Doanh thu cửa hàng đạt được trong tháng {{#if test1}}{{test1}}{{/if}} của năm {{#if test2}}{{test2}}{{/if}} là {{#if total}}{{formatCurrency total.tong}}{{/if}}</h5>
+                    <table class="mt-4 table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center" scope="col">Mã sản phẩm</th>
+                                <th class="text-center" scope="col">Tên sản phẩm</th>
+                                <th class="text-center" scope="col">Số lượng bán ra</th>
+                                <th class="text-center" scope="col">Tổng tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody id="test">
+                            {{#if list}}
+                                {{#each list}}
+                                    <tr>
+                                        <td>{{this.masp}}</td>
+                                        <td>{{this.tensp}}</td>
+                                        <td>{{this.soluongbanra}}</td>
+                                        <td>{{formatCurrency this.doanhthutungsp}}</td>
+                                    </tr>
+                                {{/each}}
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $( document ).ready(function() {
+        $("#calculate-form").submit(function(event) {
+            // Prevent the form from submitting via the browser.
+            event.preventDefault();
+            ajaxPost();
+        });
+
+        function ajaxPost(){
+            // PREPARE FORM DATA
+            var formData = {
+                month : $("#month").val(),
+                year :  $("#year").val()
+            }
+            
+            // DO POST
+            $.ajax({
+                type : "POST",
+                contentType : "application/json",
+                url : window.location + "/calculate",
+                data : JSON.stringify(formData),
+                dataType : 'json',
+                success : function(data) {
+                    //$("#test").html(data.html);
+                    $("#id").html(data.html);
+                    
+                },
+                error : function(e) {
+                    console.log("ERROR: ", e);
+                }
+            })
+
+        }
+    })
+</script>

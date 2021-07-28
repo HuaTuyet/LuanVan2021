@@ -1,0 +1,74 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Phiếu nhập hàng</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/goodsimportslip">Phiếu nhập hàng </a></li>
+                    <li class="breadcrumb-item active">Chi tiết phiếu nhập hàng</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                Chi tiết phiếu nhập hàng. 
+                <a href="/admin/goodsimportslip" class="btn btn-outline-primary ml-auto">Quay về</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    {{#each detail}}
+                        <tr>
+                            <th style="width: 20%" class="text-center" scope="col">Mã phiếu nhập hàng:</th>
+                            <td>{{this.mapn}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Tên nhà cung cấp:</th>
+                            <td>{{this.tenncc}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Ngày nhập hàng:</th>
+                            <td>{{dateFormat this.ngaynhap "DD-MM-yyyy HH:mm"}}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-center" scope="col">Tổng tiền:</th>
+                            <td>{{formatCurrency this.tongtien}}</td>
+                        </tr>
+                    {{/each}}
+                </table>
+                <br>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th class="text-center" scope="col">Mã sản phẩm</th>
+                            <th class="text-center" scope="col">Tên sản phẩm</th>
+                            <th class="text-center" scope="col">Số lượng</th>
+                            <th class="text-center" scope="col">Giá gốc</th>
+                            <th class="text-center" scope="col">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each product}}
+                            <tr>
+                                <td>{{sum @index 1}}</td>
+                                <td>{{this.masp}}</td>
+                                <td>{{this.tensp}}</td>
+                                <td>{{this.soluong}}</td>
+                                <td>{{formatCurrency this.giagoc}}</td>
+                                <td>{{formatCurrency (thanhtien this.giagoc this.soluong)}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

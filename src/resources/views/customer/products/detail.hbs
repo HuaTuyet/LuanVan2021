@@ -1,0 +1,181 @@
+
+
+<!-- Banner Starts Here -->
+    <div class="page-heading products-heading header-text">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="text-content">
+              <h4>Detail Product</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- Banner Ends Here -->
+
+<div class="latest-products">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="section-heading">
+              <h5>{{sanpham.tensp}}</h5>
+            </div>
+          </div>
+        </div>
+        {{!-- Mua hàng --}}
+        <div class="row">
+          <!--Image Product //evenly-->
+          <div class="col-md-4">
+            <div class="row">
+              <img src="/images/product/{{hinh.tenhinh}}" class="img-detail">
+            </div>
+            <div class="row mt-4 justify-content-around"> 
+              {{#each hinh}}
+              <div class="col-md-2 border-img rounded">
+                <img src="/images/products/{{this.tenhinh}}" width="100%">
+              </div>
+              {{/each}}
+            </div>
+          </div>
+          <!--Detail Product-->
+          <div class="col-md-4">
+            <table class="table">
+              <tbody>
+                <tr>
+                  <td>Mã sản phẩm</td>
+                  <td>{{sanpham.masp}}</td>
+                </tr>
+                {{#if sanpham.giagiam}}
+                <tr>
+                  <td>Giá bán</td>
+                  <td style="text-decoration: line-through;" class="giaban">{{formatCurrency sanpham.giaban}}</td>
+                </tr>
+                <tr>
+                  <td>Giá khuyến mãi</td>
+                  <td style="color: #f33f3f" id="giagiam">{{formatCurrency sanpham.giagiam}}</td>
+                </tr>
+                {{else}}
+                <tr>
+                  <td>Giá bán</td>
+                  <td>{{formatCurrency sanpham.giaban}}</td>
+                </tr>
+                {{/if}}
+                <tr>
+                  <td>Thương hiệu</td>
+                  <td>{{thuonghieu.tenth}}</td>
+                </tr>
+                <tr>
+                  <td>Xuất xứ</td>
+                  <td>{{sanpham.xuatxu}}</td>
+                </tr>
+                <tr>
+                  <td>Bảo hành</td>
+                  <td>{{sanpham.baohanh}}</td>
+                </tr>
+                <tr>
+                  <td>Màu sắc</td>
+                  <td>Đen</td>
+                </tr>
+                <tr>
+                  <td>Đánh giá</td>
+                  <td>
+                    <span id="tbsao">{{#if tbsao}}{{tbsao}}{{/if}}</span>
+                    <i class="fa fa-star star" sosao="1" sanpham="{{sanpham.masp}}"></i>
+                    <i class="fa fa-star star" sosao="2" sanpham="{{sanpham.masp}}"></i>
+                    <i class="fa fa-star star" sosao="3" sanpham="{{sanpham.masp}}"></i>
+                    <i class="fa fa-star star" sosao="4" sanpham="{{sanpham.masp}}"></i>
+                    <i class="fa fa-star star" sosao="5" sanpham="{{sanpham.masp}}"></i> |
+                    <span id="luotdg">{{luot}} lượt</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="form-group w-50 box-cart-qty">
+              <input type="hidden" name="masp" value="{{sanpham.masp}}">
+              <input type="number" name="detailQty" class="form-control" value="1" min="1" max="{{sanpham.soluong}}"> 
+                {{!-- <a href="#" class="qty detail-qty minus">-</a>
+                <input type="text" class="form-control input-detail-qty" value="1">
+                <a href="#"class="qty detail-qty plus">+</a> --}}
+            </div>
+            <a onclick="AddToCart('{{sanpham.masp}}')" class="btn btn-success w-100" style="color: white;">
+              Mua hàng
+            </a>
+          </div>
+          <!--Thông số kỹ thuật-->
+          <div class="col-md-4">
+            <h5>THÔNG SỐ KỸ THUẬT</h5>
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  {{#each thongso}}
+                  <div class="col-md-6">
+                    <p class="card-text">{{this.tents}} :</p>
+                  </div>
+                  <div class="col-md-6">
+                    <p class="card-text">{{this.giatrits}} </p>
+                  </div>
+                  {{/each}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!--Hiển thị các bình luận-->
+        <div class="row mt-5 mb-5">
+          <div class="col-md-8">
+            {{#each binhluan}}
+            <div class="comment">
+              {{#if this.anhdd}}
+              <img src="/assets/images/auths/{{this.anhdd}}" class="img-avatar">
+              {{else}}
+              <div class="avatar">{{getFirstCharacter this.tentk}}</div>
+              {{/if}}
+              <div class="content-cmt">
+                {{this.tentk}}
+                <p>{{this.noidung}}</p>
+              </div>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+
+        <!--Mô tả sp-->
+        <hr>
+        <div class="row">
+          <div class="col-md-8">
+            <div class="row">
+              <div class="btn btn-main mr-1" id="btn-tongquan">TỔNG QUAN</div>
+              <div class="btn btn-outline-main" id="btn-cmt">BÌNH LUẬN</div>
+            </div>
+
+            <!--TỔNG QUAN-->
+            <div class="row mt-4" id="tongquan">
+              {{sanpham.mota}}
+            </div>
+
+            <!--BÌNH LUẬN-->
+            <div class="row mt-4" id="cmt">
+              {{#if session.login}}
+              <h5 class="mb-4">Bình luận về sản phẩm</h5>
+              <form action="/may-anh/binh-luan/{{sanpham.masp}}" method="post">
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <textarea name="comment" class="form-control" row="5" placeholder="Nội dung ..." required></textarea>
+                  </div>
+                </div>
+                  <button type="submit" class="btn btn-primary float-right">Đăng bình luận</button>
+              </form>
+              {{else}}
+              <div>Hãy đăng nhập để bình luận về sản phẩm.
+                <a href="/tai-khoan"> Đăng nhập ngay</a>
+              </div>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+

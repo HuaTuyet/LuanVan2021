@@ -1,0 +1,90 @@
+<aside id="aside-sidebar" class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="/admin" class="brand-link">
+    <img src="/admin/dist/img/logo.jpg" alt="Logo Mayanh" class="brand-image img-circle elevation-3" style="opacity: .8">
+    <span class="brand-text font-weight-light">Cửa hàng máy ảnh</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 mb-3 d-flex align-items-start flex-column bd-highlight">
+      <div class="d-flex bd-highlight">
+        <div class="image">
+          <img src="/admin/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">{{session.tenadmin}}</a>
+          {{!-- <p class="text-white">{{session.tenadmin}}</p> --}}
+        </div>
+      </div>
+      <div class="p-3">
+        <a href="/admin/auth/logout" class="btn btn-danger" style="width: 210px; color: white">Đăng Xuất</a>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item ">
+          <a href="/admin/brand" class="nav-link">
+            <i class="nav-icon fas fa-bold"></i>
+            <p>
+              Thương hiệu
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/category" class="nav-link">
+            <i class="nav-icon fas fa-th"></i>
+            <p>
+              Loại sản phẩm
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/coupon" class="nav-link">
+            <i class="nav-icon fas fa-tag"></i>
+            <p>
+              Mã giảm giá
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/product" class="nav-link">
+            <i class="nav-icon fas fa-camera-retro"></i>
+            <p>
+              Sản phẩm
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/order" class="nav-link">
+            <i class="nav-icon fas fa-receipt"></i>
+            <p>
+              Đơn hàng
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/goodsimportslip" class="nav-link">
+            <i class="nav-icon fas fa-file-import"></i>
+            <p>
+              Nhập hàng
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/admin/reportsales" class="nav-link">
+            <i class="nav-icon fas fa-file-invoice-dollar"></i>
+            <p>
+              Thống kê doanh thu
+            </p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

@@ -1,0 +1,157 @@
+<div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Sản phẩm</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+              <li class="breadcrumb-item"><a href="/admin/product">Sản phẩm</a></li>
+              <li class="breadcrumb-item active">Thêm sản phẩm</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+</div>
+
+
+<div class="content">
+    <div class="container-fluid">
+        {{#if error}} 
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true" aria-label="Close">×</button>
+            <h5><strong>Cảnh báo!</strong></h5>
+            {{message}}
+            {{err}}
+        </div>
+        {{/if}}
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                Thêm sản phẩm
+                <a href="/admin/product" class="btn btn-outline-primary ml-auto">Quay về</a>
+            </div>
+            <div class="card-body">
+                <form name="add-product-form" method="POST" action="/admin/product/store" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="masp">Mã sản phẩm</label>
+                        <input class="form-control" type="text" name="masp" placeholder="Nhập mã sản phẩm" required maxlength="10" {{#if error}} value="{{error.masp}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="tenth">Tên sản phẩm</label>
+                        <input class="form-control" type="text" name="tensp" placeholder="Nhập tên sản phẩm" required {{#if error}} value="{{error.tensp}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="giagoc">Giá gốc</label>
+                        <input class="form-control" type="number" min="1000" name="giagoc" placeholder="Nhập giá gốc của sản phẩm" required {{#if error}} value="{{error.giagoc}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="giamgiam">Giá giảm</label>
+                        <input class="form-control" type="number" min="0" name="giagiam" placeholder="Nhập giá giảm của sản phẩm" required {{#if error}} value="{{error.giagiam}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="giaban">Giá bán</label>
+                        <input class="form-control" type="number" min="1000" name="giaban" placeholder="Nhập giá bán của sản phẩm" required {{#if error}} value="{{error.giaban}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="baohanh">Bảo hành</label>
+                        <input class="form-control" type="text" name="baohanh" placeholder="Nhập thời gian bảo hành của sản phẩm" required {{#if error}} value="{{error.baohanh}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="xuatxu">Xuất xứ</label>
+                        <input class="form-control" type="text" name="xuatxu" placeholder="Nhập nơi xuất xứ của sản phẩm" required {{#if error}} value="{{error.xuatxu}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="mota">Mô tả</label><br>
+                        <textarea class="form-control" name="mota" rows="8" placeholder="Nhập mô tả sản phẩm" required>{{#if error}} {{error.mota}} {{/if}}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="soluong">Số lượng</label>
+                        <input class="form-control" type="number" min="0" name="soluong" placeholder="Nhập số lượng sản phẩm" required {{#if error}} value="{{error.soluong}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="maloai">Loại sản phẩm</label>
+                        <select class="form-control" name="maloai">
+                            {{#each listCate}}
+                                <option value="{{this.maloai}}" {{hienthi this.maloai ../error.maloai}}>{{this.tenloai}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="math">Thương hiệu sản phẩm</label>
+                        <select class="form-control" name="math">
+                            {{#each listBr}}
+                                <option value="{{this.math}}" {{hienthi ../error.math this.math}}>{{this.tenth}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="magg">Mã giảm giá</label>
+                        <select class="form-control" name="magg">
+                            <option value="null">Không có mã giảm giá cho sản phẩm</option>
+                            {{#each listCoupon}}
+                                <option value="{{this.magg}}" {{hienthi ../error.magg this.magg}}>{{this.tenmagg}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="hidden" name="deletedAt" value="NULL">
+                    </div>
+                    <div class="form-group">
+                        <label for="mausac">Màu sắc</label><br>
+                        {{#each listColor}}
+                            <input type="checkbox" name="mausac" value="{{this.mamau}}" {{#each ../error.mausac}} {{hienthimausac this ../this.mamau}} {{/each}}>
+                            <label for="{{this.mamau}}">{{this.tenmau}}</label> &emsp;
+                        {{/each}}
+                    </div>
+                    <div class="form-group">
+                        {{#each listSpec}}
+                            <label for="{{this.mats}}">{{this.tents}}</label>
+                            <input type="hidden" name="mats" value="{{this.mats}}">
+                            <input class="form-control" type="text" name="giatrits" id="{{this.mats}}" placeholder="Nhập thông số {{this.tents}}">
+                        {{/each}}    
+                    </div>
+                    <div class="form-group">
+                        <label for="example-input-file"> </label>
+                        <input type="file" name="many-files" multiple id="input-many-files" class="form-control-file border">
+                    </div>
+                    <hr>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="preview-images"></div>
+                            </div>
+                        </div>
+                    <hr>
+                    <button type="submit" class="btn btn-primary" id="themSP">Thêm sản phẩm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded",function(){
+        let btnAddProduct = document.getElementById("themSP");
+        // Multiple images preview in browser - trungquandev.com
+        $("#input-many-files").on("change", function() {
+            if (this.files) {
+                $(".preview-images").empty();
+                let filesAmount = this.files.length;
+                for (i = 0; i < filesAmount; i++) {
+                    let reader = new FileReader();
+                    reader.onload = function(event) {
+                        $($.parseHTML("<img>")).attr("src", event.target.result).appendTo("div.preview-images");
+                    }
+                    reader.readAsDataURL(this.files[i]);
+                }
+            }
+        });
+        btnAddProduct.onclick = function (e){
+            checked = $("input[type=checkbox]:checked").length;
+            if(!checked){
+                alert("Bạn phải chọn màu sắc cho sản phẩm");
+                return false;
+            }
+        };
+    });
+</script>

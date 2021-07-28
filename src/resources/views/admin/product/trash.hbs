@@ -1,0 +1,118 @@
+<div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Sản phẩm</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+              <li class="breadcrumb-item"><a href="/admin/product">Sản phẩm</a></li>
+              <li class="breadcrumb-item active">Thùng rác</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                    Danh sách sản phẩm đã xóa
+                <a href="/admin/product" class="btn btn-outline-primary ml-auto">Quay về</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center">STT</th>
+                            <th class="text-center" scope="col">Mã sản phẩm</th>
+                            <th class="text-center" scope="col">Tên sản phẩm</th>
+                            <th class="text-center" scope="col">Giá bán</th>
+                            <th class="text-center" scope="col">Số lượng</th>
+                            <th class="text-center" scope="col">Ngày xóa</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each list}}
+                        <tr>
+                            <td>{{sum @index 1}}</td>
+                            <td>{{this.masp}}</td>
+                            <td>{{this.tensp}}</td>
+                            <td>{{this.giaban}}</td>
+                            <td>{{this.soluong}}</td>
+                            <td>{{dateFormat this.deletedAt "DD-MM-yyyy HH:mm:ss"}}</td>
+                            <td>
+                                <a href="" class="btn btn-link btn-restore" data-id="{{this.masp}}">Khôi phục</a> |
+                                <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this.masp}}" data-target="#delete-product-modal">Xóa vĩnh viễn</a>
+                            </td>
+                        </tr>
+                        {{else}}
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                Thùng rác trống.
+                                <a href="/admin/product" class="ml-2">Danh sách sản phẩm</a>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                {{!-- Confirm delete product ---}}
+                <div class="modal fade" id="delete-product-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Xóa vĩnh viễn sản phẩm</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Hành động này không thể khôi phục. Bạn vẫn muốn xóa sản phẩm này?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="btn-delete-product" class="btn btn-danger">Xóa bỏ</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form name="restore-product-form" method="POST"></form>
+<form name="delete-product-form" method="POST"></form>
+
+<script>
+    document.addEventListener("DOMContentLoaded",function(){
+        var btnDeleteProduct = document.getElementById("btn-delete-product");
+        var productId;
+        var deleteForm = document.forms['delete-product-form'];
+        var Restorebtn = $('.btn-restore');
+        var restoreForm = document.forms['restore-product-form'];
+
+        //When dialog confirm clicked
+        $('#delete-product-modal').on('shown.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            productId = button.data("id");
+            //console.log(id);
+        })
+        //console.log(btnDeleteProduct);
+        
+        btnDeleteProduct.onclick = function() {
+            deleteForm.action = '/admin/product/' + productId + '/force?_method=DELETE';
+            deleteForm.submit();
+        }
+
+        Restorebtn.click(function(event) {
+            event.preventDefault();
+            var productId = $(this).data('id');
+            restoreForm.action = '/admin/product/'+ productId + '/restore?_method=PATCH';
+            restoreForm.submit();
+        })
+    })
+</script>

@@ -1,0 +1,143 @@
+#aside-sidebar{
+    position: fixed;
+}
+
+div.preview-images>img {
+  width: 10%;
+}
+
+html {
+    font-family: "Roboto", sans-serif;
+  }
+  
+  *,
+  *:before,
+  *:after {
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+
+  
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  
+  .wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+  
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+    max-width: 1210px;
+    margin: 0 auto;
+  }
+  
+  .bgOpacity {
+    width: 100vw;
+    height: 100vh;
+    background-color: gray;
+    opacity: 0.2;
+    position: relative;
+  }
+  
+  .login {
+    background-color: whitesmoke;
+    width: 400px;
+    height: 450px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+     -webkit-box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login_image {
+    margin-left: 160px;
+    margin-top: 25px;
+    margin-bottom: 20px;
+  }
+  
+  .login_image img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+  
+  .login_content_text {
+    font-size: 180%;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 15px;
+  }
+  
+  .login_content_text span{
+    color: #f33f3f;
+  }
+  
+  .login_content_error {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .login_content_error::before {
+    font-family: "FontAwesome";
+    content: "\f071";
+    padding-right: 10px;
+  }
+  
+  .login_content form {
+    width: 90%;
+    margin: 0 auto;
+  }
+  
+  .login_content form input {
+    width: 100%;
+    margin-bottom: 25px;
+    height: 40px;
+    background: none;
+    padding-left: 15px;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid black;
+  }
+  
+  .login_content form input:focus{
+    border-bottom: 1px solid #f33f3f;
+  }
+  
+  .login_content form input::-webkit-input-placeholder {
+    color: #6f6c70;
+  }
+  
+  .login_content form input:-ms-input-placeholder {
+    color: #6f6c70;
+  }
+  
+  .login_content form input::-ms-input-placeholder {
+    color: #6f6c70;
+  }
+  
+  .login_content form input::placeholder {
+    color: #6f6c70;
+  }
+  
+  .login_content form input.btn-submit {
+    width: 100px;
+    background-color: #f33f3f;
+    margin-left: 130px;
+    padding: 0;
+    border-bottom: none;
+    cursor: pointer;
+    border-radius: 5px;
+    color: white; 
+    /* box-shadow: 1px 1px 2px 1px grey; */
+  }
+  .login_content form input.btn-submit:hover{
+    opacity: 0.9;
+  }

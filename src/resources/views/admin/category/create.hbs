@@ -1,0 +1,48 @@
+<div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Loại sản phẩm</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+              <li class="breadcrumb-item"><a href="/admin/category">Loại sản phẩm</a></li>
+              <li class="breadcrumb-item active">Thêm loại sản phẩm</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+</div>
+
+
+<div class="content">
+  <div class="container-fluid">
+    {{#if error}} 
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" aria-label="Close">×</button>
+        <h5><strong>Cảnh báo!</strong></h5>
+        Mã loại sản phẩm bị trùng
+      </div>
+    {{/if}}
+    <div class="card">
+      <div class="card-header d-flex align-items-center">
+          Thêm loại sản phẩm
+        <a href="/admin/category" class="btn btn-outline-primary ml-auto">Quay về</a>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/admin/category/store">
+          <div class="form-group">
+            <label for="maloai">Mã loại</label>
+            <input class="form-control" type="text" name="maloai" placeholder="Nhập mã loại sản phẩm" required maxlength="10" {{#if error}} value="{{error.maloai}}" {{/if}}>
+          </div>
+          <div class="form-group">
+            <label for="tenloai">Tên loại</label>
+            <input class="form-control" type="text" name="tenloai" placeholder="Nhập tên loại sản phẩm" required {{#if error}} value="{{error.tenloai}}" {{/if}}>
+          </div>
+          <button type="submit" class="btn btn-primary">Thêm loại</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

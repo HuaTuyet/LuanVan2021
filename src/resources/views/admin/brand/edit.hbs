@@ -1,0 +1,76 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Thương hiệu sản phẩm</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+          <li class="breadcrumb-item"><a href="/admin/brand">Thương hiệu sản phẩm</a></li>
+          <li class="breadcrumb-item active">Sửa thương hiệu sản phẩm</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header d-flex align-items-center">
+        Sửa thương hiệu sản phẩm
+        <a href="/admin/brand" class="btn btn-outline-primary ml-auto">Quay về</a>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="/admin/brand/{{brand.math}}?_method=PUT" enctype="multipart/form-data">
+        
+        <div class="form-group">
+            <input class="form-control" type="hidden" name="diachi" value="brands">
+          </div>
+          <div class="form-group">
+            <label for="math">Mã thương hiệu</label>
+            <input type="text" class="form-control" value="{{brand.math}}" name="math" readonly="true">
+          </div>
+          <div class="form-group">
+            <label for="tenth">Tên thương hiệu</label>
+            <input type="text" class="form-control" value="{{brand.tenth}}" name="tenth" required>
+          </div>
+          <div class="form-group">
+            <label for="example-input-file"> </label>
+            <input type="file" name="file" id="input-file" class="form-control-file border">
+          </div>
+          <hr>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="preview-images">
+                  <img width="15%" src="/images/brands/{{brand.tenhinh}}" alt="{{brand.tenhinh}}"> &nbsp;
+                </div>
+              </div>
+            </div>
+          <hr>
+          <button type="submit" class="btn btn-primary">Lưu lại</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded",function(){
+    // Multiple images preview in browser - trungquandev.com
+    $("#input-file").on("change", function() {
+      if (this.files) {
+        $(".preview-images").empty();
+        let filesAmount = this.files.length;
+        for (i = 0; i < filesAmount; i++) {
+          let reader = new FileReader();
+          reader.onload = function(event) {
+              $($.parseHTML("<img>")).attr("src", event.target.result).appendTo("div.preview-images");
+          }
+          reader.readAsDataURL(this.files[i]);
+        }
+      }
+    });
+  });
+</script>

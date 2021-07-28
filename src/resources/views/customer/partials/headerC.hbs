@@ -1,0 +1,67 @@
+<header class="">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand" href="index.html"><h2>Camera <em>Shop</em></h2></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <!--Search-->
+              <li class="nav-item">
+                <form class="form-inline" action="/tim-kiem" method="get">
+                  <input name="keyword" class="form-control mr-sm-2" type="search" placeholder="Search">
+                  <button class="btn btn-outline-danger my-2 my-sm-0 btn-search" type="submit">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button>
+                </form>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/">Trang chủ
+                  {{!-- <span class="sr-only">(current)</span> --}}
+                </a>
+                
+              </li> 
+              <li class="nav-item dropdown">
+                <a class="nav-link" href="/may-anh">Máy ảnh</a>
+                {{!-- <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Loại 1</a>
+                  <a class="dropdown-item" href="#">Loại 2</a>
+                  <a class="dropdown-item" href="#">Loại 3</a>
+                </div> --}}
+              </li>
+              {{#if session.login}}
+              <li class="nav-item dropdown d-flex">
+                <img src="/assets/images/auths/{{session.user.anhdd}}" class="rounded-circle" alt="User Image" width="30" height="30">
+                <a class="nav-link p-2" href="/tai-khoan">{{session.user.tentk}}</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/tai-khoan/me">Tài khoản của tôi</a>
+                  <a class="dropdown-item" href="/don-mua">Đơn mua</a>
+                  <a class="dropdown-item text-danger" href="/tai-khoan/logout"><i class="fa fa-sign-out"></i> Đăng xuất</a>
+                </div>
+              </li>
+              {{else}}
+              <li class="nav-item dropdown">
+                {{!-- <img src="/assets/images/auths/{{session.user.anhdd}}" class="rounded-circle" alt="User Image" width="30" height="30"> --}}
+                <a class="nav-link p-2" href="/tai-khoan">Tài khoản</a>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="/tai-khoan">Đăng nhập</a>
+                  <a class="dropdown-item" href="/tai-khoan/dang-ky">Đăng ký</a>
+                </div>
+              </li>
+              {{/if}}
+              <li class="nav-item">
+                <a class="nav-link" href="/gio-hang">
+                  {{!-- Giỏ hàng --}}
+                  <i class="fa fa-shopping-cart cart-icon" aria-hidden="true" style="font-size: 19px;">
+                    <span class="count-cart rounded-circle">
+                      {{#if session.cart.totalQty}}{{session.cart.totalQty}}{{else}}0{{/if}}
+                    </span>
+                  </i>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+</header>

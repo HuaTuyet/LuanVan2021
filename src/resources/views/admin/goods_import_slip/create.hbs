@@ -1,0 +1,102 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Phiếu nhập</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/goodsimportslip">Phiếu nhập</a></li>
+                    <li class="breadcrumb-item active">Thêm phiếu nhập</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                Thêm phiếu nhập
+                <a href="/admin/goodsimportslip" class="btn btn-outline-primary ml-auto">Quay về</a>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="sanpham">Sản phẩm</label><br>
+                    <select class="form-control" name="masp" id="cbo_product">
+                        <option value="" selected disabled >Xin hãy chọn sản phẩm cần nhập</option>
+                        {{#each listProduct}}
+                            <option value="{{this.masp}}">{{this.tensp}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+                <form name="update-quantity-form" action="/admin/goodsimportslip/update?_method=PUT" method="POST">
+                    <table class="table table-bordered table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center" scope="col">Mã sản phẩm</th>
+                                <th class="text-center" scope="col">Tên sản phẩm</th>
+                                <th class="text-center" scope="col">Số lượng</th>
+                                <th class="text-center" scope="col">Giá nhập</th>
+                                <th class="text-center" scope="col">Thành tiền</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#if products}}
+                                {{#each products}}
+                                    <tr>
+                                        <td>{{this.item.masp}}</td>
+                                        <td>{{this.item.tensp}}</td>
+                                        <td>
+                                            <input type="hidden" name="masp" value="{{this.item.masp}}">
+                                            <input class="quantity-input" type="number" value="{{this.quantity}}" min="1" max="100" data-id="{{this.item.masp}}" name="quantity">
+                                        </td>
+                                        <td>{{formatCurrency this.item.giagoc}}</td>
+                                        <td>{{formatCurrency this.price}}</td>
+                                        <td><a href="/admin/goodsimportslip/remove/{{this.item.masp}}?_method=DELETE" class="btn btn-danger"></i> Xóa</a></td>
+                                    </tr>
+                                {{/each}}
+                                <tr>
+                                    <td colspan="4"class="text-center">Tổng thành tiền:</td>
+                                    <td colspan="2" class="text-center">{{formatCurrency totalPrice}}</td>
+                                </tr>
+                            {{/if}}
+                        </tbody>
+                    </table>
+                    {{#if products}}
+                        <button type="submit" class="btn btn-primary">Cập nhật số lượng</button>
+                    {{/if}}
+                </form>
+                <hr>
+                <form action="/admin/goodsimportslip/store" method="post">
+                    <div class="form-group">
+                        <label for="sanpham">Nhà cung cấp</label><br>
+                        <select class="form-control" name="mancc" id="cbo_vendor">
+                            {{#each listVendor}}
+                                <option value="{{this.mancc}}">{{this.tenncc}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Thêm Phiếu nhập</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form name="add-product-form" method="GET"></form>
+<script>
+    document.addEventListener("DOMContentLoaded",function(){
+        var addProductForm = document.forms['add-product-form'];
+        //let updateQuantityForm = document.forms['update-quantity-form'];
+        //let txtQuantity = document.getElementsByName("quantity");
+
+        $("#cbo_product").on("change",function(){
+            addProductForm.action = '/admin/goodsimportslip/add/' + this.value;
+            addProductForm.submit();
+        })
+    })
+</script>

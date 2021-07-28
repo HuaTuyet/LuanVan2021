@@ -1,0 +1,165 @@
+
+
+<!-- Banner Starts Here -->
+    <div class="page-heading products-heading header-text">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="text-content">
+              <h4></h4>
+              <h2></h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- Banner Ends Here -->
+
+<div class="products">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div id="img-brand">
+              {{#each brands}}
+              <a href="/may-anh/thuong-hieu?math={{this.math}}" title="{{this.tenth}}">
+                <img src="/assets/images/brand/{{this.math}}.jpg" alt="{{this.tenth}}" height="100%">
+              </a> 
+              {{/each}}
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="filters">
+              <ul>
+                  <li >Sắp xếp : </li>
+                  <li><a href="#" id="lasted">Mặc định</a></li>
+                  <li><a href="#" id="priceAsc">Giá tăng</a></li>
+                  <li><a href="#" id="priceDesc">Giá giảm</a></li>
+              </ul>
+            </div>
+          </div>
+          </div>
+          <div class="row">
+          <!-- Menu bên phải-->
+          <div class="col-md-3">
+              <table class="table tb-type table-sm">
+                <thead>
+                  <tr>
+                    <th>LOẠI MÁY ẢNH</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each types}}
+                  <tr>
+                    <td><a href="/may-anh/loai?maloai={{this.maloai}}">{{this.tenloai}}</a></td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+          </div>
+
+          <!--Sản phẩm và Phân trang-->
+            <div class="col-md-9">
+              <div class="row">               
+                <div class="col-md-12">
+                  <div class="filters-content">
+                      <div class="row" id="result-sort">
+
+                        {{#each list}}
+                          <div class="col-lg-3 col-md-3">
+                            <div class="product-item">
+                              <a href="/may-anh/{{this.masp}}"><img src="/assets/images/product/{{this.masp}}H1.jpg" alt=""></a>
+                              <div class="down-content">
+                                <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}"><h4>{{this.tensp}}</h4></a>
+
+                                {{!-- {{#if this.giasp}}
+                                  {{#ifCond this.giasp this.giaban}}
+                                  <h6>{{formatCurrency this.giasp}}</h6>
+                                  <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                                  {{else}}
+                                  <h6>{{formatCurrency this.giaban}}</h6><span class= "giaban" style="visibility: hidden;">0000000</span>
+                                  {{/ifCond}}
+                                {{else}}
+                                  {{#if this.giagiam}}
+                                  <h6>{{formatCurrency this.giagiam}}</h6>
+                                  <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                                  {{else}}
+                                  <h6>{{formatCurrency this.giaban}}</h6><span class= "giaban" style="visibility: hidden;">0000000</span>
+                                  {{/if}}
+                                {{/if}} --}}
+                                {{#if this.giagiam}}
+                                  <h6>{{formatCurrency this.giagiam}}</h6>
+                                  <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                                {{else}}
+                                  <h6>{{formatCurrency this.giaban}}</h6>
+                                  <span class= "giaban" style="visibility: hidden;">00000</span>
+                                {{/if}}
+                                
+                                <ul class="stars">
+                                  <li><i class="fa fa-star"></i></li>
+                                  <li><i class="fa fa-star"></i></li>
+                                  <li><i class="fa fa-star"></i></li>
+                                  <li><i class="fa fa-star"></i></li>
+                                  <li><i class="fa fa-star"></i></li>
+                                </ul>
+                                <span class="review">Reviews (24)</span>
+                                <a onclick="AddToCart('{{this.masp}}')" class="btn btn-outline-success btn-muahang">Mua hàng</a>
+                              </div>
+                            </div>
+                          </div>
+                          {{/each}}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-12">
+                  <ul class="pages">
+                    {{#if math}}
+                      {{#each pages }}
+                      <li id="page{{this}}"><a href="/may-anh/thuong-hieu?math={{../math}}&page={{this}}">{{this}}</a></li>
+                      {{/each}}
+                    {{else if maloai}}
+                      {{#each pages }}
+                      <li id="page{{this}}"><a href="/may-anh/loai?maloai={{../maloai}}&page={{this}}">{{this}}</a></li>
+                      {{/each}}
+                    {{else}}
+                      {{#each pages }}
+                      <li id="page{{this}}"><a href="/may-anh?page={{this}}">{{this}}</a></li>
+                      {{/each}}
+                    {{/if}}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!--============MODAL===============-->
+
+<!-- Button trigger modal -->
+{{!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button> --}}
+
+<!-- Modal -->
+{{!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> --}}
+

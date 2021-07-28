@@ -1,0 +1,70 @@
+<!-- Banner Starts Here -->
+    <div class="page-heading products-heading header-text">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="text-content">
+              <h4>new arrivals</h4>
+              <h2>camera products</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- Banner Ends Here -->
+<div class="products">
+    <div class="container">
+            <div class="row">
+                <div class="col-md-6" style="font-size: 22px;">Kết quả tìm kiếm cho "{{k}}"</div>
+                <div class="col-md-6">
+                    <p class="float-right">Tìm thấy {{totalProduct}} sản phẩm</p>
+                </div>
+            </div>
+            <div class="row mt-4">
+            {{#each result}}
+            <div class="col-md-3">
+                <div class="product-item">
+                    <a href="/may-anh/{{this.masp}}"><img src="/assets/images/product/{{this.masp}}H1.jpg" alt=""></a>
+                    <div class="down-content">
+                        <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}"><h4>{{this.tensp}}</h4></a>
+                        {{#if this.giasp}}
+                            {{#ifCond this.giasp this.giaban}}
+                            <h6>{{formatCurrency this.giasp}}</h6>
+                            <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                            {{else}}
+                            <h6>{{formatCurrency this.giaban}}</h6>
+                            <span class= "giaban" style="visibility: hidden;">0</span>
+                            {{/ifCond}}
+                        {{else}}
+                            {{#if this.giagiam}}
+                            <h6>{{formatCurrency this.giagiam}}</h6>
+                            <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                            {{else}}
+                            <h6>{{formatCurrency this.giaban}}</h6><span class= "giaban" style="visibility: hidden;">0</span>
+                            {{/if}}
+                        {{/if}}                               
+                        <ul class="stars">
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                        </ul>
+                        <span class="review">Reviews (24)</span>
+                        <a onclick="AddToCart('{{this.masp}}')" class="btn btn-outline-success btn-muahang">Mua hàng</a>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="pages">
+                        {{#each pages}}
+                        <li id="page{{this}}"><a href="/tim-kiem?page={{this}}">{{this}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
+            </div>
+    </div>
+</div>

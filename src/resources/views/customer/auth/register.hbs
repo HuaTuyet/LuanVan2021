@@ -1,0 +1,81 @@
+<style>
+    div.preview-image>img {
+        width: 150px;
+    }
+</style>
+<div class="container d-flex justify-content-lg-center" style="padding-top: 120px;">
+    <div class="flex-grow-1 bd-highlight border-right">
+        <h1 class="text-center mb-2">Tạo tài khoản</h1>
+        <form action="/tai-khoan/store" class="mr-2" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="tentk">Tên tài khoản</label>
+                <input type="text" class="form-control" id="tentk" name="tentk" value="{{#if taikhoan}}{{taikhoan.tentk}}{{/if}}" required>
+            </div>
+            <div class="form-group">
+                <label for="sodt">Số điện thoại</label>
+                <input type="number" class="form-control" id="sodt" name="sodt" {{#if taikhoan}}value="{{taikhoan.sodt}}"{{/if}} required>
+            </div>
+            <div class="form-group">
+                <label for="diachi">Địa chỉ</label>
+                <input type="text" class="form-control" id="diachi" name="diachi" value="{{#if taikhoan}}{{taikhoan.diachi}}{{/if}}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{#if taikhoan}}{{taikhoan.email}}{{/if}}" required>
+            </div>
+            <div class="form-group">
+                <label for="matkhau">Mật khẩu</label>
+                <input type="password" class="form-control" id="matkhau" name="matkhau" required>
+            </div>
+            <div class="form-group">
+                <label for="xacnhanmatkhau">Xác nhận mật khẩu</label>
+                <input type="password" class="form-control" id="xacnhanmatkhau" name="xacnhanmatkhau" required>
+            </div>
+            <div class="form-group">
+                <label for="example-input-file"> </label>
+                <input type="file" name="file" id="input-file" class="form-control-file border">
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="preview-image mb-3"></div>
+                </div>
+            </div>
+
+            {{#if error}}
+                <h4 class="alert alert-danger">{{error}}</h4>
+            {{/if}}
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary items-center" style="width: 300px">Đăng ký</button>
+            </div>
+        </form>
+    </div>
+    <div></div>
+    <div class="flex-grow-1 align-self-center text-center">
+        <h2 class="text-lg-center mt-5">Xin chào!</h2>
+        <p class="font-weight-bold mt-4">Bạn đã có tài khoản? Đăng nhập ngay!</p>
+        <a href="/tai-khoan/dang-nhap" class="mt-5 btn btn-outline-secondary" style="width: 300px">Đăng nhập</a>
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Multiple images preview in browser - trungquandev.com
+            $("#input-file").on("change", function() {
+                if (this.files) {
+                    $(".preview-image").empty();
+                    let filesAmount = this.files.length;
+                    for (i = 0; i < filesAmount; i++) {
+                        let reader = new FileReader();
+                        reader.onload = function(event) {
+                            $($.parseHTML("<img>")).attr("src", event.target.result).appendTo("div.preview-image");
+                            console.log(event.target.result);
+                        }
+                        reader.readAsDataURL(this.files[i]);
+                    }
+                }
+            });
+        });
+    </script>
+</div>
+

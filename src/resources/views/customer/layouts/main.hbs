@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="vn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Shop</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link href="/customer/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/customer/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/customer/assets/css/templatemo-sixteen.css">
+    <link rel="stylesheet" href="/customer/assets/css/owl.css">
+    <link rel="stylesheet" href="/customer/assets/css/styles.css">
+</head>
+<body>
+    {{> headerC}}
+
+    {{{body}}}
+
+    {{> footerC}}
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="/customer/vendor/jquery/jquery.min.js"></script>
+    <script src="/customer/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- Additional Scripts -->
+    <script src="/customer/assets/js/custom.js"></script>
+    <script src="/customer/assets/js/owl.js"></script>
+    <script src="/customer/assets/js/slick.js"></script>
+    <script src="/customer/assets/js/isotope.js"></script>
+    <script src="/customer/assets/js/accordions.js"></script>
+
+    <script>
+        //===============================BEGIN FUNCTIONS================================
+        //Lấy các tham số có trên URL
+        function getUrlParameter(sParam) {
+            let sPageURL = window.location.search.substring(1),
+                sURLVariables = sPageURL.split('&'),
+                sParameterName,
+                i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return typeof sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                }
+            }
+            return false;
+        };
+
+        //Lấy :id (masp) trên đường dẫn thông qua attr href
+        function getIdPath(path){
+            let subPath = path.split('/');
+            let lastIndex = subPath.length - 1;
+            return subPath[lastIndex];
+        }
+
+        //Format giá tiền
+        function formatPrice(price){
+            return new Intl.NumberFormat('vn-VN', { style: 'currency', currency: 'VND' }).format(price);
+        }
+
+        //Thêm sản phẩm vào giỏ hàng khi nhấn nút mua hàng
+        function AddToCart(masp){
+            let currentPath = window.location.pathname;
+            let url = "/gio-hang/add";
+            let productQty = $('input[name=detailQty]').val() ? $('input[name=detailQty]').val() : 1; console.log('qty: ', productQty)
+            $.post(url,{masp, productQty, currentPath},function(data, status){
+                if(!data.login){ window.location.href = '/tai-khoan'}
+                else if(data.add == true){
+                    $('.count-cart').text(data.cart.totalQty);
+                    alert('Sản phẩm đã được thêm vào giỏ hàng');
+                }else{
+                    alert('Có lỗi xảy ra!!');
+                }
+            });
+        }
+        //===============================END FUNCTIONS================================
+
+        $('#btn-cmt').click(function(){
+            $(this).removeClass('btn-outline-main').addClass('btn-main');
+            $('#btn-tongquan').removeClass('btn-main').addClass('btn-outline-main');
+            $('#cmt').css("display", "block");
+            $('#tongquan').css("display","none");
+        });
+        $('#btn-tongquan').click(function(){
+            $(this).removeClass('btn-outline-main').addClass('btn-main');
+            $('#btn-cmt').removeClass('btn-main').addClass('btn-outline-main');
+            $('#tongquan').css("display", "block");
+            $('#cmt').css("display","none");
+        });
+
+        //Phân trang: Kiểm tra đang ở trang nào thì thêm class active vào thẻ <li> đó
+        let page = getUrlParameter('page');
+        let lPages = {{#if pages.length}}{{pages.length}}{{else}} 0 {{/if}};
+        if(page){
+            if(page <= 0 || page > lPages)
+                page = 1; 
+        } else{
+            page = 1;
+        } 
+        let idLiPage = '#page' + page;
+        let s = {{#if sort}}{{sort}}{{else}}0{{/if}}; 
+        $(window).on('load', function(){
+            $(idLiPage).addClass('active');
+            if(s == 1){
+                $('#priceAsc').css('color','#f33f3f');
+            }
+            else if(s == 2){
+                $('#priceDesc').css('color','#f33f3f')
+            }
+            else{
+                $('#lasted').css('color','#f33f3f')
+            }
+        });
+
+        // Gởi - Nhận dữ liệu khi nhấn vào phân trang
+        //Thay đổi nội dung sản phẩm khi nhấn vào "giá tăng" hoặc "giá giảm"
+        let currentUrl = window.location.pathname;
+        let math = getUrlParameter("math");
+        let maloai = getUrlParameter("maloai");
+        $('#priceAsc').click(function(e) {
+			e.preventDefault();
+            s = 1;
+            $(this).css('color','#f33f3f');
+            $('#lasted').css('color','#007bff');
+            $('#priceDesc').css('color','#007bff');
+			$.ajax({
+				url: currentUrl,
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					sort: "priceAsc",
+                    page, math, maloai
+				},
+                success: function(data){
+                    $('#result-sort').html(data.html);
+                },
+                error: function(){console.log("Có lỗi!")}
+			});
+		});
+        $('#priceDesc').click(function(e) {
+			e.preventDefault();
+            s = 2;
+            $(this).css('color','#f33f3f');
+            $('#lasted').css('color','#007bff')
+            $('#priceAsc').css('color','#007bff')
+			$.ajax({
+				url: currentUrl,
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					sort: "priceDesc",
+                    page, math, maloai
+				},
+                success: function(data){
+                    $('#result-sort').html(data.html);
+                },
+                error: function(){console.log("Có lỗi!")}
+			});
+		});
+        $('#lasted').click(function(e) {
+			e.preventDefault();
+            s = 2;
+            $(this).css('color','#f33f3f');
+            $('#priceDesc').css('color','#007bff')
+            $('#priceAsc').css('color','#007bff')
+			$.ajax({
+				url: currentUrl,
+				type: 'POST',
+				dataType: 'json',
+				data: {
+					sort: "lasted",
+                    page, math, maloai
+				},
+                success: function(data){
+                    $('#result-sort').html(data.html);
+                },
+                error: function(){console.log("Có lỗi!")}
+			});
+		});
+
+//===============================XỬ LÍ GIỎ HÀNG==============================
+        //Hiển thị tổng tiền khi load trang giỏ hàng
+        let tongTien = 0;
+        if(currentUrl == '/gio-hang'){
+            //Lấy giá trị trong radio vận chuyển điền vào phí vận chuyển trong giỏ hàng
+            let radVc = $('input[name=radDelivery]:checked').val();
+            $('#delivery').text(formatPrice(radVc));
+
+            //Tính Tổng số tiền
+            let tienHang = Number($('#total-price').text().replace(/\D/g,""));
+            let vanChuyen = Number($('#delivery').text().replace(/\D/g,"")); 
+            let giamGia = Number($('#discount').text().replace(/\D/g,""));
+            tongTien += tienHang + vanChuyen - giamGia;
+            $('#total').text(formatPrice(tongTien));
+            $('input[name=tongtien]').val(tongTien);
+        }
+
+        //Tăng - Giảm số lượng        
+        $('.input-qty').each(function() {
+            var $this = $(this),
+                currentQty = $this.val();
+                qty = $this.parent().find('.cart-qty'),
+                min = Number($this.attr('min')),
+                max = Number($this.attr('max'));
+                          
+            $(qty).click(function(e) {
+                e.preventDefault();
+                let masp = getIdPath(e.target.href);
+
+                if ($(this).hasClass('minus')) {
+                    if (currentQty > min){
+                        currentQty--;  
+                        $('.alert-cart').css('display','none');
+                        $.ajax({
+                            url: '/gio-hang/update/' + masp,
+                            type: 'GET',
+                            dataType: 'json',
+                            data: {
+                                qty: 'minus'
+                            },
+                            success: function(data){
+                                //let priceElement = $this.parent().siblings('.price'); 
+                                //let price = formatPrice(data.item.price*data.item.qty);
+                                //$(priceElement).text(price);
+
+                                //Cập nhật lại Tổng tiền hàng khi GIẢM số lượng
+                                let totalPrice = formatPrice(data.totalPrice);
+                                $('#total-price').text(totalPrice);
+
+                                 //Tính lại Tổng số tiền khi GIẢM số lượng
+                                let tienHang = Number($('#total-price').text().replace(/\D/g,""));
+                                let vanChuyen = Number($('#delivery').text().replace(/\D/g,""));
+                                let giamGia = Number($('#discount').text().replace(/\D/g,""));
+                                tongTien = tienHang + vanChuyen - giamGia;
+                                $('#total').text(formatPrice(tongTien));
+                                $('input[name=tongtien]').val(tongTien);
+
+                                //Thay đổi số giỏ hàng trên thanh menu
+                                $('.count-cart').text(data.totalQty);
+                            }
+                        });
+                    } else{
+                        let r = confirm('Bạn chắc chắn muốn bỏ sản phẩm này?');
+                        if(r == true){
+                            $(location).attr('href','/gio-hang/delete/'+ masp);
+                        }
+                    }
+                } else if ($(this).hasClass('plus')) {
+                    if (currentQty < max){
+                        currentQty++;
+                        $.ajax({
+                            url: '/gio-hang/update/' + masp,
+                            type: 'GET',
+                            dataType: 'json',
+                            data: {
+                                qty: 'plus'
+                            },
+                            success: function(data){
+                                //Cập nhật lại Tổng tiền hàng khi TĂNG số lượng
+                                let totalPrice = formatPrice(data.totalPrice);
+                                $('#total-price').text(totalPrice);
+
+                                //Tính lại Tổng số tiền khi TĂNG số lượng
+                                let tienHang = Number($('#total-price').text().replace(/\D/g,""));
+                                let vanChuyen = Number($('#delivery').text().replace(/\D/g,""));
+                                let giamGia = Number($('#discount').text().replace(/\D/g,""));
+                                tongTien = tienHang + vanChuyen - giamGia;
+                                $('#total').text(formatPrice(tongTien));
+                                $('input[name=tongtien]').val(tongTien);
+
+                                //Thay đổi số giỏ hàng trên thanh menu
+                                $('.count-cart').text(data.totalQty);
+                            }
+                        });
+                    } else{
+                        $('.alert-cart').css('display','block');
+                    }
+                }
+                $this.val(currentQty);
+            })
+        })
+
+        //Nhập mã giảm giá
+        $('.btn-voucher').click(function(e){
+            e.preventDefault();
+            let magg = $('#voucher').val();
+            if(magg){
+                $.ajax({
+                    url: '/gio-hang/khuyen-mai',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        magg, day : new Date(),
+                    },
+                    success: function(data){
+                        if(data.error){
+                            let htmlBox = '<div class="alert alert-success alert-dismissible fade show text-center mt-2" role="alert">'+
+                            data.error + '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                            '<span aria-hidden="true">&times;</span></button></div>';
+                            $('.box-voucher').append(htmlBox);
+                        } else {
+                            $('#discount').text('- ' + formatPrice(data.giamgia));
+                            $('input[name=giamgia]').val(data.giamgia);
+
+                            // Tính lại tổng số tiền
+                            let tienHang = Number($('#total-price').text().replace(/\D/g,""));
+                            let vanChuyen = Number($('#delivery').text().replace(/\D/g,""));
+                            let giamGia = Number($('#discount').text().replace(/\D/g,""));
+                            tongTien = tienHang + vanChuyen - giamGia;
+                            $('#total').text(formatPrice(tongTien));
+                            $('input[name=tongtien]').val(tongTien);
+                        }
+                    },
+                });
+            } else {
+                let htmlBox = '<div class="alert alert-success alert-dismissible fade show text-center mt-2" role="alert">'+
+                'Ơ, bạn chưa nhập mã giảm giá kìa.' +
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'+
+                '<span aria-hidden="true">&times;</span></button></div>';
+                $('.box-voucher').append(htmlBox);
+            }
+        })
+
+        //Chọn hình thức vận chuyển -> thay đổi giá ship trong giỏ hàng
+        $('input[name=radDelivery]').on('change', function(){
+            let selectedDelivery = Number($(this).val());
+            let oldDelivery = Number($('#delivery').text().replace(/\D/g,""));
+            tongTien = tongTien - oldDelivery + selectedDelivery;
+            $('#delivery').text(formatPrice(selectedDelivery));
+            
+            //Cập nhật lại Tổng số tiền
+            $('#total').text(formatPrice(tongTien));
+            $('input[name=tongtien]').val(tongTien);
+        });
+
+        // ================ Đánh giá sao - detai page =====================
+        $('.star').each(function(){
+            let sosao = $(this).attr('sosao');
+            let masp = $(this).attr('sanpham');
+            let url = '/may-anh/danh-gia';
+            let currentPath = window.location.pathname;
+
+            $(this).click(function(){
+                $.post(url,{masp, sosao, currentPath},function(data, status){
+                    if(!data.login){
+                        window.location.href = '/tai-khoan'
+                    }
+                    else{
+                        $('#tbsao').text(data.tbsao);
+                        $('#luotdg').text(data.luot + ' lượt');
+                    }
+                });
+            })
+        })
+    </script>
+
+    {{!-- <script language = "text/Javascript"> 
+      cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field
+      function clearField(t){                   //declaring the array outside of the
+      if(! cleared[t.id]){                      // function makes it static and global
+          cleared[t.id] = 1;  // you could use true and false, but that's more typing
+          t.value='';         // with more chance of typos
+          t.style.color='#fff';
+          }
+      }
+    </script> --}}
+</body>
+</html>

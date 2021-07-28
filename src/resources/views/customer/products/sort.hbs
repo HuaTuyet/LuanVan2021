@@ -1,0 +1,55 @@
+{{#if priceList}}
+{{#each priceList}}
+                    <div class="col-lg-3 col-md-3 all des">
+                      <div class="product-item">
+                        <a href="/may-anh/{{this.masp}}"><img src="/assets/images/product/{{this.masp}}H1.jpg" alt=""></a>
+                        <div class="down-content">
+                          <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}"><h4>{{this.tensp}}</h4></a>
+                          {{#if this.giagiam}}
+                            <h6>{{formatCurrency this.giagiam}}</h6>
+                            <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                          {{else}}
+                            <h6>{{formatCurrency this.giaban}}</h6>
+                            <span class= "giaban" style="visibility: hidden;">000000</span>
+                          {{/if}}
+                          <ul class="stars">
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                          </ul>
+                          <span>Reviews (24)</span>
+                          <a onclick="AddToCart('{{this.masp}}')" class="btn btn-outline-success btn-muahang">Mua hàng</a>
+                        </div>
+                      </div>
+                    </div>
+{{/each}}
+{{else}}
+{{#each lastedList}}
+                    <div class="col-lg-3 col-md-3 all des">
+                      <div class="product-item">
+                        <a href="/may-anh/{{this.masp}}"><img src="/assets/images/product/{{this.masp}}H1.jpg" alt=""></a>
+                        <div class="down-content">
+                          <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}"><h4>{{this.tensp}}</h4></a>
+                          {{#if this.giagiam}}
+                            <h6>{{formatCurrency this.giagiam}}</h6>
+                            <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                          {{else}}
+                            <h6>{{formatCurrency this.giaban}}</h6>
+                            <span class= "giaban" style="visibility: hidden;">00000</span>
+                          {{/if}}
+                          <ul class="stars">
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                            <li><i class="fa fa-star"></i></li>
+                          </ul>
+                          <span>Reviews (24)</span>
+                          <a onclick="AddToCart('{{this.masp}}')" class="btn btn-outline-success btn-muahang">Mua hàng</a>
+                        </div>
+                      </div>
+                    </div>
+{{/each}}
+{{/if}}

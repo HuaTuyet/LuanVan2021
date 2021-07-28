@@ -1,0 +1,27 @@
+<div class="container d-flex justify-content-lg-center" style="padding-top: 120px;">
+    <div class="flex-grow-1 border-right">
+        <h1 class="text-center mb-2">Đăng nhập</h1>
+        <form action="/tai-khoan/login" method="POST" class="mr-2">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{#if taikhoan}}{{taikhoan.email}}{{/if}}">
+            </div>
+            <div class="form-group">
+                <label for="matkhau">Mật khẩu</label>
+                <input type="password" class="form-control" id="matkhau" name="matkhau">
+            </div>
+            {{#if error}}
+            <div class="alert alert-danger mt-4">{{error}}</div>
+            {{/if}}
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary" style="width: 300px">Đăng nhập</button>
+        </div>
+        </form>
+    </div>
+    <div class="flex-grow-1 align-self-center text-center">
+        <h2 class="text-lg-center mt-5">Xin chào!</h2>
+        <p class="font-weight-bold mt-4">Bạn hãy đăng nhập để mua hàng nhé. <br/> 
+        Bạn là thành viên mới?</p>
+        <a href="/tai-khoan/dang-ky" class="mt-5 btn btn-outline-secondary" style="width: 300px">Đăng ký</a>
+    </div>
+</div>

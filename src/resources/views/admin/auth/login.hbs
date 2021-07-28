@@ -1,0 +1,15 @@
+{{!-- <div class="wrapper bgOpacity"></div> --}}
+<div class="login">
+  <div class="login_image">
+    <img  src="/admin/dist/img/logo.jpg" alt="logo">
+  </div>
+  <div class="login_content">
+    <p class="login_content_text">Admin <span>Camera Shop</span></p>
+    <form class="text-center" action="/admin/auth/login" method="post">
+        <input type="email" name="email" id="email" placeholder="Email">
+        <input type="password" name="matkhau" id="matkhau" placeholder="Mật khẩu">
+        {{#if error}} <div class="text-danger">{{error}} </div>{{/if}}
+        <button type="submit" class="btn btn-danger mt-4">Đăng nhập</button>
+    </form>
+  </div>
+</div>

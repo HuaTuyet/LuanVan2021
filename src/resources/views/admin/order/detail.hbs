@@ -1,0 +1,125 @@
+<div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Đơn hàng</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+              <li class="breadcrumb-item"><a href="/admin/order">Đơn hàng</a></li>
+              <li class="breadcrumb-item active">Chi tiết đơn hàng</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+</div>
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header d-flex align-items-center">
+        Chi tiết đơn đặt hàng. 
+        <a href="/admin/order" class="btn btn-outline-primary ml-auto">Quay về</a>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered table-hover">
+          {{#each detail}}
+            <tr>
+              <th style="width: 20%" class="text-center" scope="col">Mã đơn hàng:</th>
+              <td>{{this.madh}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Ngày đặt hàng:</th>
+              <td>{{dateFormat this.ngaydat "DD-MM-yyyy HH:mm:ss"}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Tên khách hàng:</th>
+              <td>{{this.tenkh}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Địa chỉ:</th>
+              <td>{{this.diachi}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Số điện thoại:</th>
+              <td>{{this.sodt}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Ghi chú:</th>
+              <td>{{this.ghichu}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Giảm giá:</th>
+              <td>{{formatCurrency this.giamgia}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Phương thức thanh toán:</th>
+              <td>{{thanhtoan this.hinhthuctt}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Hình thức vận chuyển:</th>
+              <td>{{this.tenvc}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Tài khoản:</th>
+              <td>{{this.tentk}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Tổng tiền:</th>
+              <td>{{formatCurrency this.tongtien}}</td>
+            </tr>
+            <tr>
+              <th class="text-center" scope="col">Trạng thái:</th>
+              <td>{{trangthai this.trangthai}}</td>
+            </tr>
+          {{/each}}
+        </table>
+        <br>
+        <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th class="text-center">STT</th>
+                <th class="text-center" scope="col">Sản phẩm</th>
+                <th class="text-center" scope="col">Số lượng</th>
+                <th class="text-center" scope="col">Đơn giá</th>
+                <th class="text-center" scope="col">Thành tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each product}}
+                <tr>
+                  <td>{{sum @index 1}}</td>
+                  <td>{{this.tensp}}</td>
+                  <td>{{this.soluong}}</td>
+                  <td>{{formatCurrency this.giasp}}</td>
+                  <td>{{formatCurrency (thanhtien this.giasp this.soluong)}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+        </table>
+        <br>
+        <form name="change-status-form" action="/admin/order/{{#each detail}}{{this.madh}}{{/each}}/changestatus?_method=PATCH" method="POST">
+          {{#each detail}}
+            {{#if (matcactrangthai this.trangthai)}}
+              {{else}}
+                {{#if (hienthibutton this.trangthai)}}
+                  <input type="submit" class="btn btn-primary mt-2" value="Duyệt đơn hàng" name="accept">
+                  <input type="submit" class="btn btn-danger mt-2" value="Hủy đơn hàng" name="cancel">
+                  {{else}}
+                  <select class="form-control" name="trangthai">
+                    <option value="1" {{disabled this.trangthai 1}}>Đang chuẩn bị</option>
+                    <option value="2" {{disabled this.trangthai 2}}>Đang giao</option>
+                    <option value="3" {{disabled this.trangthai 3}}>Đã giao</option>
+                    {{!-- <option value="4" {{disabled this.trangthai 4}}>Đã hủy</option> --}}
+                  </select>
+                  <button type="submit" class="btn btn-primary mt-2" id="changestatus">Đổi trạng thái</button>
+                {{/if}}
+            {{/if}}
+          {{/each}}
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

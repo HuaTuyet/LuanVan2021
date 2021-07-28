@@ -1,0 +1,153 @@
+<div class="container" style="padding-top: 120px;min-height: 64vh;">
+<!--TEST DATA-->
+
+{{#if dhList}}
+{{#each dhList}}
+<div class="row" style="margin-bottom: 15px;">
+    <div class="col-md-8 m-auto order">
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <h5>{{this.madh}}</h5>
+                <p>Ngày đặt: {{this.ngaydat}}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <p><a href="/don-mua/thong-tin-don-hang/{{this.madh}}">Xem sản phẩm</a></p>
+            </div>
+            <div class="col-md-4">
+                <p style="font-size: 18px;"><strong>Tổng tiền: </strong>{{formatCurrency this.tongtien}}</p>
+            </div>
+        </div><hr>
+        <div class="row">
+            <div class="col-md-8">
+                <p><strong>Trạng thái:</strong> {{formatStatus this.trangthai}}</p>
+            </div>
+            <form action="/don-mua/huy-don/{{this.madh}}" method="post">
+            {{#ifCondEqual this.trangthai 1}}
+            <div class="col-md-4">
+                <button class="btn btn-success" type="submit">
+                    Hủy đơn hàng
+                </button>
+            </div>
+            {{/ifCondEqual}}
+            </form>
+        </div>
+    </div>
+</div>
+{{/each}}
+{{else}}
+<div class="row" style="margin-bottom: 15px;">
+        <div class="col-md-8 m-auto order">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="mb-2">ID ĐƠN HÀNG. {{dh.madh}}
+                        <span style="color: #f33f3f;" class="float-right">ĐƠN HÀNG {{formatStatus dh.trangthai}}</span>
+                    </h5><hr>
+                    <p style="font-size: 18px;">Địa chỉ nhận hàng </p>
+                    <p>{{dh.tenkh}}</p>
+                    <p>{{dh.sodt}}</p>
+                    <p>{{dh.diachi}}</p>
+                    <hr>
+                    <form action="/don-mua/huy-don/{{dh.madh}}" method="post">
+                        {{#ifCondEqual dh.trangthai 1}}
+                        <button class="btn btn-success float-right">Hủy đơn hàng</button>
+                        {{/ifCondEqual}}
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
+<div class="row">
+    <div class="col-md-8 m-auto">
+                <table class="table table-bordered table-sm">
+                <tbody> 
+                    {{#each ctdh}}
+                    <tr>
+                        <td style="display: flex">
+                            <img src="/images/product/{{this.masp}}H1.jpg" width="50px">
+                            <div class="ml-2 pro-order">
+                                <p>{{this.tensp}}</p>
+                                <p>{{this.soluong}} x <span>{{formatCurrency this.dongia}}</span></p>
+                            </div>
+                        </td>
+                    </tr> 
+                    {{/each}}
+                    <tr>
+                        <td>
+                            <ul>
+                                <li style="display: flex; justify-content: space-between">
+                                    <p>Tổng tiền hàng: </p>
+                                    <p>{{formatCurrency tienhang}}</p>
+                                </li>
+                                <li style="display: flex; justify-content: space-between">
+                                    <p>Phí vận chuyển: </p>
+                                    <p>{{formatCurrency dh.phivc}}</p>
+                                </li>
+                                <li style="display: flex; justify-content: space-between">
+                                    <p>Giảm giá: </p>
+                                    <p>- {{formatCurrency dh.giamgia}}</p>
+                                </li>
+                                <li style="display: flex; justify-content: space-between">
+                                    <p>Tổng tiền: </p>
+                                    <p style="font-size: 20px; color: #f33f3f">{{formatCurrency dh.tongtien}}</p>
+                                </li><hr>
+                                <li style="display: flex; justify-content: space-between">
+                                    <p>Phương thức thanh toán</p>
+                                    <p>Thanh toán khi nhận hàng</p>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+{{/if}}
+</div>
+
+
+<!--===========================================-->
+{{!-- <div class="row" style="margin-bottom: 15px;">
+    <div class="col-md-8 m-auto order">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <h5>Chưa có dữ liệu</h5>
+            </div>
+            <div class="col-md-6">
+                <p class="float-right">Ngày đặt: 02-03-2021</p>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-6" style="display: flex;">
+                <img src="/assets/images/product/MA001H1.jpg" width="50px" style="border: 1px solid rgb(224, 224, 224);">
+                <div class="div" style="margin-left: 10px;">
+                    <h6>Tên sản phẩm máy ảnh ... - CHƯA ĐỔ DỮ LIỆU</h6>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p> 150,000 x 1</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p>2 sản phẩm</p>
+                <p><a href="#">Xem thêm sản phẩm</a></p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Tổng tiền: </strong>22,000</p>
+            </div>
+        </div><hr>
+        <div class="row">
+            <div class="col-md-6">
+                <p>Trạng thái: chờ xác nhận</p>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-success">Hủy đơn hàng</button>
+            </div>
+        </div>
+    </div>
+</div> --}}
+
+
+
