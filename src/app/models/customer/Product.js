@@ -47,7 +47,7 @@ exports.list = function(){
 // ============================= HOME PAGE ==============================
 exports.promotionList = function(){
     return new Promise((resolve, reject) => {
-        let sql = "SELECT sanpham.*, (SELECT hinhanh.tenhinh FROM sanpham JOIN hinhanh ON sanpham.masp = hinhanh.masp LIMIT 1) AS tenhinh FROM sanpham WHERE giagiam > 0 AND soluong > 0";
+        let sql = "SELECT sp.*, ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha ON sp.masp = ha.masp WHERE giagiam > 0 AND soluong > 0";
         db.query(sql, function(err, data, fields){
             if(err){
                 reject(err);
@@ -57,6 +57,17 @@ exports.promotionList = function(){
     })
 }
 
+exports.getImage = function(masp, callback){
+    let sql = "SELECT * hinhanh WHERE masp = ?";
+    db.query(sql,masp,function(err, data, fields){
+        if(err){
+            throw err;
+        }
+        callback(data[0].tenhinh);
+    });
+}
+
+/// TESSTTTT GIT
 exports.getImages = function(masp, callback){
     let sql = "SELECT * hinhanh WHERE masp = ?";
     db.query(sql,masp,function(err, data, fields){
