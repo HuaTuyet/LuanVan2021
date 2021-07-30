@@ -32,7 +32,7 @@
             <div class="filters">
               <ul>
                   <li >Sắp xếp : </li>
-                  <li><a href="#" id="lasted">Mặc định</a></li>
+                  <li><a href="#" id="lasted">Mới nhất</a></li>
                   <li><a href="#" id="priceAsc">Giá tăng</a></li>
                   <li><a href="#" id="priceDesc">Giá giảm</a></li>
               </ul>
@@ -66,9 +66,9 @@
                       <div class="row" id="result-sort">
 
                         {{#each list}}
-                          <div class="col-lg-3 col-md-3">
+                          <div class="col-lg-4 col-md-4">
                             <div class="product-item">
-                              <a href="/may-anh/{{this.masp}}"><img src="/assets/images/product/{{this.masp}}H1.jpg" alt=""></a>
+                              <a href="/may-anh/{{this.masp}}" class="link-img"><img src="/images/products/{{this.tenhinh}}" alt=""></a>
                               <div class="down-content">
                                 <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}"><h4>{{this.tensp}}</h4></a>
 
@@ -88,11 +88,14 @@
                                   {{/if}}
                                 {{/if}} --}}
                                 {{#if this.giagiam}}
+                                <div style="min-height: 50px;">
                                   <h6>{{formatCurrency this.giagiam}}</h6>
                                   <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                                </div>
                                 {{else}}
+                                <div style="min-height: 50px;">
                                   <h6>{{formatCurrency this.giaban}}</h6>
-                                  <span class= "giaban" style="visibility: hidden;">00000</span>
+                                </div>
                                 {{/if}}
                                 
                                 <ul class="stars">

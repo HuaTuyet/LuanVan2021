@@ -2,8 +2,10 @@ const express = require('express')
 const router = express.Router();
 
 const productsController = require('../../app/controllers/customer/ProductsController')
+const authMiddleware = require('../../app/middlewares/authMiddlewares')
+
 router.post('/binh-luan/:id', productsController.postComment)
-router.post('/danh-gia', productsController.rating)
+router.post('/danh-gia', authMiddleware.requireAuthCustomer, productsController.rating)
 router.get('/thuong-hieu', productsController.showProductByBrand)
 router.post('/thuong-hieu', productsController.sortByBrand)
 router.get('/loai', productsController.showProductByType)

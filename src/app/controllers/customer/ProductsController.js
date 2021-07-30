@@ -57,7 +57,7 @@ class ProductsController {
                     //res.json({list, pages, sort, brands, start, count});
                     res.render('products/products', { list, pages, sort, brands, types });
                 })
-                .catch(err => {
+                .catch(err => { 
                     console.log("Loi: ", err);
                 })
             }
@@ -381,10 +381,6 @@ class ProductsController {
     // POST / may-anh / danh-gia
     rating(req, res){
         req.session.redirectTo = req.body.currentPath;
-        if(!req.session.login){
-            res.json({login:false});
-        }
-        else{
             let sosao = req.body.sosao;
             let masp = req.body.masp;
             let tentk = req.session.user.tentk;
@@ -430,7 +426,6 @@ class ProductsController {
             .catch(err => {
                 console.log("Loi: ", err);
             })
-        }
     }
 }
 

@@ -12,7 +12,10 @@ const db = require('../Database')
 // }
 
 exports.getAProduct = function(masp, callbackQuery){
-    let sql = "SELECT * FROM sanpham WHERE masp = ?";
+    //let sql = "SELECT * FROM sanpham WHERE masp = ?";
+    let sql = "SELECT sp.*, ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha "+
+    "ON sp.masp = ha.masp INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b "
+    +"ON ha.masp = b.masp AND ha.tenhinh = b.tenhinh WHERE sp.masp = ?"
     db.query(sql, masp, function(err, data, fields){
         if(err){
             return console.error('Error: ' + err.message);
@@ -34,7 +37,9 @@ exports.getAProduct = function(masp, callbackQuery){
 // }
 exports.list = function(){
     return new Promise((resolve, reject) => {
-        let sql = "SELECT sanpham.*, (SELECT hinhanh.tenhinh FROM sanpham JOIN hinhanh ON sanpham.masp = hinhanh.masp LIMIT 1) AS tenhinh FROM sanpham WHERE soluong > 0";
+        let sql = "SELECT sp.*, ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+        "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+        "AND ha.tenhinh = b.tenhinh WHERE soluong > 0";
         db.query(sql, function(err, data, fields){
             if(err){
                 reject(err);
@@ -47,7 +52,9 @@ exports.list = function(){
 // ============================= HOME PAGE ==============================
 exports.promotionList = function(){
     return new Promise((resolve, reject) => {
-        let sql = "SELECT sp.*, ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha ON sp.masp = ha.masp WHERE giagiam > 0 AND soluong > 0";
+        let sql = "SELECT sp.*, ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+        "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+        "AND ha.tenhinh = b.tenhinh WHERE giagiam > 0 AND soluong > 0";
         db.query(sql, function(err, data, fields){
             if(err){
                 reject(err);
@@ -58,17 +65,6 @@ exports.promotionList = function(){
 }
 
 exports.getImage = function(masp, callback){
-    let sql = "SELECT * hinhanh WHERE masp = ?";
-    db.query(sql,masp,function(err, data, fields){
-        if(err){
-            throw err;
-        }
-        callback(data[0].tenhinh);
-    });
-}
-
-/// TESSTTTT GIT
-exports.getImages = function(masp, callback){
     let sql = "SELECT * hinhanh WHERE masp = ?";
     db.query(sql,masp,function(err, data, fields){
         if(err){
@@ -206,10 +202,13 @@ exports.getTypes = function(){
 
 exports.getProducts = function([start, count]){
     return new Promise((resolve, reject) =>{
-        // let sql = "SELECT sanpham.*, phieunhap.ngaynhap FROM sanpham " +
-        // "JOIN chitietphieunhap ON sanpham.masp = chitietphieunhap.masp " +
-        // "JOIN phieunhap ON chitietphieunhap.mapn = phieunhap.mapn ORDER BY ngaynhap DESC LIMIT ?, ?";
-        let sql = "SELECT * FROM sanpham  LIMIT ?, ?";
+        let sql = "SELECT sp.*, MAX(pn.ngaynhap) max_date, ha.tenhinh FROM sanpham sp " +
+        "INNER JOIN chitietphieunhap ct ON sp.masp = ct.masp " +
+        "INNER JOIN phieunhap pn ON ct.mapn = pn.mapn "+
+        "INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+        "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+        "AND ha.tenhinh = b.tenhinh WHERE sp.soluong > 0 GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
+        //let sql = "SELECT * FROM sanpham  LIMIT ?, ?";
         db.query(sql,[start, count], function(err, data){
             if(err){
                 reject("Lấy dữ liệu thất bại: ",err);
@@ -221,11 +220,13 @@ exports.getProducts = function([start, count]){
 
 exports.getProductsByBrand = function([math, start, count]){
     return new Promise((resolve, reject) =>{
-        // let sql = "SELECT sanpham.*, phieunhap.ngaynhap FROM sanpham " +
-        // "JOIN chitietphieunhap ON sanpham.masp = chitietphieunhap.masp " +
-        // "JOIN phieunhap ON chitietphieunhap.mapn = phieunhap.mapn WHERE sanpham.math = ? "+ 
-        // "ORDER BY ngaynhap DESC LIMIT ?, ?";
-        let sql = "SELECT * FROM sanpham WHERE math = ? LIMIT ?, ?";
+        let sql = "SELECT sp.*, MAX(pn.ngaynhap) max_date, ha.tenhinh FROM sanpham sp " +
+        "INNER JOIN chitietphieunhap ct ON sp.masp = ct.masp " +
+        "INNER JOIN phieunhap pn ON ct.mapn = pn.mapn "+
+        "INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+        "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+        "AND ha.tenhinh = b.tenhinh WHERE sp.math = ? AND sp.soluong > 0 GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
+        //let sql = "SELECT * FROM sanpham WHERE math = ? LIMIT ?, ?";
         db.query(sql,[math, start, count], function(err, data){
             if(err){
                 reject("Lấy dữ liệu thất bại: ",err);
@@ -237,11 +238,13 @@ exports.getProductsByBrand = function([math, start, count]){
 
 exports.getProductsByType = function([maloai, start, count]){
     return new Promise((resolve, reject) =>{
-        // let sql = "SELECT sanpham.*, phieunhap.ngaynhap FROM sanpham " +
-        // "JOIN chitietphieunhap ON sanpham.masp = chitietphieunhap.masp " +
-        // "JOIN phieunhap ON chitietphieunhap.mapn = phieunhap.mapn WHERE sanpham.maloai = ? "+ 
-        // "ORDER BY ngaynhap DESC LIMIT ?, ?";
-        let sql = "SELECT * FROM sanpham WHERE maloai = ? LIMIT ?, ?";
+        let sql = "SELECT sp.*, MAX(pn.ngaynhap) max_date, ha.tenhinh FROM sanpham sp " +
+        "INNER JOIN chitietphieunhap ct ON sp.masp = ct.masp " +
+        "INNER JOIN phieunhap pn ON ct.mapn = pn.mapn "+
+        "INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+        "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+        "AND ha.tenhinh = b.tenhinh WHERE sp.maloai = ? AND sp.soluong > 0 GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
+        //let sql = "SELECT * FROM sanpham WHERE maloai = ? LIMIT ?, ?";
         db.query(sql,[maloai, start, count], function(err, data){
             if(err){ 
                 reject("Lấy dữ liệu thất bại: ",err);
@@ -290,7 +293,10 @@ exports.countAllByType = function(maloai){
 // ================== Sort
 exports.sortPriceDesc = function([start, count]){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham ORDER BY giasp DESC LIMIT ?, ?";
+        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp, ha.tenhinh FROM sanpham sp "+
+        "INNER JOIN hinhanh ha ON sp.masp = ha.masp INNER JOIN "+
+        "(SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp AND ha.tenhinh = b.tenhinh "+
+        "ORDER BY giasp DESC LIMIT ?, ?";
         db.query(sql,[start, count], function(err, data){
             if(err)
                 reject(err);
@@ -300,7 +306,11 @@ exports.sortPriceDesc = function([start, count]){
 }
 exports.sortPriceAsc = function([start, count]){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham ORDER BY giasp ASC LIMIT ?, ?";
+        //let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham ORDER BY giasp ASC LIMIT ?, ?";
+        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp, ha.tenhinh FROM sanpham sp "+
+        "INNER JOIN hinhanh ha ON sp.masp = ha.masp INNER JOIN "+
+        "(SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp AND ha.tenhinh = b.tenhinh "+
+        "ORDER BY giasp ASC LIMIT ?, ?"; 
         db.query(sql,[start, count], function(err, data){
             if(err)
                 reject(err);

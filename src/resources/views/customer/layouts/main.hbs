@@ -186,7 +186,7 @@
 //===============================XỬ LÍ GIỎ HÀNG==============================
         //Hiển thị tổng tiền khi load trang giỏ hàng
         let tongTien = 0;
-        if(currentUrl == '/gio-hang'){
+        if(currentUrl == '/thanh-toan'){
             //Lấy giá trị trong radio vận chuyển điền vào phí vận chuyển trong giỏ hàng
             let radVc = $('input[name=radDelivery]:checked').val();
             $('#delivery').text(formatPrice(radVc));

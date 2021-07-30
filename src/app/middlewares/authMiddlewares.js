@@ -15,3 +15,11 @@ module.exports.requireAuth = function(req, res, next) {
 
     next();
 };
+
+module.exports.requireAuthCustomer = function(req, res, next) { 
+    if(!req.session.login){
+        res.redirect('/tai-khoan');
+        return; // phải return ko thì nó sẽ chạy logic của nó
+    }
+    next();
+};

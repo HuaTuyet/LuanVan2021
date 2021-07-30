@@ -1,16 +1,19 @@
 {{#if priceList}}
 {{#each priceList}}
-                    <div class="col-lg-3 col-md-3 all des">
+                    <div class="col-lg-4 col-md-4 all des">
                       <div class="product-item">
-                        <a href="/may-anh/{{this.masp}}"><img src="/assets/images/product/{{this.masp}}H1.jpg" alt=""></a>
+                        <a href="/may-anh/{{this.masp}}" class="link-img"><img src="/images/products/{{this.tenhinh}}" alt=""></a>
                         <div class="down-content">
                           <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}"><h4>{{this.tensp}}</h4></a>
                           {{#if this.giagiam}}
-                            <h6>{{formatCurrency this.giagiam}}</h6>
-                            <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                            <div style="min-height: 50px;">
+                              <h6>{{formatCurrency this.giagiam}}</h6>
+                              <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                            </div>
                           {{else}}
-                            <h6>{{formatCurrency this.giaban}}</h6>
-                            <span class= "giaban" style="visibility: hidden;">000000</span>
+                            <div style="min-height: 50px;">
+                              <h6>{{formatCurrency this.giaban}}</h6>
+                            </div>
                           {{/if}}
                           <ul class="stars">
                             <li><i class="fa fa-star"></i></li>
@@ -27,17 +30,20 @@
 {{/each}}
 {{else}}
 {{#each lastedList}}
-                    <div class="col-lg-3 col-md-3 all des">
+                    <div class="col-lg-4 col-md-4 all des">
                       <div class="product-item">
-                        <a href="/may-anh/{{this.masp}}"><img src="/assets/images/product/{{this.masp}}H1.jpg" alt=""></a>
+                        <a href="/may-anh/{{this.masp}}" class="link-img"><img src="/images/products/{{this.tenhinh}}" alt=""></a>
                         <div class="down-content">
                           <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}"><h4>{{this.tensp}}</h4></a>
                           {{#if this.giagiam}}
-                            <h6>{{formatCurrency this.giagiam}}</h6>
-                            <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                            <div style="min-height: 50px;">
+                              <h6>{{formatCurrency this.giagiam}}</h6>
+                              <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                            </div>
                           {{else}}
-                            <h6>{{formatCurrency this.giaban}}</h6>
-                            <span class= "giaban" style="visibility: hidden;">00000</span>
+                            <div style="min-height: 50px;">
+                              <h6>{{formatCurrency this.giaban}}</h6>
+                            </div>
                           {{/if}}
                           <ul class="stars">
                             <li><i class="fa fa-star"></i></li>

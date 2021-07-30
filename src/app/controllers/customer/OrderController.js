@@ -7,6 +7,19 @@ function formatDate(date){
 }
 
 class OrderController{
+    // GET / thanh-toan
+    viewPay(req, res){
+        modelProduct.getDelivery(function(dataQuery){
+            let cart = new Cart(req.session.cart ? req.session.cart : {});
+            let arrCart = cart.generateArray();
+            let totalQty = cart.totalQty;
+            let totalPrice = cart.totalPrice;
+            let delivery = dataQuery;
+            //res.json({arrCart, totalQty, totalPrice, delivery});          
+            res.render('pay', {arrCart, totalQty, totalPrice, delivery});
+        });
+    }
+
     // POST / dat-hang
     createOrder(req, res){
         let dataForm = req.body;

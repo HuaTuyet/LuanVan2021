@@ -1,0 +1,121 @@
+<div class="container" style="padding-top: 120px; min-height: 64vh;">
+<!--Giỏ hàng-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-warning alert-cart" role="alert">
+            Số lượng sản phẩm không đủ.
+        </div>
+    </div>
+</div>
+
+<!--Giỏ hàng-->
+<form action="/dat-hang" method="POST">
+<div class="row">
+    <div class="col-md-6">
+        <h5>THÔNG TIN GIỎ HÀNG</h5>
+        <table class="table table-bordered table-sm table-cart">
+            <thead>
+                <tr>
+                    <th>Hình</th>
+                    <th>Sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody> 
+                {{#each arrCart}}
+                <tr>
+                    <td><img src="/images/products/{{this.item.tenhinh}}" width="50px"></td>
+                    <td>{{this.item.tensp}}</td>
+                    <td>
+                        <span class="price">{{formatCurrency this.price}}</span>
+                        <div class="box-cart-qty">
+                            <a href="/gio-hang/update/{{this.item.masp}}" class="qty cart-qty minus">-</a>
+                            <input type="number" class="input-qty" value="{{this.qty}}" min="1" max="{{this.item.soluong}}" disabled>
+                            <a href="/gio-hang/update/{{this.item.masp}}"class=" qty cart-qty plus">+</a>
+                        </div>
+                    </td>
+                    <!--Delete Cart-->
+                    <td><a href="/gio-hang/delete/{{this.item.masp}}"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+                </tr>
+                {{/each}}
+                <tr>
+                    <td colspan="2" style="padding-left:30%">Tổng tiền hàng:</td>
+                    <td colspan="2" id="total-price">{{formatCurrency totalPrice}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding-left:30%">Vận chuyển:</td>
+                    <td colspan="2" id="delivery"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding-left:30%">Giảm giá:</td>
+                    <input type="hidden" name="giamgia" value="0">
+                    <td colspan="2" id="discount">- {{formatCurrency 0}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding-left:30%"><strong>Tổng số tiền</strong></td>
+                    <input type="hidden" name="tongtien" value="0">
+                    <td colspan="2" id="total"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="box-voucher">
+            <lable for="voucher"><strong>MÃ GIẢM GIÁ: </strong></lable>
+            <input id="voucher" type="text" placeholder="Nhập mã giảm giá">
+            {{!-- <button class="btn btn-success btn-cart btn-voucher">SỬ DỤNG</button> --}}
+            <a href="#" class="btn btn-success btn-cart btn-voucher">SỬ DỤNG</a>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <h5>THÔNG TIN KHÁCH HÀNG</h5>
+        <input name="tenkh" type="text" class="form-control form-control-sm mb-2" placeholder="Họ và tên (*)" required>           
+        <input name="sodt" type="text" class="form-control form-control-sm mb-2" placeholder="Số điện thoại (*)" required>
+        <input name="diachi" type="text" class="form-control form-control-sm mb-2" placeholder="Địa chỉ (*)" required>
+        <textarea name="ghichu" class="form-control form-control-sm mb-2" rows="3" placeholder="Ghi chú đơn hàng..."></textarea>
+
+        <!--VẬN CHUYỂN-->
+        <h5>HÌNH THỨC VẬN CHUYỂN</h5>
+        <div class="box-delivery">
+            {{#each delivery}}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radDelivery" id="ghtc" value="{{this.phivc}}" checked>
+                <label class="form-check-label" for="ghtc">{{this.tenvc}} : {{this.phivc}}</lable>
+            </div>
+            {{/each}}
+            {{!-- <div class="form-check">
+                <input class="form-check-input" type="radio" name="radDelivery" id="ghn" value="30000">
+                <label class="form-check-label" for="ghn">Giao hàng nhanh : 30,000</lable>
+            </div> --}}
+        </div>
+
+        <!--THANH TOÁN-->
+        <h5>HÌNH THỨC THANH TOÁN</h5>
+        <div class="box-payment">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radPayment" id="cod" value="cod" checked>
+                <label class="form-check-label" for="cod">Thanh toán sau khi nhận hàng (COD)</lable>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radPayment" id="bank" value="tranfer">
+                <label class="form-check-label" for="bank">Chuyển khoản ngân hàng</lable>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="radPayment" id="card-atm" value="atm">
+                <label class="form-check-label" for="card-atm">Thanh toán bằng thẻ ATM nội địa / thẻ Quốc Tế (Visa, MasterCard, JCB)</lable>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <a href="/may-anh" class="btn btn-cart">< THÊM SẢN PHẨM KHÁC</a>
+        {{!-- <a href="#" class="btn btn-success btn-cart float-right" id="order">ĐẶT HÀNG ></a> --}}
+        <button type="submit" class="btn btn-success btn-cart float-right" id="order">ĐẶT HÀNG ></button>
+    </div>
+</div>
+</form>
+</div>
+
+
+

@@ -42,17 +42,14 @@
           {{#each proList}}
           <div class="col-md-3">
             <div class="product-item">
-              <a href="/may-anh/{{this.masp}}"><img src="/images/products/{{this.tenhinh}}" alt=""></a>
+              <a href="/may-anh/{{this.masp}}" class="link-img"><img src="/images/products/{{this.tenhinh}}" alt=""></a>
               <div class="down-content">
                 <a href="/may-anh/{{this.masp}}"><h4>{{this.tensp}}</h4></a>
                 
-                {{#if this.giagiam}}
+                <div style="min-height: 50px;">
                   <h6>{{formatCurrency this.giagiam}}</h6>
                   <span class="giaban">{{formatCurrency this.giaban}}</span> 
-                {{else}}
-                  <h6>{{formatCurrency this.giaban}}</h6>
-                  <span class= "giaban" style="visibility: hidden;">00000</span>
-                {{/if}}
+                </div>
 
                 <ul class="stars">
                   <li><i class="fa fa-star"></i></li>
@@ -78,7 +75,7 @@
         <div class="row">
           <div class="col-md-12">
             <div class="section-heading">
-              <h2>Sản phẩm</h2>
+              <h2>Sản phẩm mới nhất</h2>
               <a href="/may-anh">Xem tất cả <i class="fa fa-angle-right"></i></a>
             </div>
           </div>
@@ -86,18 +83,24 @@
           {{#each list}}
           <div class="col-md-3">
             <div class="product-item">
-              <a href="/may-anh/{{this.masp}}"><img src="/images/products/{{this.tenhinh}}" width="90%"></a>
+              <a href="/may-anh/{{this.masp}}" class="link-img">
+                <img src="/images/products/{{this.tenhinh}}" width="90%">
+              </a>
               <div class="down-content">
                 <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}">
                   <h4>{{this.tensp}}</h4>
                 </a>
                 
                 {{#if this.giagiam}}
+                <div style="min-height: 50px;">
                   <h6>{{formatCurrency this.giagiam}}</h6>
                   <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                </div>
                 {{else}}
+                <div style="min-height: 50px;">
                   <h6>{{formatCurrency this.giaban}}</h6>
-                  <span class= "giaban" style="visibility: hidden;">00000</span>
+                  {{!-- <span class= "giaban" style="visibility: hidden;">00000</span> --}}
+                </div>                  
                 {{/if}}
 
                 <ul class="stars">

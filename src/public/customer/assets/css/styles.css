@@ -14,6 +14,11 @@
     transition: all 0.5s;
 }
 /************************/
+.link-img{
+    display: block;
+    min-height:153px
+}
+
 .product-item .down-content h4{
     margin-bottom: 10px;
 }

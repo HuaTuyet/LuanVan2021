@@ -5,46 +5,43 @@ const modelOrder = require('../../models/customer/Order')
 class CartController {
     // GET / gio-hang 
     viewCart(req, res){
-        if(!req.session.login){
-            res.redirect('/tai-khoan');
-        }else {
-            modelProduct.getDelivery(function(dataQuery){
-                let cart = new Cart(req.session.cart ? req.session.cart : {});
-                let arrCart = cart.generateArray();
-                let totalQty = cart.totalQty;
-                let totalPrice = cart.totalPrice;
-                let delivery = dataQuery;
-                //res.json({arrCart, totalQty, totalPrice, delivery});          
-                res.render('cart', {arrCart, totalQty, totalPrice, delivery});
-            });
-        }
+            let cart = new Cart(req.session.cart ? req.session.cart : {});
+            let arrCart = cart.generateArray();
+            let totalQty = cart.totalQty;
+            let totalPrice = cart.totalPrice;
+            //res.json({arrCart, totalQty, totalPrice, delivery});          
+            res.render('cart', {arrCart, totalQty, totalPrice});
+
+            // modelProduct.getDelivery(function(dataQuery){
+            //     let cart = new Cart(req.session.cart ? req.session.cart : {});
+            //     let arrCart = cart.generateArray();
+            //     let totalQty = cart.totalQty;
+            //     let totalPrice = cart.totalPrice;
+            //     let delivery = dataQuery;
+            //     //res.json({arrCart, totalQty, totalPrice, delivery});          
+            //     res.render('cart', {arrCart, totalQty, totalPrice, delivery});
+            // });
     } 
 
     // POST / gio-hang / add 
     addCart(req, res){
         req.session.redirectTo = req.body.currentPath;
-        //Kiểm tra người dùng đăng nhập chưa
-        if(!req.session.login){
-            res.json({login: false}); 
-        }
-        else{ 
-            let productId = req.body.masp; console.log('masp: ', productId);
-            let productQty = Number(req.body.productQty); console.log('qty o trang detail: ', productQty);
-            let cart = new Cart(req.session.cart ? req.session.cart : {});
-            let add = false;
-            let oldQty = cart.totalQty;
+        let productId = req.body.masp; console.log('masp: ', productId);
+        let productQty = Number(req.body.productQty); console.log('qty o trang detail: ', productQty);
+        let cart = new Cart(req.session.cart ? req.session.cart : {});
+        let add = false;
+        let oldQty = cart.totalQty;
     
-            modelProduct.getAProduct(productId, function(product){
-                cart.add(product, product.masp, productQty);
-                console.log('cart - add: ', cart);
-                let newQty = cart.totalQty; 
-                if(oldQty < newQty){
-                    add = true;
-                }
-                req.session.cart = cart; console.log(req.session);
-                res.json({cart, add, login: true});         
-            }) 
-        }
+        modelProduct.getAProduct(productId, function(product){
+            cart.add(product, product.masp, productQty);
+            console.log('cart - add: ', cart);
+            let newQty = cart.totalQty; 
+            if(oldQty < newQty){
+                add = true;
+            }
+            req.session.cart = cart; console.log(req.session);
+            res.json({cart, add, login: true});         
+        }) 
     }  
 
     // GET / gio-hang / delete /:id

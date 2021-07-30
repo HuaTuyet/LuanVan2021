@@ -32,7 +32,7 @@
               </li>
               {{#if session.login}}
               <li class="nav-item dropdown d-flex">
-                <img src="/assets/images/auths/{{session.user.anhdd}}" class="rounded-circle" alt="User Image" width="30" height="30">
+                <img src="/images/auths/{{session.user.anhdd}}" class="rounded-circle" alt="User Image" width="30" height="30">
                 <a class="nav-link p-2" href="/tai-khoan">{{session.user.tentk}}</a>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="/tai-khoan/me">Tài khoản của tôi</a>
@@ -51,7 +51,11 @@
               </li>
               {{/if}}
               <li class="nav-item">
+                {{#if session.login}}
+                <a class="nav-link" href="/thanh-toan">
+                {{else}}
                 <a class="nav-link" href="/gio-hang">
+                {{/if}}
                   {{!-- Giỏ hàng --}}
                   <i class="fa fa-shopping-cart cart-icon" aria-hidden="true" style="font-size: 19px;">
                     <span class="count-cart rounded-circle">
