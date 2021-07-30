@@ -21,10 +21,19 @@ module.exports = {
     formatCurrency: (cur) => new Intl.NumberFormat('vn-VN', { style: 'currency', currency: 'VND' }).format(cur),
     formatCurrencyMulti: (cur, qty) => new Intl.NumberFormat('vn-VN', { style: 'currency', currency: 'VND' }).format(cur*qty),
     formatStatus: (status) => {
-      if(status == 1){
+      if(status == 0){
         return "CHỜ XÁC NHẬN";
       }
-      else if(status == 5){
+      else if(status == 1){
+        return "ĐANG CHUẨN BỊ";
+      }
+      else if(status == 1){
+        return "ĐANG GIAO";
+      }
+      else if(status == 1){
+        return "ĐÃ GIAO";
+      }
+      else if(status == 4){
         return "ĐÃ HỦY";
       }
     },

@@ -177,7 +177,8 @@ class AuthController{
                             modelAuth.update(user, function(result){
                                 if(result > 0){
                                     if(anhddOld){
-                                        deleteImage.deleteFile(anhddOld);
+                                        let path = "auths/" + anhddOld;
+                                        deleteImage.deleteFile(path);
                                     }
                                     req.session.user.email = req.body.email;
                                     req.session.user.sodt = req.body.sodt;

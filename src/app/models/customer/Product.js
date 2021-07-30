@@ -34,7 +34,7 @@ exports.getAProduct = function(masp, callbackQuery){
 // }
 exports.list = function(){
     return new Promise((resolve, reject) => {
-        let sql = "SELECT sanpham.*, (SELECT hinhanh.tenhinh FROM sanpham JOIN hinhanh ON sanpham.masp = hinhanh.masp LIMIT 1) AS tenhinh FROM sanpham WHERE soluong > 0";
+        let sql = "SELECT sanpham.*, hinhanh.tenhinh FROM sanpham INNER JOIN hinhanh ON sanpham.masp = hinhanh.masp INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON hinhanh.masp = b.masp AND hinhanh.tenhinh = b.tenhinh WHERE soluong > 0";
         db.query(sql, function(err, data, fields){
             if(err){
                 reject(err);
@@ -47,7 +47,7 @@ exports.list = function(){
 // ============================= HOME PAGE ==============================
 exports.promotionList = function(){
     return new Promise((resolve, reject) => {
-        let sql = "SELECT sanpham.*, (SELECT hinhanh.tenhinh FROM sanpham JOIN hinhanh ON sanpham.masp = hinhanh.masp LIMIT 1) AS tenhinh FROM sanpham WHERE giagiam > 0 AND soluong > 0";
+        let sql = "SELECT sanpham.*, hinhanh.tenhinh FROM sanpham INNER JOIN hinhanh ON sanpham.masp = hinhanh.masp INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON hinhanh.masp = b.masp AND hinhanh.tenhinh = b.tenhinh WHERE soluong > 0 AND giagiam > 0";
         db.query(sql, function(err, data, fields){
             if(err){
                 reject(err);
