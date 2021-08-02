@@ -1,7 +1,7 @@
 <header class="">
       <nav class="navbar navbar-expand-lg">
         <div class="container">
-          <a class="navbar-brand" href="index.html"><h2>Camera <em>Shop</em></h2></a>
+          <a class="navbar-brand" href="/"><h2>Camera <em>Shop</em></h2></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -32,8 +32,12 @@
               </li>
               {{#if session.login}}
               <li class="nav-item dropdown d-flex">
+                {{#if session.user.anhdd}}
                 <img src="/images/auths/{{session.user.anhdd}}" class="rounded-circle" alt="User Image" width="30" height="30">
-                <a class="nav-link p-2" href="/tai-khoan">{{session.user.tentk}}</a>
+                {{else}}
+                <i class="fa fa-user" aria-hidden="true" style="color: white; padding-top: 14px"></i>
+                {{/if}}
+                <a class="nav-link p-2" href="/tai-khoan/me">{{session.user.tentk}}</a>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="/tai-khoan/me">Tài khoản của tôi</a>
                   <a class="dropdown-item" href="/don-mua">Đơn mua</a>
@@ -42,7 +46,6 @@
               </li>
               {{else}}
               <li class="nav-item dropdown">
-                {{!-- <img src="/assets/images/auths/{{session.user.anhdd}}" class="rounded-circle" alt="User Image" width="30" height="30"> --}}
                 <a class="nav-link p-2" href="/tai-khoan">Tài khoản</a>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="/tai-khoan">Đăng nhập</a>

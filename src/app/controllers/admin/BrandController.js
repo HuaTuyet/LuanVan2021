@@ -106,7 +106,7 @@ class BrandController {
             let id = req.params.id;
             modelBrand.detail(id)
                 .then(brand => {
-                    let path = "brands/" + brand[0].tenhinh; console.log('path: ', path)
+                    let path = "brands/" + brand[0].tenhinh;
                     deleteImages.deleteFile(path); 
                 })
                 .catch(err => {console.log('có lỗi!!' + err)})

@@ -31,7 +31,7 @@ exports.getOrder = function(tentk){
 }
 exports.getOneOrder = function(madh){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT donhang.*,vanchuyen.phivc FROM donhang JOIN vanchuyen ON donhang.mavc = vanchuyen.mavc WHERE madh = ?"; 
+        let sql = "SELECT * FROM donhang WHERE madh = ?"; 
         db.query(sql, madh, function(err, data){
             if(err){
                 reject("Lấy dữ liệu thất bại: ",err);
@@ -42,7 +42,10 @@ exports.getOneOrder = function(madh){
 }
 exports.getOrderDetail = function(madh){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT chitietdonhang.*,sanpham.tensp FROM chitietdonhang JOIN sanpham ON chitietdonhang.masp = sanpham.masp WHERE madh = ?"; 
+        //let sql = "SELECT chitietdonhang.*,sanpham.tensp FROM chitietdonhang JOIN sanpham ON chitietdonhang.masp = sanpham.masp WHERE madh = ?"; 
+        let sql = "SELECT ct.*,sp.tensp, ha.tenhinh FROM chitietdonhang ct "+
+        "INNER JOIN sanpham sp ON ct.masp = sp.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+        "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp AND ha.tenhinh = b.tenhinh WHERE madh = ?"
         db.query(sql, madh, function(err, data){
             if(err){
                 reject("Lấy dữ liệu thất bại: ",err);
@@ -61,7 +64,7 @@ exports.fnGetOrderDetail = function(madh, callback){
 
 exports.destroyOrder = function(madh){
     return new Promise((resolve, reject) =>{
-        let sql = "UPDATE donhang SET trangthai ='5' WHERE madh = ?";
+        let sql = "UPDATE donhang SET trangthai ='4' WHERE madh = ?";
         db.query(sql, madh, function(err, data){
             if(err){
                 reject("Lấy dữ liệu thất bại: ",err);

@@ -22,7 +22,7 @@
             <div id="img-brand">
               {{#each brands}}
               <a href="/may-anh/thuong-hieu?math={{this.math}}" title="{{this.tenth}}">
-                <img src="/assets/images/brand/{{this.math}}.jpg" alt="{{this.tenth}}" height="100%">
+                <img src="/images/brands/{{this.tenhinh}}" alt="{{this.tenth}}" height="100%">
               </a> 
               {{/each}}
             </div>
@@ -56,6 +56,22 @@
                   {{/each}}
                 </tbody>
               </table>
+
+              <table class="table tb-type table-sm">
+                <thead>
+                  <tr>
+                    <th>MÁY ẢNH</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><a href="/may-anh/gia?value=under">Dưới {{formatCurrency 10000000}}</a></td>
+                  </tr>
+                  <tr>
+                    <td><a href="/may-anh/gia?value=upper">Trên {{formatCurrency 10000000}}</a></td>
+                  </tr>
+                </tbody>
+              </table>
           </div>
 
           <!--Sản phẩm và Phân trang-->
@@ -72,21 +88,6 @@
                               <div class="down-content">
                                 <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}"><h4>{{this.tensp}}</h4></a>
 
-                                {{!-- {{#if this.giasp}}
-                                  {{#ifCond this.giasp this.giaban}}
-                                  <h6>{{formatCurrency this.giasp}}</h6>
-                                  <span class="giaban">{{formatCurrency this.giaban}}</span> 
-                                  {{else}}
-                                  <h6>{{formatCurrency this.giaban}}</h6><span class= "giaban" style="visibility: hidden;">0000000</span>
-                                  {{/ifCond}}
-                                {{else}}
-                                  {{#if this.giagiam}}
-                                  <h6>{{formatCurrency this.giagiam}}</h6>
-                                  <span class="giaban">{{formatCurrency this.giaban}}</span> 
-                                  {{else}}
-                                  <h6>{{formatCurrency this.giaban}}</h6><span class= "giaban" style="visibility: hidden;">0000000</span>
-                                  {{/if}}
-                                {{/if}} --}}
                                 {{#if this.giagiam}}
                                 <div style="min-height: 50px;">
                                   <h6>{{formatCurrency this.giagiam}}</h6>
@@ -123,6 +124,10 @@
                     {{else if maloai}}
                       {{#each pages }}
                       <li id="page{{this}}"><a href="/may-anh/loai?maloai={{../maloai}}&page={{this}}">{{this}}</a></li>
+                      {{/each}}
+                    {{else if gia}}
+                      {{#each pages }}
+                      <li id="page{{this}}"><a href="/may-anh/gia?value={{../gia}}&page={{this}}">{{this}}</a></li>
                       {{/each}}
                     {{else}}
                       {{#each pages }}

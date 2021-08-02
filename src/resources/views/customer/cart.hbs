@@ -1,4 +1,13 @@
 <div class="container" style="padding-top: 120px; min-height: 64vh;">
+{{#if emptyCart}}
+<div class="row">
+    <div class="col-md-12 text-center">
+            <i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 80px;color: #f33f3f;"></i>
+            <p>Không có sản phẩm nào trong giỏ hàng</p><br>
+            <a href="/" class="btn btn-outline-primary">Tiếp tục mua sắm</a>
+    </div>
+</div>
+{{else}}
 <!--Giỏ hàng-->
 <div class="row">
     <div class="col-md-8 m-auto">
@@ -55,6 +64,7 @@
     </div>
 </div>
 </form>
+{{/if}}
 </div>
 
 

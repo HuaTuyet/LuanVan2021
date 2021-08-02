@@ -1,4 +1,4 @@
-<div class="container" style="padding-top: 120px;">
+<div class="container" style="padding-top: 120px; min-height: 64vh;">
     <div class="row" style="border-bottom: 1px solid rgb(194, 192, 192);">
         <div class="col-md-12"><h4>Hồ sơ của tôi</h4></div>
         <div class="col-md-12"><a href="/tai-khoan/me/cap-nhat">Sửa hồ sơ</a></div>       
@@ -23,7 +23,11 @@
             </div>
             <div class="profile">
                 <p style="align-self: center">Ảnh đại diện</p>
+                {{#if taikhoan.anhdd}}
                 <img src="/images/auths/{{taikhoan.anhdd}}">
+                {{else}}
+                <i class="fa fa-user" aria-hidden="true" style="padding-top: 2px; font-size: 20px"></i>
+                {{/if}}
             </div>
         </div>
     </div>

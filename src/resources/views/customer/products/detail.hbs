@@ -28,7 +28,7 @@
           <!--Image Product //evenly-->
           <div class="col-md-4">
             <div class="row">
-              <img src="/images/product/{{hinh.tenhinh}}" class="img-detail">
+              <img src="/images/products/{{hinhChiTiet hinh}}" class="img-detail">
             </div>
             <div class="row mt-4 justify-content-around"> 
               {{#each hinh}}
@@ -92,17 +92,19 @@
               </tbody>
             </table>
 
+            {{#if sanpham.soluong}}
             <div class="form-group w-50 box-cart-qty">
               <input type="hidden" name="masp" value="{{sanpham.masp}}">
               <input type="number" name="detailQty" class="form-control" value="1" min="1" max="{{sanpham.soluong}}"> 
-                {{!-- <a href="#" class="qty detail-qty minus">-</a>
-                <input type="text" class="form-control input-detail-qty" value="1">
-                <a href="#"class="qty detail-qty plus">+</a> --}}
             </div>
             <a onclick="AddToCart('{{sanpham.masp}}')" class="btn btn-success w-100" style="color: white;">
               Mua hàng
             </a>
+            {{else}}
+            <div style="text-align: center;color: #f33f3f;font-weight: 500;font-size: 20px;">HÀNG TẠM HẾT</div>
+            {{/if}}
           </div>
+
           <!--Thông số kỹ thuật-->
           <div class="col-md-4">
             <h5>THÔNG SỐ KỸ THUẬT</h5>

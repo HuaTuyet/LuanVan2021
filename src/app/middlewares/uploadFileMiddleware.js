@@ -5,7 +5,7 @@ let dirPath = path.join(`${__dirname}/../../public/dist/image/brands`);
 
 let storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, path.join(`${__dirname}/../../public/images/${req.body.diachi}`));
+        callback(null, path.join(`${__dirname}/../../public/images/${req.body.path}`));
     },
  
     filename: (req, file, callback) =>{

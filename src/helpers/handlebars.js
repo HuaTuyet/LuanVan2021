@@ -21,10 +21,19 @@ module.exports = {
     formatCurrency: (cur) => new Intl.NumberFormat('vn-VN', { style: 'currency', currency: 'VND' }).format(cur),
     formatCurrencyMulti: (cur, qty) => new Intl.NumberFormat('vn-VN', { style: 'currency', currency: 'VND' }).format(cur*qty),
     formatStatus: (status) => {
-      if(status == 1){
+      if(status == 0){
         return "CHỜ XÁC NHẬN";
       }
-      else if(status == 5){
+      else if(status == 1){
+        return "ĐANG CHUẨN BỊ";
+      }
+      else if(status == 2){
+        return "ĐANG GIAO";
+      }
+      else if(status == 3){
+        return "ĐÃ GIAO";
+      }
+      else if(status == 4){
         return "ĐÃ HỦY";
       }
     },
@@ -37,6 +46,7 @@ module.exports = {
         }
         return options.inverse(this); //return false
     },
+    hinhChiTiet: (arrayImg) => arrayImg[0].tenhinh
     // ifCond: (v1, v2, options) => {
     //     if(v1 != v2) {
     //       return options.fn(this); //return true

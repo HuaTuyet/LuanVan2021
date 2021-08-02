@@ -255,6 +255,48 @@ exports.getProductsByType = function([maloai, start, count]){
     })
 }
 
+exports.getProductsByPrice = function(gia, [start, count]){
+    return new Promise((resolve, reject) =>{
+        let sql = "";
+        if(gia === "under"){
+            sql = "SELECT * FROM sanpham sp "+
+            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+            "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+            "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp <= 10000000 LIMIT ?, ?"; 
+        } 
+        else if(gia === "upper"){
+            sql = "SELECT * FROM sanpham sp "+
+            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+            "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+            "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= 10000000 LIMIT ?, ?"; 
+        } 
+        db.query(sql, [start, count], function(err, data){
+            if(err){
+                reject("Lấy dữ liệu thất bại: ",err);
+            }
+            resolve(data);
+        })
+    })
+}
+
+exports.getProductsByPriceOption = function([from, to, start, count]){
+    return new Promise((resolve, reject) =>{
+        let sql = "SELECT * FROM sanpham sp "+
+            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+            "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+            "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= ? AND a.giasp <= ? LIMIT ?, ?"; 
+        db.query(sql, [from, to, start, count], function(err, data){
+            if(err){
+                reject("Lấy dữ liệu thất bại: ",err);
+            }
+            resolve(data);
+        })
+    })
+}
+
 exports.countAllProduct = function(){
     return new Promise((resolve, reject) =>{
         let sql = "SELECT count(*) AS total FROM sanpham"; 
@@ -283,6 +325,41 @@ exports.countAllByType = function(maloai){
     return new Promise((resolve, reject) =>{
         let sql = "SELECT count(*) AS total FROM sanpham WHERE maloai = ?"; 
         db.query(sql, maloai, function(err, data){
+            if(err){
+                reject("Lấy dữ liệu thất bại: ",err);
+            }
+            resolve(data[0].total);
+        })
+    })
+}
+
+exports.countAllByPrice = function(gia){
+    return new Promise((resolve, reject) =>{
+        let sql = "";
+        if(gia === "under"){
+            sql = "SELECT COUNT(*) AS total FROM sanpham sp "+
+            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+            "ON sp.masp = a.masp WHERE a.giasp <= 10000000"; 
+        } 
+        else if(gia === "upper"){
+            sql = "SELECT COUNT(*) AS total FROM sanpham sp "+
+            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+            "ON sp.masp = a.masp WHERE a.giasp >= 10000000"; 
+        }
+        db.query(sql, function(err, data){
+            if(err){
+                reject("Lấy dữ liệu thất bại: ",err);
+            }
+            resolve(data[0].total);
+        })
+    })
+}
+exports.countAllByPriceOption = function([from, to]){
+    return new Promise((resolve, reject) =>{
+        let sql = "SELECT COUNT(*) AS total FROM sanpham sp "+
+            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+            "ON sp.masp = a.masp WHERE a.giasp >= ? AND a.giasp <= ?"; 
+        db.query(sql, [from, to], function(err, data){
             if(err){
                 reject("Lấy dữ liệu thất bại: ",err);
             }
@@ -360,6 +437,56 @@ exports.sortPriceAscByType = function([maloai, start, count]){
         })
     })
 }
+exports.sortPriceAscByPrice = function(gia, [start, count]){
+    return new Promise((resolve, reject) =>{
+        //let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham WHERE maloai=? ORDER BY giasp ASC LIMIT ?, ?";
+        let sql = "";
+        if(gia === "under"){
+            sql = "SELECT * FROM sanpham sp "+
+            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+            "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+            "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp <= 10000000 ORDER BY a.giasp ASC LIMIT ?, ?"; 
+        } 
+        else if(gia === "upper"){
+            sql = "SELECT * FROM sanpham sp "+
+            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+            "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+            "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= 10000000 ORDER BY a.giasp ASC LIMIT ?, ?"; 
+        } 
+        db.query(sql,[start, count], function(err, data){
+            if(err)
+                reject(err);
+            resolve(data);
+        })
+    })
+}
+exports.sortPriceDescByPrice = function(gia, [start, count]){
+    return new Promise((resolve, reject) =>{
+        //let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham WHERE maloai=? ORDER BY giasp ASC LIMIT ?, ?";
+        let sql = "";
+        if(gia === "under"){
+            sql = "SELECT * FROM sanpham sp "+
+            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+            "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+            "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp <= 10000000 ORDER BY a.giasp DESC LIMIT ?, ?"; 
+        } 
+        else if(gia === "upper"){
+            sql = "SELECT * FROM sanpham sp "+
+            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+            "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+            "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= 10000000 ORDER BY a.giasp DESC LIMIT ?, ?"; 
+        } 
+        db.query(sql,[start, count], function(err, data){
+            if(err)
+                reject(err);
+            resolve(data);
+        })
+    })
+}
 
 // ============================= CART PAGE ==============================
 exports.getDelivery = function(result){
@@ -369,4 +496,11 @@ exports.getDelivery = function(result){
             result(data);
         });
 }
+// exports.getInfoUser = function(tentk, result){
+//     let sql = "SELECT sodt, diachi FROM taikhoan WHERE tentk = ?";
+//     db.query(sql,tentk,function(err, data){
+//         if(err) throw err;
+//         result(data);
+//     });
+// }
 

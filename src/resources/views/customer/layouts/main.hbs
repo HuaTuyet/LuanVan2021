@@ -122,6 +122,7 @@
         let currentUrl = window.location.pathname;
         let math = getUrlParameter("math");
         let maloai = getUrlParameter("maloai");
+        let gia = getUrlParameter("value");
         $('#priceAsc').click(function(e) {
 			e.preventDefault();
             s = 1;
@@ -134,7 +135,7 @@
 				dataType: 'json',
 				data: {
 					sort: "priceAsc",
-                    page, math, maloai
+                    page, math, maloai, gia
 				},
                 success: function(data){
                     $('#result-sort').html(data.html);
@@ -154,7 +155,7 @@
 				dataType: 'json',
 				data: {
 					sort: "priceDesc",
-                    page, math, maloai
+                    page, math, maloai, gia
 				},
                 success: function(data){
                     $('#result-sort').html(data.html);
@@ -174,7 +175,7 @@
 				dataType: 'json',
 				data: {
 					sort: "lasted",
-                    page, math, maloai
+                    page, math, maloai, gia
 				},
                 success: function(data){
                     $('#result-sort').html(data.html);

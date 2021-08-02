@@ -6,11 +6,15 @@ class CartController {
     // GET / gio-hang 
     viewCart(req, res){
             let cart = new Cart(req.session.cart ? req.session.cart : {});
-            let arrCart = cart.generateArray();
-            let totalQty = cart.totalQty;
-            let totalPrice = cart.totalPrice;
-            //res.json({arrCart, totalQty, totalPrice, delivery});          
-            res.render('cart', {arrCart, totalQty, totalPrice});
+            if(cart && Object.keys(cart.items).length !== 0){
+                let arrCart = cart.generateArray();
+                let totalQty = cart.totalQty;
+                let totalPrice = cart.totalPrice;
+                //res.json({arrCart, totalQty, totalPrice, delivery});          
+                res.render('cart', {arrCart, totalQty, totalPrice});
+            } else {
+                res.render('cart', {emptyCart:true});
+            };
 
             // modelProduct.getDelivery(function(dataQuery){
             //     let cart = new Cart(req.session.cart ? req.session.cart : {});
@@ -52,8 +56,12 @@ class CartController {
         cart.delete(productId);
         // console.log('cart - delete: ', cart);
         req.session.cart = cart;
-        res.redirect('/gio-hang');
-       
+        if(req.session.login){
+            res.redirect('/thanh-toan');
+        }
+        else{
+            res.redirect('/gio-hang');
+        }
     }
 
     // GET / gio-hang / update /:id

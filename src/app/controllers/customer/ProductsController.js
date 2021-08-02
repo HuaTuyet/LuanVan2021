@@ -202,6 +202,74 @@ class ProductsController {
         })
     }
     
+    // GET / may-anh / gia
+    showProductByPrice(req, res){
+        let count = 4; // Số sản phẩm trên 1 trang  
+        let gia = req.query.value ? req.query.value : null; console.log("gia: ", gia);        
+        let page = req.query.page ? req.query.page : 1;
+        const totalProduct = modelProduct.countAllByPrice(gia);
+        const brands = modelProduct.getBrands();
+        const types = modelProduct.getTypes();
+        //const price = modelProduct.getProductslByPrice(gia);
+        Promise.all([totalProduct, brands, types])
+        .then(([totalProduct, brands, types]) => { 
+            
+            let pages = [];
+            let totalPages = Math.ceil(totalProduct / count);
+            for(let i = 1; i <= totalPages; i++){
+                pages.push(i);
+            };
+
+            if(page <= 0 || page > totalPages)
+                page = 1; 
+            
+            let start = (page - 1)*count;           
+            let sort = 0;
+            if(req.session.sort){
+                sort = req.session.sort;     
+                switch(sort){
+                    case "priceAsc":
+                        const sortPriceAsc = modelProduct.sortPriceAscByPrice(gia,[start,count]);
+                        sortPriceAsc.then((list) => {
+                            //res.json("sort asc brand");
+                            res.render('products/products', {list, pages, sort:1, brands, types, gia});
+                        })
+                        .catch(err => {console.log("Loi: ", err);})
+                        break;
+                    case "priceDesc": 
+                        const sortPriceDesc = modelProduct.sortPriceDescByPrice(gia,[start,count]);
+                        sortPriceDesc.then((list) => { 
+                            res.render('products/products', {list, pages, sort:2, brands, types, gia});
+                        })  
+                        .catch(err => {console.log("Loi: ", err);})
+                        break;
+                    case "lasted": 
+                    const lastedList = modelProduct.getProductsByPrice(gia, [start,count]);
+                    lastedList.then((list) => {
+                        //console.log(list);
+                        res.render('products/products', {list, pages, sort, brands, types, gia});
+                    })
+                    .catch(err => {
+                        console.log("Loi: ", err);
+                    })
+                }
+            }
+            else{
+                const lastedList = modelProduct.getProductsByPrice(gia, [start, count]);
+                lastedList.then((list) => {
+                    //console.log("dssp loai: ", list);
+                    res.render('products/products', {list, pages, sort, brands, types, gia});
+                })
+                .catch(err => {
+                    console.log("Loi: ", err);
+                })
+            }
+        })
+        .catch(err => { 
+            console.log("Loi: ", err);
+        })
+    }
+    
     // POST / may-anh
     sort(req, res){
         if(req.body.sort){
@@ -341,6 +409,49 @@ class ProductsController {
         }
     }
 
+    // POST / may-anh / gia
+    sortByPrice(req, res){
+        if(req.body.sort){
+                req.session.sort = req.body.sort;
+        }
+            
+        let count = 4; 
+        let page = req.body.page; 
+        let gia = req.body.gia ? req.body.gia : null;
+        let start = (page - 1)*count;
+        if(req.session.sort){
+            let sort = req.session.sort;     
+            switch(sort){
+                case "priceAsc":
+                    const sortPriceAsc = modelProduct.sortPriceAscByPrice(gia, [start,count]);
+                    sortPriceAsc.then(priceList => {
+                        res.render('products/sort',{layout:false, priceList}, (err, html)=>{
+                            res.send({html}); 
+                        })  
+                    })
+                    .catch(err => {console.log("Loi: ", err);})
+                    break;
+                case "priceDesc":
+                    const sortPriceDesc = modelProduct.sortPriceDescByPrice(gia, [start,count]);
+                    sortPriceDesc.then(priceList => {
+                        res.render('products/sort',{layout:false, priceList}, (err, html)=>{
+                            res.send({html});  
+                        })
+                    })
+                    .catch(err => {console.log("Loi: ", err);})
+                    break;
+                case "lasted":
+                    const sortLasted = modelProduct.getProductsByPrice(gia, [start,count]);
+                    sortLasted.then(lastedList => {
+                        res.render('products/sort',{layout:false, lastedList}, (err, html)=>{
+                            res.send({html});  
+                        })
+                    })
+                    .catch(err => {console.log("Loi: ", err);})
+                    break;
+            }
+        }
+    }
 
     // GET / may-anh / :id === DETAIL PAGE
     detail(req, res){ 

@@ -24,7 +24,7 @@
                 <p><strong>Trạng thái:</strong> {{formatStatus this.trangthai}}</p>
             </div>
             <form action="/don-mua/huy-don/{{this.madh}}" method="post">
-            {{#ifCondEqual this.trangthai 1}}
+            {{#ifCondEqual this.trangthai 0}}
             <div class="col-md-4">
                 <button class="btn btn-success" type="submit">
                     Hủy đơn hàng
@@ -50,7 +50,7 @@
                     <p>{{dh.diachi}}</p>
                     <hr>
                     <form action="/don-mua/huy-don/{{dh.madh}}" method="post">
-                        {{#ifCondEqual dh.trangthai 1}}
+                        {{#ifCondEqual dh.trangthai 0}}
                         <button class="btn btn-success float-right">Hủy đơn hàng</button>
                         {{/ifCondEqual}}
                     </form>
@@ -65,7 +65,7 @@
                     {{#each ctdh}}
                     <tr>
                         <td style="display: flex">
-                            <img src="/images/product/{{this.masp}}H1.jpg" width="50px">
+                            <img src="/images/products/{{this.tenhinh}}" width="50px">
                             <div class="ml-2 pro-order">
                                 <p>{{this.tensp}}</p>
                                 <p>{{this.soluong}} x <span>{{formatCurrency this.dongia}}</span></p>

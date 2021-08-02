@@ -1,4 +1,13 @@
 <div class="container" style="padding-top: 120px; min-height: 64vh;">
+{{#if emptyCart}}
+<div class="row">
+    <div class="col-md-12 text-center">
+            <i class="fa fa-shopping-cart" aria-hidden="true" style="font-size: 80px;color: #f33f3f;"></i>
+            <p>Không có sản phẩm nào trong giỏ hàng</p><br>
+            <a href="/" class="btn btn-outline-primary">Tiếp tục mua sắm</a>
+    </div>
+</div>
+{{else}}
 <!--Giỏ hàng-->
 <div class="row">
     <div class="col-md-12">
@@ -7,7 +16,6 @@
         </div>
     </div>
 </div>
-
 <!--Giỏ hàng-->
 <form action="/dat-hang" method="POST">
 <div class="row">
@@ -70,8 +78,8 @@
     <div class="col-md-6">
         <h5>THÔNG TIN KHÁCH HÀNG</h5>
         <input name="tenkh" type="text" class="form-control form-control-sm mb-2" placeholder="Họ và tên (*)" required>           
-        <input name="sodt" type="text" class="form-control form-control-sm mb-2" placeholder="Số điện thoại (*)" required>
-        <input name="diachi" type="text" class="form-control form-control-sm mb-2" placeholder="Địa chỉ (*)" required>
+        <input name="sodt" type="text" class="form-control form-control-sm mb-2" value="{{session.user.sodt}}" required> 
+        <input name="diachi" type="text" class="form-control form-control-sm mb-2" value="{{session.user.diachi}}" required>
         <textarea name="ghichu" class="form-control form-control-sm mb-2" rows="3" placeholder="Ghi chú đơn hàng..."></textarea>
 
         <!--VẬN CHUYỂN-->
@@ -115,6 +123,7 @@
     </div>
 </div>
 </form>
+{{/if}}
 </div>
 
 

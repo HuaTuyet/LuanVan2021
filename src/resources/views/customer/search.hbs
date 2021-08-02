@@ -24,25 +24,25 @@
             {{#each result}}
             <div class="col-md-3">
                 <div class="product-item">
-                    <a href="/may-anh/{{this.masp}}"><img src="/assets/images/product/{{this.masp}}H1.jpg" alt=""></a>
+                    <a href="/may-anh/{{this.masp}}" class="link-img">
+                        <img src="/images/products/{{this.tenhinh}}" width="90%">
+                    </a>
                     <div class="down-content">
-                        <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}"><h4>{{this.tensp}}</h4></a>
-                        {{#if this.giasp}}
-                            {{#ifCond this.giasp this.giaban}}
-                            <h6>{{formatCurrency this.giasp}}</h6>
-                            <span class="giaban">{{formatCurrency this.giaban}}</span> 
-                            {{else}}
-                            <h6>{{formatCurrency this.giaban}}</h6>
-                            <span class= "giaban" style="visibility: hidden;">0</span>
-                            {{/ifCond}}
+                        <a href="/may-anh/{{this.masp}}" title="{{this.tensp}}">
+                        <h4>{{this.tensp}}</h4>
+                        </a>
+                        
+                        {{#if this.giagiam}}
+                        <div style="min-height: 50px;">
+                        <h6>{{formatCurrency this.giagiam}}</h6>
+                        <span class="giaban">{{formatCurrency this.giaban}}</span> 
+                        </div>
                         {{else}}
-                            {{#if this.giagiam}}
-                            <h6>{{formatCurrency this.giagiam}}</h6>
-                            <span class="giaban">{{formatCurrency this.giaban}}</span> 
-                            {{else}}
-                            <h6>{{formatCurrency this.giaban}}</h6><span class= "giaban" style="visibility: hidden;">0</span>
-                            {{/if}}
-                        {{/if}}                               
+                        <div style="min-height: 50px;">
+                        <h6>{{formatCurrency this.giaban}}</h6>
+                        </div>                  
+                        {{/if}}    
+
                         <ul class="stars">
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
