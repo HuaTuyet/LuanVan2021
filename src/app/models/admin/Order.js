@@ -62,7 +62,7 @@ exports.increaseProductQuantity = function(quantity, idProduct){
 //Lấy thông tin đơn hàng cho việc in hóa đơn
 exports.getOrder = function(idOrder){
     return new Promise((resolve, reject) => {
-        let sql = "SELECT dh.madh, DATE_FORMAT(dh.ngaydat, '%d-%m-%Y') as ngaydat, dh.tenkh, dh.diachi, dh.giamgia, vc.phivc, tk.email FROM donhang dh JOIN vanchuyen vc ON dh.mavc = vc.mavc JOIN taikhoan tk ON dh.tentk = tk.tentk WHERE madh = ?";
+        let sql = "SELECT dh.madh, DATE_FORMAT(dh.ngaydat, '%d-%m-%Y') as ngaydat, dh.tenkh, dh.diachi, dh.giamgia, dh.phivc, tk.email FROM donhang dh JOIN taikhoan tk ON dh.tentk = tk.tentk WHERE madh = ?";
         db.query(sql, idOrder, function(err,result) {
             if(err){
                 reject(err);
