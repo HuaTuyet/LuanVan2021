@@ -30,6 +30,8 @@ router.get('/tai-khoan/logout', authController.logout);
 router.get('/tai-khoan/me', authMiddleware.requireAuthCustomer, authController.viewAccount);
 router.get('/tai-khoan/me/cap-nhat', authMiddleware.requireAuthCustomer, authController.viewUpdateAccount);
 router.post('/tai-khoan/me/cap-nhat', authMiddleware.requireAuthCustomer, authController.updateAccount);
+router.get('/tai-khoan/me/doi-mat-khau', authMiddleware.requireAuthCustomer, authController.viewChangePw);
+router.post('/tai-khoan/me/doi-mat-khau', authMiddleware.requireAuthCustomer, authController.changePw);
 
 router.get('/tai-khoan/:slug', authController.viewLogin);
 router.get('/tai-khoan', authController.viewLogin);

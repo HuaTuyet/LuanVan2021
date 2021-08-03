@@ -73,3 +73,14 @@ exports.getUsersByTentk = function(tentk, callbackUser){
         callbackUser(result[0]);
     })
 }
+
+//Đổi mật khẩu
+exports.changePassword = function(matkhau, tentk, callbackUser){
+    var sql = "UPDATE taikhoan SET matkhau = ? WHERE tentk = ?";
+    db.query(sql, [matkhau,tentk], function(err, result) {
+        if(err){
+            return console.error('err: ' + err.message);
+        }
+        callbackUser(result.affectedRows);
+    })
+}

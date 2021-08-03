@@ -197,6 +197,38 @@ class AuthController{
                 })
         }); 
     }
+
+    // GET / tai-khoan / me / doi-mat-khau
+    viewChangePw(req, res){
+        res.render('auth/changePassword');
+    }
+    // POST / tai-khoan / me / doi-mat-khau
+    changePw(req, res){
+        //let old = req.body;
+        if(req.body.matkhaumoi != req.body.matkhaunhaplai){
+            res.render('auth/changePassword', {error: "Mật khẩu nhập lại không trùng!"});
+        } 
+        else{
+            let tentk = req.session.user.tentk; 
+            modelAuth.getUsersByTentk(tentk,async function(user){
+                if(!(await bcrypt.compare(req.body.matkhaucu, user.matkhau))){
+                    res.render('auth/changePassword', {error: "Mật khẩu cũ không đúng!"});
+                }
+                else{
+                    console.log("trung mat khau cu");
+                    let newPw = await bcrypt.hash(req.body.matkhaumoi, 8); console.log('newPw: ', newPw);
+                    modelAuth.changePassword(newPw ,tentk, function(data){
+                        if(data > 0){
+                            res.render('auth/changePassword', {success: true});
+                        }
+                        else{
+                            res.render('auth/changePassword', {error: "Không thể đổi mật khẩu lúc này!"});
+                        }
+                    })
+                }
+            }) 
+        }
+    }
 }
 
 // -- /^[\d\w_.]+$/g --

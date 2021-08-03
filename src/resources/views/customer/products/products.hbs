@@ -106,8 +106,13 @@
                                   <li><i class="fa fa-star"></i></li>
                                   <li><i class="fa fa-star"></i></li>
                                 </ul>
-                                <span class="review">Reviews (24)</span>
+                                <span>Reviews (24)</span>
+                                {{#if this.soluong}}
                                 <a onclick="AddToCart('{{this.masp}}')" class="btn btn-outline-success btn-muahang">Mua hàng</a>
+                                {{else}}
+                                <div style="margin-top: 18px;color: #f33f3f;font-weight: 500;font-size: 20px;">HÀNG TẠM HẾT</div>
+                                {{/if}}
+                                
                               </div>
                             </div>
                           </div>

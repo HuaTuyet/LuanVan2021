@@ -39,7 +39,7 @@ exports.list = function(){
     return new Promise((resolve, reject) => {
         let sql = "SELECT sp.*, ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
         "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-        "AND ha.tenhinh = b.tenhinh WHERE soluong > 0";
+        "AND ha.tenhinh = b.tenhinh";
         db.query(sql, function(err, data, fields){
             if(err){
                 reject(err);
@@ -54,7 +54,7 @@ exports.promotionList = function(){
     return new Promise((resolve, reject) => {
         let sql = "SELECT sp.*, ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
         "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-        "AND ha.tenhinh = b.tenhinh WHERE giagiam > 0 AND soluong > 0";
+        "AND ha.tenhinh = b.tenhinh WHERE giagiam > 0";
         db.query(sql, function(err, data, fields){
             if(err){
                 reject(err);
@@ -207,7 +207,7 @@ exports.getProducts = function([start, count]){
         "INNER JOIN phieunhap pn ON ct.mapn = pn.mapn "+
         "INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
         "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-        "AND ha.tenhinh = b.tenhinh WHERE sp.soluong > 0 GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
+        "AND ha.tenhinh = b.tenhinh  GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
         //let sql = "SELECT * FROM sanpham  LIMIT ?, ?";
         db.query(sql,[start, count], function(err, data){
             if(err){
@@ -225,7 +225,7 @@ exports.getProductsByBrand = function([math, start, count]){
         "INNER JOIN phieunhap pn ON ct.mapn = pn.mapn "+
         "INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
         "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-        "AND ha.tenhinh = b.tenhinh WHERE sp.math = ? AND sp.soluong > 0 GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
+        "AND ha.tenhinh = b.tenhinh WHERE sp.math = ? GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
         //let sql = "SELECT * FROM sanpham WHERE math = ? LIMIT ?, ?";
         db.query(sql,[math, start, count], function(err, data){
             if(err){
@@ -243,7 +243,7 @@ exports.getProductsByType = function([maloai, start, count]){
         "INNER JOIN phieunhap pn ON ct.mapn = pn.mapn "+
         "INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
         "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-        "AND ha.tenhinh = b.tenhinh WHERE sp.maloai = ? AND sp.soluong > 0 GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
+        "AND ha.tenhinh = b.tenhinh WHERE sp.maloai = ? GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
         //let sql = "SELECT * FROM sanpham WHERE maloai = ? LIMIT ?, ?";
         db.query(sql,[maloai, start, count], function(err, data){
             if(err){ 
