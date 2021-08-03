@@ -11,7 +11,7 @@ const db = require('../Database')
 // }
 
 exports.search = function(keyword, result){
-        let sql = "SELECT * FROM sanpham WHERE tensp LIKE '%" + keyword + "%'";
+        let sql = "SELECT * FROM sanpham WHERE tensp LIKE '%" + keyword + "%' AND deletedAt IS NULL";
         db.query(sql, function(err, data){
             if(err) throw err;
             result(data);
@@ -20,7 +20,7 @@ exports.search = function(keyword, result){
 exports.searchLimit = function(keyword, [start,count], result){
     let sql = "SELECT sp.*,ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
     "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-    "AND ha.tenhinh = b.tenhinh WHERE sp.tensp LIKE '%" + keyword + "%' LIMIT ?, ?";
+    "AND ha.tenhinh = b.tenhinh WHERE sp.tensp LIKE '%" + keyword + "%' AND sp.deletedAt IS NULL LIMIT ?, ?";
     db.query(sql,[start,count], function(err, data){
         if(err) throw err;
         result(data);

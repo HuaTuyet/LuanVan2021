@@ -69,7 +69,6 @@ class ProductsController {
 
     // GET / may-anh / thuong-hieu
     showProductByBrand(req, res, next){
-        console.log("showProductByBrand ");
         let count = 4; // Số sản phẩm trên 1 trang  
         let math = req.query.math ? req.query.math : null;            
         let page = req.query.page ? req.query.page : 1;
@@ -455,29 +454,35 @@ class ProductsController {
 
     // GET / may-anh / :id === DETAIL PAGE
     detail(req, res){ 
-        let masp = req.params.id;     
-        const sp = modelProduct.detail(masp);
-        const ts = modelProduct.thongso(masp);
-        const th = modelProduct.brandOfProduct(masp);
-        const ha = modelProduct.imgOfProduct(masp);
-        const bl = modelProduct.getComment(masp);
-        const dg = modelProduct.getRate(masp);
-        Promise.all([sp, ts, th, ha, bl, dg])
-            .then(([sanpham, thongso, thuonghieu, hinh, binhluan, dg]) => {
-                let tongsao = 0;
-                let tbsao = 0;
-                for(let i in dg){
-                    tongsao += dg[i].sosao
-                }
-                if(tongsao > 0){
-                    tbsao = Math.round((tongsao / dg.length)*10) / 10;
-                }
-                res.render('products/detail', 
-                    {sanpham,thongso,thuonghieu,hinh,binhluan,tbsao, luot: dg.length});
-            })
-            .catch(err => {
-                console.log("Loi: ", err);
-            })
+        let masp = req.params.id;
+        modelProduct.getAProduct(masp,function(data){
+            if(data){
+                const sp = modelProduct.detail(masp);
+                const ts = modelProduct.thongso(masp);
+                const th = modelProduct.brandOfProduct(masp);
+                const ha = modelProduct.imgOfProduct(masp);
+                const bl = modelProduct.getComment(masp);
+                const dg = modelProduct.getRate(masp);
+                Promise.all([sp, ts, th, ha, bl, dg])
+                    .then(([sanpham, thongso, thuonghieu, hinh, binhluan, dg]) => {
+                        let tongsao = 0;
+                        let tbsao = 0;
+                        for(let i in dg){
+                            tongsao += dg[i].sosao
+                        }
+                        if(tongsao > 0){
+                            tbsao = Math.round((tongsao / dg.length)*10) / 10;
+                        }
+                        res.render('products/detail', 
+                            {sanpham,thongso,thuonghieu,hinh,binhluan,tbsao, luot: dg.length});
+                    })
+                    .catch(err => {
+                        console.log("Loi: ", err);
+                    })
+            } else {
+                res.redirect('/');
+            }
+        })  
     }
 
     // POST / may-anh / binh-luan / :id

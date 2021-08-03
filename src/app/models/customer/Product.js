@@ -15,7 +15,7 @@ exports.getAProduct = function(masp, callbackQuery){
     //let sql = "SELECT * FROM sanpham WHERE masp = ?";
     let sql = "SELECT sp.*, ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha "+
     "ON sp.masp = ha.masp INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b "
-    +"ON ha.masp = b.masp AND ha.tenhinh = b.tenhinh WHERE sp.masp = ?"
+    +"ON ha.masp = b.masp AND ha.tenhinh = b.tenhinh WHERE sp.masp = ? AND sp.deletedAt IS NULL"
     db.query(sql, masp, function(err, data, fields){
         if(err){
             return console.error('Error: ' + err.message);
@@ -39,7 +39,7 @@ exports.list = function(){
     return new Promise((resolve, reject) => {
         let sql = "SELECT sp.*, ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
         "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-        "AND ha.tenhinh = b.tenhinh";
+        "AND ha.tenhinh = b.tenhinh WHERE sp.deletedAt IS NULL";
         db.query(sql, function(err, data, fields){
             if(err){
                 reject(err);
@@ -54,7 +54,7 @@ exports.promotionList = function(){
     return new Promise((resolve, reject) => {
         let sql = "SELECT sp.*, ha.tenhinh FROM sanpham sp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
         "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-        "AND ha.tenhinh = b.tenhinh WHERE giagiam > 0";
+        "AND ha.tenhinh = b.tenhinh WHERE giagiam > 0 AND sp.deletedAt IS NULL";
         db.query(sql, function(err, data, fields){
             if(err){
                 reject(err);
@@ -64,15 +64,16 @@ exports.promotionList = function(){
     })
 }
 
-exports.getImage = function(masp, callback){
-    let sql = "SELECT * hinhanh WHERE masp = ?";
-    db.query(sql,masp,function(err, data, fields){
-        if(err){
-            throw err;
-        }
-        callback(data[0].tenhinh);
-    });
-}
+// exports.getImage = function(masp, callback){
+//     //let sql = "SELECT * hinhanh WHERE masp = ?";
+//     let sql = "SELECT * hinhanh ha INNER JOIN sanpham sp ON sp.masp = ha.masp WHERE ha.masp = ? AND sp.deletedAt IS NULL";
+//     db.query(sql,masp,function(err, data, fields){
+//         if(err){
+//             throw err;
+//         }
+//         callback(data[0].tenhinh);
+//     });
+// }
 
 // ============================= DETAIL PAGE ==============================
 exports.detail = function(masp){
@@ -89,7 +90,7 @@ exports.detail = function(masp){
 
 exports.thongso = function(masp){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT chitietthongso.*, thongso.tents FROM chitietthongso JOIN thongso ON chitietthongso.mats = thongso.mats WHERE masp=?";
+        let sql = "SELECT chitietthongso.*, thongso.tents FROM chitietthongso JOIN thongso ON chitietthongso.mats = thongso.mats WHERE chitietthongso.masp=?";
         db.query(sql, masp, function(err, data, fields){
             if(err){
                 reject(err);
@@ -178,7 +179,7 @@ exports.rating = function(rate, row){
 // ============================= PRODUCTS PAGE ==============================
 exports.getBrands = function(){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT * FROM thuonghieu";
+        let sql = "SELECT * FROM thuonghieu WHERE deletedAt IS NULL";
         db.query(sql, function(err, data){
             if(err){
                 reject("Kết nối CSDL thất bại: ",err);
@@ -190,7 +191,7 @@ exports.getBrands = function(){
 
 exports.getTypes = function(){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT * FROM loai";
+        let sql = "SELECT * FROM loai WHERE deletedAt IS NULL";
         db.query(sql, function(err, data){
             if(err){
                 reject("Kết nối CSDL thất bại: ",err);
@@ -207,7 +208,7 @@ exports.getProducts = function([start, count]){
         "INNER JOIN phieunhap pn ON ct.mapn = pn.mapn "+
         "INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
         "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-        "AND ha.tenhinh = b.tenhinh  GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
+        "AND ha.tenhinh = b.tenhinh WHERE sp.deletedAt IS NULL GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
         //let sql = "SELECT * FROM sanpham  LIMIT ?, ?";
         db.query(sql,[start, count], function(err, data){
             if(err){
@@ -225,7 +226,7 @@ exports.getProductsByBrand = function([math, start, count]){
         "INNER JOIN phieunhap pn ON ct.mapn = pn.mapn "+
         "INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
         "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-        "AND ha.tenhinh = b.tenhinh WHERE sp.math = ? GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
+        "AND ha.tenhinh = b.tenhinh WHERE sp.math = ? AND sp.deletedAt IS NULL GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
         //let sql = "SELECT * FROM sanpham WHERE math = ? LIMIT ?, ?";
         db.query(sql,[math, start, count], function(err, data){
             if(err){
@@ -243,7 +244,7 @@ exports.getProductsByType = function([maloai, start, count]){
         "INNER JOIN phieunhap pn ON ct.mapn = pn.mapn "+
         "INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
         "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-        "AND ha.tenhinh = b.tenhinh WHERE sp.maloai = ? GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
+        "AND ha.tenhinh = b.tenhinh WHERE sp.maloai = ? AND sp.deletedAt IS NULL GROUP BY ct.masp ORDER BY max_date DESC LIMIT ?, ?";
         //let sql = "SELECT * FROM sanpham WHERE maloai = ? LIMIT ?, ?";
         db.query(sql,[maloai, start, count], function(err, data){
             if(err){ 
@@ -263,14 +264,14 @@ exports.getProductsByPrice = function(gia, [start, count]){
             "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
             "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
             "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-            "AND ha.tenhinh = b.tenhinh WHERE a.giasp <= 10000000 LIMIT ?, ?"; 
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp <= 10000000 AND sp.deletedAt IS NULL LIMIT ?, ?"; 
         } 
         else if(gia === "upper"){
             sql = "SELECT * FROM sanpham sp "+
             "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
             "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
             "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= 10000000 LIMIT ?, ?"; 
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= 10000000 AND sp.deletedAt IS NULL LIMIT ?, ?"; 
         } 
         db.query(sql, [start, count], function(err, data){
             if(err){
@@ -281,25 +282,25 @@ exports.getProductsByPrice = function(gia, [start, count]){
     })
 }
 
-exports.getProductsByPriceOption = function([from, to, start, count]){
-    return new Promise((resolve, reject) =>{
-        let sql = "SELECT * FROM sanpham sp "+
-            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
-            "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
-            "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= ? AND a.giasp <= ? LIMIT ?, ?"; 
-        db.query(sql, [from, to, start, count], function(err, data){
-            if(err){
-                reject("Lấy dữ liệu thất bại: ",err);
-            }
-            resolve(data);
-        })
-    })
-}
+// exports.getProductsByPriceOption = function([from, to, start, count]){
+//     return new Promise((resolve, reject) =>{
+//         let sql = "SELECT * FROM sanpham sp "+
+//             "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+//             "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
+//             "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
+//             "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= ? AND a.giasp <= ? LIMIT ?, ?"; 
+//         db.query(sql, [from, to, start, count], function(err, data){
+//             if(err){
+//                 reject("Lấy dữ liệu thất bại: ",err);
+//             }
+//             resolve(data);
+//         })
+//     })
+// }
 
 exports.countAllProduct = function(){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT count(*) AS total FROM sanpham"; 
+        let sql = "SELECT count(*) AS total FROM sanpham WHERE deletedAt IS NULL"; 
         db.query(sql, function(err, data){
             if(err){
                 reject("Lấy dữ liệu thất bại: ",err);
@@ -311,7 +312,7 @@ exports.countAllProduct = function(){
 
 exports.countAllByBrand = function(math){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT count(*) AS total FROM sanpham WHERE math = ?"; 
+        let sql = "SELECT count(*) AS total FROM sanpham WHERE math = ? AND deletedAt IS NULL"; 
         db.query(sql, math, function(err, data){
             if(err){
                 reject("Lấy dữ liệu thất bại: ",err);
@@ -323,7 +324,7 @@ exports.countAllByBrand = function(math){
 
 exports.countAllByType = function(maloai){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT count(*) AS total FROM sanpham WHERE maloai = ?"; 
+        let sql = "SELECT count(*) AS total FROM sanpham WHERE maloai = ? AND deletedAt IS NULL"; 
         db.query(sql, maloai, function(err, data){
             if(err){
                 reject("Lấy dữ liệu thất bại: ",err);
@@ -339,12 +340,12 @@ exports.countAllByPrice = function(gia){
         if(gia === "under"){
             sql = "SELECT COUNT(*) AS total FROM sanpham sp "+
             "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
-            "ON sp.masp = a.masp WHERE a.giasp <= 10000000"; 
+            "ON sp.masp = a.masp WHERE a.giasp <= 10000000 AND sp.deletedAt IS NULL"; 
         } 
         else if(gia === "upper"){
             sql = "SELECT COUNT(*) AS total FROM sanpham sp "+
             "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
-            "ON sp.masp = a.masp WHERE a.giasp >= 10000000"; 
+            "ON sp.masp = a.masp WHERE a.giasp >= 10000000 AND sp.deletedAt IS NULL"; 
         }
         db.query(sql, function(err, data){
             if(err){
@@ -354,26 +355,26 @@ exports.countAllByPrice = function(gia){
         })
     })
 }
-exports.countAllByPriceOption = function([from, to]){
-    return new Promise((resolve, reject) =>{
-        let sql = "SELECT COUNT(*) AS total FROM sanpham sp "+
-            "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
-            "ON sp.masp = a.masp WHERE a.giasp >= ? AND a.giasp <= ?"; 
-        db.query(sql, [from, to], function(err, data){
-            if(err){
-                reject("Lấy dữ liệu thất bại: ",err);
-            }
-            resolve(data[0].total);
-        })
-    })
-}
+// exports.countAllByPriceOption = function([from, to]){
+//     return new Promise((resolve, reject) =>{
+//         let sql = "SELECT COUNT(*) AS total FROM sanpham sp "+
+//             "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
+//             "ON sp.masp = a.masp WHERE a.giasp >= ? AND a.giasp <= ?"; 
+//         db.query(sql, [from, to], function(err, data){
+//             if(err){
+//                 reject("Lấy dữ liệu thất bại: ",err);
+//             }
+//             resolve(data[0].total);
+//         })
+//     })
+//}
 // ================== Sort
 exports.sortPriceDesc = function([start, count]){
     return new Promise((resolve, reject) =>{
         let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp, ha.tenhinh FROM sanpham sp "+
         "INNER JOIN hinhanh ha ON sp.masp = ha.masp INNER JOIN "+
         "(SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp AND ha.tenhinh = b.tenhinh "+
-        "ORDER BY giasp DESC LIMIT ?, ?";
+        "WHERE sp.deletedAt IS NULL ORDER BY giasp DESC LIMIT ?, ?";
         db.query(sql,[start, count], function(err, data){
             if(err)
                 reject(err);
@@ -387,7 +388,7 @@ exports.sortPriceAsc = function([start, count]){
         let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp, ha.tenhinh FROM sanpham sp "+
         "INNER JOIN hinhanh ha ON sp.masp = ha.masp INNER JOIN "+
         "(SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp AND ha.tenhinh = b.tenhinh "+
-        "ORDER BY giasp ASC LIMIT ?, ?"; 
+        "WHERE sp.deletedAt IS NULL ORDER BY giasp ASC LIMIT ?, ?"; 
         db.query(sql,[start, count], function(err, data){
             if(err)
                 reject(err);
@@ -398,7 +399,7 @@ exports.sortPriceAsc = function([start, count]){
 
 exports.sortPriceDescByBrand = function([math, start, count]){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham WHERE math=? ORDER BY giasp DESC LIMIT ?, ?";
+        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham WHERE math=? AND sanpham.deletedAt IS NULL ORDER BY giasp DESC LIMIT ?, ?";
         db.query(sql,[math, start, count], function(err, data){
             if(err)
                 reject(err);
@@ -408,7 +409,7 @@ exports.sortPriceDescByBrand = function([math, start, count]){
 }
 exports.sortPriceAscByBrand = function([math, start, count]){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham WHERE math=? ORDER BY giasp ASC LIMIT ?, ?";
+        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham WHERE math=? AND sanpham.deletedAt IS NULL ORDER BY giasp ASC LIMIT ?, ?";
         db.query(sql,[math, start, count], function(err, data){
             if(err)
                 reject(err);
@@ -419,7 +420,7 @@ exports.sortPriceAscByBrand = function([math, start, count]){
 
 exports.sortPriceDescByType = function([maloai, start, count]){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham WHERE maloai=? ORDER BY giasp DESC LIMIT ?, ?";
+        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham WHERE maloai=? AND sanpham.deletedAt IS NULL ORDER BY giasp DESC LIMIT ?, ?";
         db.query(sql,[maloai, start, count], function(err, data){
             if(err)
                 reject(err);
@@ -429,7 +430,7 @@ exports.sortPriceDescByType = function([maloai, start, count]){
 }
 exports.sortPriceAscByType = function([maloai, start, count]){
     return new Promise((resolve, reject) =>{
-        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham WHERE maloai=? ORDER BY giasp ASC LIMIT ?, ?";
+        let sql = "SELECT *, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham WHERE maloai=? AND sanpham.deletedAt IS NULL ORDER BY giasp ASC LIMIT ?, ?";
         db.query(sql,[maloai, start, count], function(err, data){
             if(err)
                 reject(err);
@@ -446,14 +447,14 @@ exports.sortPriceAscByPrice = function(gia, [start, count]){
             "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
             "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
             "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-            "AND ha.tenhinh = b.tenhinh WHERE a.giasp <= 10000000 ORDER BY a.giasp ASC LIMIT ?, ?"; 
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp <= 10000000 AND sp.deletedAt IS NULL ORDER BY a.giasp ASC LIMIT ?, ?"; 
         } 
         else if(gia === "upper"){
             sql = "SELECT * FROM sanpham sp "+
             "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
             "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
             "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= 10000000 ORDER BY a.giasp ASC LIMIT ?, ?"; 
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= 10000000 AND sp.deletedAt IS NULL ORDER BY a.giasp ASC LIMIT ?, ?"; 
         } 
         db.query(sql,[start, count], function(err, data){
             if(err)
@@ -471,14 +472,14 @@ exports.sortPriceDescByPrice = function(gia, [start, count]){
             "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
             "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
             "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-            "AND ha.tenhinh = b.tenhinh WHERE a.giasp <= 10000000 ORDER BY a.giasp DESC LIMIT ?, ?"; 
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp <= 10000000 AND sp.deletedAt IS NULL ORDER BY a.giasp DESC LIMIT ?, ?"; 
         } 
         else if(gia === "upper"){
             sql = "SELECT * FROM sanpham sp "+
             "INNER JOIN (SELECT masp, IF(giagiam > 0, giagiam, giaban) AS giasp FROM sanpham) a "+
             "ON sp.masp = a.masp INNER JOIN hinhanh ha ON sp.masp = ha.masp "+
             "INNER JOIN (SELECT masp, tenhinh FROM hinhanh GROUP BY masp) b ON ha.masp = b.masp "+
-            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= 10000000 ORDER BY a.giasp DESC LIMIT ?, ?"; 
+            "AND ha.tenhinh = b.tenhinh WHERE a.giasp >= 10000000 AND sp.deletedAt IS NULL ORDER BY a.giasp DESC LIMIT ?, ?"; 
         } 
         db.query(sql,[start, count], function(err, data){
             if(err)
