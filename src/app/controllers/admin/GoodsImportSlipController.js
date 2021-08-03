@@ -135,6 +135,7 @@ class GoodsImportSlipController {
                 mapn: slip.mapn,
                 masp: products[i].item.masp,
                 soluong: products[i].quantity,
+                dongia: products[i].item.giagoc,
             }
             modelGoodsImportSlip.createDetailSlip(detailSlip);
             modelGoodsImportSlip.increaseProductQuantity(detailSlip.soluong, detailSlip.masp)
@@ -199,6 +200,7 @@ class GoodsImportSlipController {
                 mapn: id,
                 masp: products[i].item.masp,
                 soluong: products[i].quantity,
+                dongia: products[i].item.giagoc,
             }
             modelGoodsImportSlip.createDetailSlip(detailSlip);
             modelGoodsImportSlip.increaseProductQuantity(detailSlip.soluong, detailSlip.masp)

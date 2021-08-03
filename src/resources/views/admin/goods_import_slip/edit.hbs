@@ -54,14 +54,14 @@
                                             <input type="hidden" name="masp" value="{{this.item.masp}}">
                                             <input class="quantity-input" type="number" value="{{this.quantity}}" min="1" max="100" data-id="{{this.item.masp}}" name="quantity">
                                         </td>
-                                        <td>{{this.item.giagoc}}</td>
-                                        <td>{{this.price}}</td>
+                                        <td>{{formatCurrency this.item.giagoc}}</td>
+                                        <td>{{formatCurrency this.price}}</td>
                                         <td><a href="/admin/goodsimportslip/remove/{{this.item.masp}}" class="btn btn-danger"></i> Xóa</a></td>
                                     </tr>
                                 {{/each}}
                                 <tr>
                                     <td colspan="4"class="text-center">Tổng thành tiền:</td>
-                                    <td colspan="2" class="text-center">{{totalPrice}}</td>
+                                    <td colspan="2" class="text-center">{{formatCurrency totalPrice}}</td>
                                 </tr>
                             {{/if}}
                         </tbody>

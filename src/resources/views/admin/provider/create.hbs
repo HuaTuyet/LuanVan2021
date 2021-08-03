@@ -1,0 +1,59 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">Nhà cung cấp sản phẩm</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/provider">Nhà cung cấp sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Thêm nhà cung cấp</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="container-fluid">
+        {{#if error}} 
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true" aria-label="Close">×</button>
+            <h5><strong>Cảnh báo!</strong></h5>
+            Mã nhà cung cấp bị trùng
+            </div>
+        {{/if}}
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                Thêm nhà cung cấp sản phẩm
+            <a href="/admin/provider" class="btn btn-outline-primary ml-auto">Quay về</a>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/admin/provider/store">
+                    <div class="form-group">
+                        <label for="mancc">Mã nhà cung cấp</label>
+                        <input class="form-control" type="text" name="mancc" placeholder="Nhập mã nhà cung cấp" required maxlength="10" {{#if error}} value="{{error.mancc}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="tenncc">Tên nhà cung cấp</label>
+                        <input class="form-control" type="text" name="tenncc" placeholder="Nhập tên nhà cung cấp" required {{#if error}} value="{{error.tenncc}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input class="form-control" type="email" name="email" placeholder="Nhập email nhà cung cấp" required {{#if error}} value="{{error.email}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="sodt">Số điện thoại</label>
+                        <input class="form-control" type="number" name="sodt" placeholder="Nhập số điện thoại nhà cung cấp" required {{#if error}} value="{{error.sodt}}" {{/if}}>
+                    </div>
+                    <div class="form-group">
+                        <label for="diachi">Địa chỉ</label>
+                        <input class="form-control" type="text" name="diachi" placeholder="Nhập địa chỉ nhà cung cấp" required {{#if error}} value="{{error.diachi}}" {{/if}}>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Thêm nhà cung cấp</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

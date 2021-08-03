@@ -3,15 +3,15 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0 text-dark">Thương hiệu sản phẩm</h1>
-          </div><!-- /.col -->
+          </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="/admin">Trang chủ</a></li>
               <li class="breadcrumb-item active">Thương hiệu sản phẩm</li>
             </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+          </div>
+        </div>
+      </div>
 </div>
 
 <div class="content">
@@ -38,6 +38,7 @@
                             <th class="text-center">STT</th>
                             <th class="text-center" scope="col">Mã thương hiệu</th>
                             <th class="text-center" scope="col">Tên thương hiệu</th>
+                            <th class="text-center" scope="col">Hình ảnh</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -47,6 +48,7 @@
                             <td>{{sum @index 1}}</td>
                             <td>{{this.math}}</td>
                             <td>{{this.tenth}}</td>
+                            <td width="10%"><img width="85%" src="/images/brands/{{this.tenhinh}}" alt="{{this.tenhinh}}"></td>
                             <td>
                                 <a href="/admin/brand/{{this.math}}/edit" class="btn btn-link">Sửa</a> |
                                 <a href="" class="btn btn-link" data-toggle="modal" data-id="{{this.math}}" data-target="#delete-brand-modal">Xóa</a>

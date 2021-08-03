@@ -29,7 +29,7 @@ exports.detail = function(idSlip){
 //Lấy thông tin sản phẩm hiển thị thông tin chi tiết phiếu nhập
 exports.productDetailSlip = function(idSlip){
     return new Promise((resolve, reject) => {
-        let sql = 'SELECT ctpn.masp, ctpn.soluong, sp.tensp, sp.giagoc FROM chitietphieunhap ctpn JOIN sanpham sp ON ctpn.masp = sp.masp WHERE ctpn.mapn = ?';
+        let sql = 'SELECT ctpn.masp, ctpn.soluong, ctpn.dongia as giagoc, sp.tensp FROM chitietphieunhap ctpn JOIN sanpham sp ON ctpn.masp = sp.masp WHERE ctpn.mapn = ?';
         db.query(sql, idSlip, function(err, result) {
             if(err){
                 reject(err);
@@ -55,7 +55,7 @@ exports.listProduct = function(){
 //Lấy danh nhà cung cấp
 exports.listVendor = function(){
     return new Promise((resolve, reject) => {
-        let sql = 'SELECT ncc.mancc, ncc.tenncc FROM nhacungcap ncc';
+        let sql = 'SELECT ncc.mancc, ncc.tenncc FROM nhacungcap ncc WHERE deletedAt IS NULL';
         db.query(sql, function(err, result){
             if (err){
                 reject(err);
@@ -108,7 +108,7 @@ exports.increaseProductQuantity = function(quantity, idProduct){
 
 //Lấy phiếu nhập theo mã
 exports.getPN = function(idSlip, callback){
-    let sql ='SELECT pn.mapn, pn.tongtien, pn.mancc, ct.masp, ct.soluong, sp.tensp, sp.giagoc FROM chitietphieunhap ct JOIN phieunhap pn ON ct.mapn = pn.mapn JOIN sanpham sp ON ct.masp = sp.masp WHERE ct.mapn = ?';
+    let sql ='SELECT pn.mapn, pn.tongtien, pn.mancc, ct.masp, ct.soluong, ct.dongia as giagoc, sp.tensp FROM chitietphieunhap ct JOIN phieunhap pn ON ct.mapn = pn.mapn JOIN sanpham sp ON ct.masp = sp.masp WHERE ct.mapn = ?';
     db.query(sql, idSlip, function(err, result){
         if(err){
             return console.error('err lay phieu nhap: ' + err.message);

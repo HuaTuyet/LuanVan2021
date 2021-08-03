@@ -5,6 +5,7 @@ const productRouter = require('./admin/product');
 const orderRouter = require('./admin/order');
 const goodsimportslipRouter = require('./admin/goodsimportslip');
 const reportsalesRouter = require('./admin/reportsales');
+const providerRouter = require('./admin/provider');
 const newsRouter = require('./admin/news');
 const siteRouter = require('./admin/site');
 const authRouter = require('./admin/auth');
@@ -22,6 +23,7 @@ function routes(app) {
     app.use('/admin/order', orderRouter);
     app.use('/admin/goodsimportslip', goodsimportslipRouter);
     app.use('/admin/reportsales', reportsalesRouter);
+    app.use('/admin/provider', providerRouter);
     app.use('/news', newsRouter);
     app.use('/admin', siteRouter);
 
