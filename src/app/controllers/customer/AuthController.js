@@ -2,6 +2,9 @@ const modelAuth = require('../../models/customer/Auth');
 const uploadFile = require('../../middlewares/uploadFileMiddleware');
 const deleteImage = require('../../middlewares/deleteFilesMiddleware');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = 'some super secret ...'
 let debug = console.log.bind(console);
 //const bcrypt = require('bcryptjs');
 
@@ -229,8 +232,130 @@ class AuthController{
             }) 
         }
     }
+
+    // GET / tai-khoan / forgot-password
+    viewForgotPw(req, res){
+        res.render('auth/forgotPassword');
+    }
+    // POST / tai-khoan / forgot-password
+    forgotPw(req, res){
+        // goi mail
+        const {email} = req.body;
+        modelAuth.checkEmail(email, function(resultEmail){
+            if(resultEmail.length > 0){ 
+                // co tai khoan bang email nay
+                const secret = JWT_SECRET + resultEmail[0].matkhau;
+                const payload = {
+                    email : resultEmail[0].email,
+                    tentk : resultEmail[0].tentk,
+                };
+                const token = jwt.sign(payload, secret, {expiresIn: '15m'});
+                const link = `http://localhost:3000/tai-khoan/reset-password/${resultEmail[0].tentk}/${token}`;
+                //res.send('Chúng tôi đã gởi link reset password đến email của bạn.');
+                //res.render('auth/forgotPassword', {sent: true})
+                console.log(link);
+                //goi mail
+                modelAuth.updateToken(token, resultEmail[0].tentk);
+                const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth:{
+                        user: "elsword8585@gmail.com",
+                        pass: "xtcefahrjodtlrxv",
+                    }
+                });
+                transporter.sendMail({
+                    from: "elsword8585@gmail.com",
+                    to: resultEmail[0].email,
+                    subject: "CameraShop - Thiết lập lại mật khẩu đăng nhập",
+                    html:`
+                        <p>Xin chào ${resultEmail[0].tentk}, chúng tôi nhận được yêu cầu thiết lập lại mật khẩu cho tài khoản CameraShop của bạn.<p>
+                        <p>Nhấn vào link bên dưới để thiết lập mật khẩu mới cho tài khoản CameraShop của bạn<p>
+                        <p><a href="${link}">${link}</a></p>
+                        <p>Trân trọng, <br> Cửa hàng CameraShop</p>
+                    `
+                }, function (err, info) {
+                    if(err) {
+                        console.log("Có lỗi trong gửi mail: "+ err);
+                    }
+                    else {
+                        res.render('auth/forgotPassword', {sent: true, email: resultEmail[0].email})
+                    }
+                })
+            } else {
+                res.render('auth/forgotPassword', {error: "Email này chưa đăng ký tài khoản"});
+            }
+        })
+    }
+    // GET / tai-khoan / reset-password / :id / :token
+    viewResetPw(req, res){
+        const {id, token} = req.params;
+        modelAuth.getUsersByTentk(id, function(resultUser){
+            if(resultUser.tentk){
+                //user hợp lệ
+                //const secret = JWT_SECRET + resultUser.matkhau;
+                try{
+                    //const payload = jwt.verify(token, secret);
+                    res.render('auth/resetPassword', {email: resultUser.email, id, token})
+                } catch (error){
+                    res.render('auth/resetPassword', {error: "Token sai hoặc hết hiệu lực"})
+                }
+            }
+            else{
+                res.send('Người dùng không hợp lệ!');
+            }
+        })
+    }
+    // POST / tai-khoan / reset-password / :id / :token
+    resetPw(req, res){
+        const {id, token} = req.params;
+        modelAuth.getUsersByTentk(id, function(resultUser){
+            if(req.body.password !== req.body.password2){
+                return res.render('auth/resetPassword', 
+                    {error: "2 mật khẩu không trùng nhau", 
+                    id, token,
+                    email: resultUser.email,
+                });
+            }
+            if(resultUser.tentk){
+                //user hợp lệ
+                const secret = JWT_SECRET + resultUser.matkhau;
+                try{
+                    //const payload = jwt.verify(token, secret);
+                    jwt.verify(token, secret, function(error, decodedData){
+                        if(error){
+                            console.log("Lỗi token: ", error);
+                            return res.render('auth/resetPassword',{
+                                email: resultUser.email,
+                                error: "Token sai hoặc hết hiệu lực"
+                            })
+                        }
+                        modelAuth.getUserToken(token, async function(resultUser){
+                            if(resultUser.length <= 0){
+                                return res.render('auth/resetPassword',{error: "User với token này không tồn tại"})
+                            }
+                            let newPw = await bcrypt.hash(req.body.password, 8);
+                            modelAuth.changePassword(newPw ,resultUser[0].tentk, function(data){
+                                if(data > 0){
+                                    res.render('auth/resetPassword', {success: true});
+                                    modelAuth.updateToken(null, resultUser[0].tentk)
+                                }
+                                else{
+                                    res.render('auth/resetPassword', {error: "Không thể đặt lại mật khẩu lúc này!"});
+                                }
+                            })
+                        })
+                    })
+                } catch (error){
+                    console.log(error.message);
+                }
+            }
+            else{
+                res.send('Người dùng không hợp lệ!');
+            }
+        })
+    }
 }
 
 // -- /^[\d\w_.]+$/g --
-
+// password của email aloha: 123abc
 module.exports = new AuthController;

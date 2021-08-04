@@ -84,3 +84,23 @@ exports.changePassword = function(matkhau, tentk, callbackUser){
         callbackUser(result.affectedRows);
     })
 }
+
+//Cập nhật token
+exports.updateToken = function(token, tentk){
+    var sql = "UPDATE taikhoan SET token = ? WHERE tentk = ?";
+    db.query(sql, [token ,tentk], function(err, result) {
+        if(err){
+            return console.error('err: ' + err.message);
+        }
+        console.log(result.affectedRows);
+    })
+}
+exports.getUserToken = function(token, callbackUser){
+    var sql = "SELECT * FROM taikhoan WHERE token = ?";
+    db.query(sql, token, function(err, result) {
+        if(err){
+            return console.error('err: ' + err.message);
+        }
+        callbackUser(result);
+    })
+}

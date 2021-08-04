@@ -26,6 +26,11 @@ router.get('/tai-khoan/dang-ky', authController.viewRegister);
 router.post('/tai-khoan/store', authController.store);
 router.post('/tai-khoan/login', authController.login);
 router.get('/tai-khoan/logout', authController.logout);
+router.get('/tai-khoan/forgot-password', authController.viewForgotPw);
+router.post('/tai-khoan/forgot-password', authController.forgotPw);
+router.get('/tai-khoan/reset-password/:id/:token', authController.viewResetPw);
+router.post('/tai-khoan/reset-password/:id/:token', authController.resetPw);
+
 
 router.get('/tai-khoan/me', authMiddleware.requireAuthCustomer, authController.viewAccount);
 router.get('/tai-khoan/me/cap-nhat', authMiddleware.requireAuthCustomer, authController.viewUpdateAccount);

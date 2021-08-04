@@ -268,3 +268,23 @@ footer .detail-info-content ul li i{
     font-size: 10px;
     margin-right: 2px;
 }
+
+/*PASSWORD*/
+.box-password{
+    box-shadow: 1px 1px 2px 2px #eaeaea;
+    padding: 40px 68px;
+}
+.box-password form{
+    width: 320px;
+}
+.box-password .btn-password{
+    background-color: #f33f3f;
+    border: 1px solid #f33f3f;
+    width: 100%;
+    color: white;
+}
+.box-password i{
+    display: block;
+    font-size: 60px;
+    margin: 14px 0;
+}

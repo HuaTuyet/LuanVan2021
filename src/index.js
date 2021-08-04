@@ -7,6 +7,7 @@ const address = process.env.port || 3000;
 const route = require('./routes');
 const session = require('express-session');
 
+
 //Static file
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
