@@ -273,7 +273,7 @@ class AuthController{
                         <p><a href="${link}">${link}</a></p>
                         <p>Trân trọng, <br> Cửa hàng CameraShop</p>
                     `
-                }, function (err, info) {
+                }, function (err, info) { 
                     if(err) {
                         console.log("Có lỗi trong gửi mail: "+ err);
                     }

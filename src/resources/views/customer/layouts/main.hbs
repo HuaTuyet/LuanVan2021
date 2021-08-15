@@ -68,15 +68,25 @@
             let currentPath = window.location.pathname;
             let url = "/gio-hang/add";
             let productQty = $('input[name=detailQty]').val() ? $('input[name=detailQty]').val() : 1; console.log('qty: ', productQty)
-            $.post(url,{masp, productQty, currentPath},function(data, status){
-                if(!data.login){ window.location.href = '/tai-khoan'}
-                else if(data.add == true){
-                    $('.count-cart').text(data.cart.totalQty);
-                    alert('Sản phẩm đã được thêm vào giỏ hàng');
-                }else{
-                    alert('Có lỗi xảy ra!!');
-                }
-            });
+            let min = $('input[name=detailQty]').attr('min'), max =$('input[name=detailQty]').attr('max');
+            console.log("min: " + min + " - max: ", + max);
+            if(productQty < min){
+                alert("Bạn phải chọn ít nhất 1 sản phẩm");
+            }
+            else if(productQty > max){
+                alert("Số lượng sản phẩm không đủ");
+            }
+            else{
+                $.post(url,{masp, productQty, currentPath},function(data, status){
+                    if(!data.login){ window.location.href = '/tai-khoan'}
+                    else if(data.add == true){
+                        $('.count-cart').text(data.cart.totalQty);
+                        alert('Sản phẩm đã được thêm vào giỏ hàng');
+                    }else{
+                        alert('Có lỗi xảy ra!!');
+                    }
+                });
+            }
         }
         //===============================END FUNCTIONS================================
 
@@ -350,6 +360,10 @@
                 $.post(url,{masp, sosao, currentPath},function(data, status){
                     if(!data.login){
                         window.location.href = '/tai-khoan'
+                    }
+                    else if(data.error){
+                        alert("Bạn không thể đánh giá vì chưa mua sản phẩm này");
+                        console.log("error")
                     }
                     else{
                         $('#tbsao').text(data.tbsao);
