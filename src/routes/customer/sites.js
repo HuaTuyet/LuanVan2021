@@ -21,6 +21,7 @@ router.get('/don-mua/thong-tin-don-hang/:id', authMiddleware.requireAuthCustomer
 router.post('/don-mua/huy-don/:id', authMiddleware.requireAuthCustomer, orderController.destroyOrder)
 router.get('/create_payment_url', authMiddleware.requireAuthCustomer, orderController.createPaymentUrl)
 router.post('/create_payment_url', authMiddleware.requireAuthCustomer, orderController.createPaymentUrlPost)
+router.get('/vnpay_return', authMiddleware.requireAuthCustomer, orderController.vnpayReturn)
 
 router.get('/tim-kiem', sitesController.search)
 

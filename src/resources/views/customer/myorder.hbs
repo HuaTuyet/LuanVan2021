@@ -8,7 +8,7 @@
         <div class="row mb-3">
             <div class="col-md-12">
                 <h5>{{this.madh}}</h5>
-                <p>Ngày đặt: {{this.ngaydat}}</p>
+                <p>Ngày đặt: {{formatDate this.ngaydat}}</p>
             </div>
         </div>
         <div class="row">
@@ -94,7 +94,7 @@
                                 </li><hr>
                                 <li style="display: flex; justify-content: space-between">
                                     <p>Phương thức thanh toán</p>
-                                    <p>Thanh toán khi nhận hàng</p>
+                                    <p>{{formatHTThanhToan dh.hinhthuctt}}</p>
                                 </li>
                             </ul>
                         </td>

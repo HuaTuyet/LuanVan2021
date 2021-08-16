@@ -3,7 +3,7 @@
         <form id="createVnpay" action="/create_payment_url" method='POST'>
             <div class="form-group">
                 <label>Số tiền</label>
-                <input type="text" class="form-control" id="amount" name="amount" value={{amount}}>
+                <input type="text" class="form-control" id="amount" name="amount" value={{amount}} readonly>
             </div>
             <div class="form-group">
                 <label>Ngân hàng</label>
@@ -12,6 +12,11 @@
                     <option value="VNPAYQR">Ngân hàng VNPAYQR</option>
                     <option value="NCB">Ngân hàng NCB</option>
                     <option value="ABC">Ngân hàng ACB</option>
+                    <option value="SACOMBANK">Ngân hàng SACOMBANK</option>
+                    <option value="EXIMBANK">Ngân hàng EXIMBANK</option>
+                    <option value="VIETINBANK">Ngân hàng VIETINBANK</option>
+                    <option value="VIETCOMBANK">Ngân hàng VIETCOMBANK</option>
+                    <option value="HDBANK">Ngân hàng HDBANK</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-primary" id="btnPopup">Thanh toán</button>

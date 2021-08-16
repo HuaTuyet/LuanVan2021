@@ -37,6 +37,14 @@ module.exports = {
         return "ĐÃ HỦY";
       }
     },
+    formatHTThanhToan : (hinhthuc) => {
+      if(hinhthuc == 'cod'){
+        return "Thanh toán khi nhận hàng";
+      }
+      else if(hinhthuc == 'vnpay'){
+        return "Thanh toán VNPAY";
+      }
+    },
     formatDate: (strDate) => strDate.toDateString(),
     getFirstCharacter: (str) => str.substr(0,1),
     hienthiHA: (a) => a == null ? "user.jpg" : a,
