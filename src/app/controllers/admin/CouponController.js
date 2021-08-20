@@ -69,15 +69,22 @@ class CouponController{
     //[GET] /coupon/:id/edit
     edit(req, res) {
         let id = req.params.id;
-        modelCoupon.detail(id)
-            .then(coupon =>
-                res.render('coupon/edit', { 
-                    coupon: coupon[0]
-                })
-            )
-            .catch(err => {
-                console.log("Có lỗi: ", err);
-            })
+        modelCoupon.findId(id, function(resultId){
+            if(resultId.length == 0){
+                res.redirect('/admin/coupon');
+            }
+            else{
+                modelCoupon.detail(id)
+                    .then(coupon =>
+                        res.render('coupon/edit', { 
+                            coupon: coupon[0]
+                        })
+                    )
+                    .catch(err => {
+                        console.log("Có lỗi: ", err);
+                    })
+            }
+        })
     }
 
     //[PUT] /coupon/:id

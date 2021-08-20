@@ -36,24 +36,31 @@ class ProductController {
     //[GET] /product/:id/detail
     detail(req, res) {
         let id = req.params.id;
-        const detailProduct = modelProduct.detail(id);
-        const colorProduct = modelProduct.color(id);
-        const specificationProduct = modelProduct.specification(id);
-        const imagesProduct = modelProduct.images(id);
-        Promise.all([detailProduct, colorProduct, specificationProduct, imagesProduct])
-            .then(([detail, color, specification, images]) =>
-                //res.json(color[0].tenmau)
-                //res.json(specification)
-                res.render('product/detail', {
-                    detail,
-                    color,
-                    specification,
-                    images,
-                }),
-            )
-            .catch(err =>{
-                console.log("Có lỗi: " + err);
-            })
+        modelProduct.findId(id, function(resultId){
+            if(resultId.length == 0){
+                res.redirect('/admin/product');
+            }
+            else{
+                const detailProduct = modelProduct.detail(id);
+                const colorProduct = modelProduct.color(id);
+                const specificationProduct = modelProduct.specification(id);
+                const imagesProduct = modelProduct.images(id);
+                Promise.all([detailProduct, colorProduct, specificationProduct, imagesProduct])
+                    .then(([detail, color, specification, images]) =>
+                        //res.json(color[0].tenmau)
+                        //res.json(specification)
+                        res.render('product/detail', {
+                            detail,
+                            color,
+                            specification,
+                            images,
+                        }),
+                    )
+                    .catch(err =>{
+                        console.log("Có lỗi: " + err);
+                    })
+            }
+        })
     }
 
     //[GET] /product/create
@@ -202,7 +209,8 @@ class ProductController {
                                 console.log("Có lỗi:" + err);
                             })
             }
-            Promise.all([listCategory, listBrand, listCoupon, listColor, listSpecification])
+            else{
+                Promise.all([listCategory, listBrand, listCoupon, listColor, listSpecification])
                             .then(([listCate, listBr, listCoupon, listColor, listSpec])=>{
                                 res.render('product/create', {
                                     listCate,
@@ -217,38 +225,47 @@ class ProductController {
                             .catch(err => {
                                 console.log("Có lỗi:" + err);
                             })
+            }
         }
     }
 
     //[GET] /product/:id/edit
     edit(req, res) {
         let id = req.params.id;
-        const listCategory = modelProduct.listCategory();
-        const listBrand = modelProduct.listBrand();
-        const listCoupon = modelProduct.listCoupon();
-        const listColor = modelProduct.listColor();
-        const detailProduct = modelProduct.detail(id);
-        const colorProduct = modelProduct.color(id);
-        const specificationProduct = modelProduct.specification(id);
-        const imagesProduct = modelProduct.images(id);
-        Promise.all([listCategory, listBrand, listCoupon, listColor, detailProduct, colorProduct, specificationProduct, imagesProduct])
-            .then(([listCate, listBr, listCoupon, listColor,detail, color, specification, images]) =>
-                //res.json(color[0].tenmau)
-                //res.json(specification)
-                res.render('product/edit', {
-                    listCate,
-                    listBr,
-                    listCoupon,
-                    listColor,
-                    detail: detail[0],
-                    color,
-                    specification,
-                    images,
-                }),
-            )
-            .catch(err =>{
-                console.log("Có lỗi: " + err);
-            })
+        modelProduct.findId(id, function(resultId){
+            if(resultId.length == 0){
+                res.redirect('/admin/product');
+            }
+            else{
+                const listCategory = modelProduct.listCategory();
+                const listBrand = modelProduct.listBrand();
+                const listCoupon = modelProduct.listCoupon();
+                const listColor = modelProduct.listColor();
+                const detailProduct = modelProduct.detail(id);
+                const colorProduct = modelProduct.color(id);
+                const specificationProduct = modelProduct.specification(id);
+                const imagesProduct = modelProduct.images(id);
+                Promise.all([listCategory, listBrand, listCoupon, listColor, detailProduct, colorProduct, specificationProduct, imagesProduct])
+                    .then(([listCate, listBr, listCoupon, listColor,detail, color, specification, images]) =>
+                        //res.json(color[0].tenmau)
+                        //res.json(specification)
+                        res.render('product/edit', {
+                            listCate,
+                            listBr,
+                            listCoupon,
+                            listColor,
+                            detail: detail[0],
+                            color,
+                            specification,
+                            images,
+                        }),
+                    )
+                    .catch(err =>{
+                        console.log("Có lỗi: " + err);
+                    })
+            }
+        })
+        
     }
 
     //[PUT] /product/:id
@@ -350,7 +367,7 @@ class ProductController {
         catch(errors){
             if (errors.code === "LIMIT_UNEXPECTED_FILE") {
                 Promise.all([listCategory, listBrand, listCoupon, listColor, specificationProduct, imagesProduct, detailProduct])
-                            .then(([listCate, listBr, listCoupon, listColor, specification, images])=>{
+                            .then(([listCate, listBr, listCoupon, listColor, specification, images, detail])=>{
                                 res.render(`product/edit`, {
                                     listCate,
                                     listBr,
@@ -367,23 +384,26 @@ class ProductController {
                                 console.log("Có lỗi:" + err);
                             })
             }
-            Promise.all([listCategory, listBrand, listCoupon, listColor, specificationProduct, imagesProduct, detailProduct])
-                            .then(([listCate, listBr, listCoupon, listColor, specification, images ,detail])=>{
-                                res.render(`product/edit`, {
-                                    listCate,
-                                    listBr,
-                                    listCoupon,
-                                    listColor,
-                                    specification, 
-                                    images,
-                                    detail: detail[0],
-                                    error: req.body,
-                                    message: errors,
-                                })
-                            })
-                            .catch(err => {
-                                console.log("Có lỗi:" + err);
-                            })
+            else{
+                Promise.all([listCategory, listBrand, listCoupon, listColor, specificationProduct, imagesProduct, detailProduct])
+                    .then(([listCate, listBr, listCoupon, listColor, specification, images ,detail])=>{
+                        res.render(`product/edit`, {
+                            listCate,
+                            listBr,
+                            listCoupon,
+                            listColor,
+                            specification, 
+                            images,
+                            detail: detail[0],
+                            error: req.body,
+                            message: errors,
+                        })
+                    })
+                    .catch(err => {
+                        console.log("Có lỗi:" + err);
+                    })
+            }
+            
         }
     }
 

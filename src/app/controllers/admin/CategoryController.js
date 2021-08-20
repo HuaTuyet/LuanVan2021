@@ -17,17 +17,6 @@ class CategoryController{
                 console.log("Có lỗi: ", err);
             })
 
-        // modelCategory.list(function(resultList){
-        //     modelCategory.countDeleted(function(resultCount){
-        //         let listCat = resultList;
-        //         let countDeleted = resultCount;
-        //         //res.json(countDeleted);
-        //         res.render('category/list', { //list là chỉ file list.hbs trong thư mục category
-        //             list: listCat,
-        //             count_deleted: countDeleted
-        //         })
-        //     });
-        // });
     }
 
     //[GET] /category/trash
@@ -44,13 +33,6 @@ class CategoryController{
                 console.log("Có lỗi: ", err);
             })
 
-        // modelCategory.listTrash(function(resultQuery){
-        //     let listTrash = resultQuery;
-        //     //res.json(listCat);
-        //     res.render('category/trash', { //trash là chỉ file trash.hbs trong thư mục category
-        //         list: listTrash
-        //     });
-        // });
     }
 
     //[GET] /category/create
@@ -77,25 +59,23 @@ class CategoryController{
 
     //[GET] /category/:id/edit
     edit(req, res) {
-        // let id = req.params.id;
-        // modelCategory.detail(id, function(resultDetail) {
-        //     //let category = resultQuery;
-        //     //res.json(resultDetail);
-        //     res.render('category/edit', { //edit là chỉ file edit.hbs trong thư mục category
-        //         cate: resultDetail
-        //     });
-        // })
-
         let id = req.params.id;
-        modelCategory.detail(id)
-            .then(category =>
-                res.render('category/edit', { 
-                    category: category[0] 
-                })
-            )
-            .catch(err => {
-                console.log("Có lỗi: ", err);
-            })
+        modelCategory.findId(id ,function(resultId){
+            if(resultId.length == 0){
+                res.redirect("/admin/category");
+            }
+            else{
+                modelCategory.detail(id)
+                    .then(category =>
+                        res.render('category/edit', { 
+                            category: category[0] 
+                        })
+                    )
+                    .catch(err => {
+                        console.log("Có lỗi: ", err);
+                    })
+            }
+        })
     }
 
     //[PUT] /category/:id
@@ -129,18 +109,6 @@ class CategoryController{
                     .catch(err => {
                         console.log("Có lỗi: ", err);
                     })
-                // modelCategory.list(function(resultQuery){
-                //     modelCategory.countDeleted(function(resultCount){
-                //         let listCat = resultQuery;
-                //         let countDeleted = resultCount;
-                //         //res.json(countDeleted);
-                //         res.render('category/list', { //list là chỉ file list.hbs trong thư mục category
-                //             list: listCat,
-                //             count_deleted: countDeleted,
-                //             error: resultFK
-                //         })
-                //     });
-                // });
             }
         })
     }

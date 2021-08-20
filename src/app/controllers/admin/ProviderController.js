@@ -55,15 +55,22 @@ class ProviderController{
     //[GET] /provider/edit/
     edit(req, res) {
         let id = req.params.id;
-        modelProvider.detail(id)
-            .then(provider =>
-                res.render('provider/edit', { 
-                    provider: provider[0] 
-                })
-            )
-            .catch(err => {
-                console.log("Có lỗi: ", err);
-            })
+        modelProvider.findId(id, function(resultId){
+            if(resultId.length == 0){
+                res.redirect("/admin/provider");
+            }
+            else{
+                modelProvider.detail(id)
+                    .then(provider =>
+                        res.render('provider/edit', { 
+                            provider: provider[0] 
+                        })
+                    )
+                    .catch(err => {
+                        console.log("Có lỗi: ", err);
+                    })
+            }
+        })
     }
 
     //[PUT] /provider/:id

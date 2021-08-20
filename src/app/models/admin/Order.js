@@ -3,13 +3,76 @@ const db = require('../Database');
 //Lấy danh sách đơn hàng 
 exports.list = function(){
     return new Promise((resolve, reject) => {
-        let sql = "SELECT madh, tenkh, trangthai FROM donhang ORDER BY ngaydat DESC";
+        let sql = "SELECT madh, tenkh, ngaydat, trangthai FROM donhang ORDER BY ngaydat DESC";
         db.query(sql, function(err,result){
             if(err){
                 reject(err);
             }
             resolve(result);
         })
+    })
+}
+
+//Lấy danh sách đơn hàng bằng ngày hiện tại
+exports.sortToday = function(){
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM donhang WHERE DATE(ngaydat) = CURDATE() ORDER BY ngaydat DESC";
+        db.query(sql, function(err,result){
+            if(err){
+                reject(err);
+            }
+            resolve(result);
+        })
+    })
+}
+
+//Lấy danh sách đơn hàng bằng ngày hôm qua
+exports.sortYesterday = function(){
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM donhang WHERE DATE(ngaydat) = CURDATE() - 1 ORDER BY ngaydat DESC";
+        db.query(sql, function(err,result){
+            if(err){
+                reject(err);
+            }
+            resolve(result);
+        })
+    })
+}
+
+//Lấy danh sách đơn hàng tuần trước
+exports.sortLastWeek = function(){
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM donhang WHERE YEARWEEK(ngaydat) = YEARWEEK(NOW() - INTERVAL 1 WEEK) ORDER BY ngaydat DESC";
+        db.query(sql, function(err,result){
+            if(err){
+                reject(err);
+            }
+            resolve(result);
+        })
+    })
+}
+
+//Lấy danh sách đơn hàng tháng trước
+exports.sortLastMonth = function(){
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * FROM donhang WHERE MONTH(ngaydat) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) ORDER BY ngaydat DESC";
+        db.query(sql, function(err,result){
+            if(err){
+                reject(err);
+            }
+            resolve(result);
+        })
+    })
+}
+
+//Kiểm tra xem mã dh này có tồn tại trong CSDL hay không 
+exports.findId = function(idOrder, callbackDetail){
+    var sql = "SELECT madh FROM donhang WHERE madh = ?";
+    db.query(sql, idOrder, function(err, result){
+        if(err){
+            return console.error('err find khoa ngoai: ' + err.message);
+        }
+        callbackDetail(result);
     })
 }
 

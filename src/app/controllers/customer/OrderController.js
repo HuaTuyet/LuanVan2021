@@ -33,7 +33,7 @@ class OrderController{
             let dataForm = req.body; console.log('data form đặt hàng: ', dataForm); 
             let arrCart = cart.generateArray();
             let dh = [], rowDetail = [], details = [];
-            const today = new Date(); //console.log(today.getMinutes());
+            let today = new Date(); console.log("Ngày đặt: ", today);
             dh.push('DH' + today.getTime());
             for( let i in arrCart){
                 rowDetail[i] = [dh[0], arrCart[i].item.masp, arrCart[i].qty, arrCart[i].price];
@@ -49,7 +49,7 @@ class OrderController{
                 }
                 let donhang = {
                     madh: 'DH' + today.getTime(),
-                    ngaydat: formatDate(today),
+                    ngaydat: today,
                     tenkh: dataForm['tenkh'],
                     sodt: dataForm['sodt'],
                     diachi: dataForm['diachi'],
@@ -63,7 +63,7 @@ class OrderController{
                     tentk: req.session.user.tentk,
     
                 }; 
-                console.log('don hang: ', donhang);
+                console.log('don hang: ', donhang.ngaydat);
                 modelOrder.createOrder(donhang);
                 modelOrder.createOrderDetail(details, function(data){
                     if(data > 0){
@@ -76,6 +76,7 @@ class OrderController{
                 });
             })
             //res.json({dataForm, cart: cart.generateArray()});
+            req.session.cart = null;
             res.redirect('/don-mua');
         };
     }

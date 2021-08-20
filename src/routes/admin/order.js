@@ -9,5 +9,6 @@ router.get('/:id/detail', authmiddleware.requireAuth, orderController.detail);
 // router.get('/:id/receipt', authmiddleware.requireAuth, orderController.receipt);
 router.get('/:slug', authmiddleware.requireAuth, orderController.index);
 router.get('/', authmiddleware.requireAuth, orderController.index);
+router.post('/', authmiddleware.requireAuth, orderController.sort);
 
 module.exports = router;

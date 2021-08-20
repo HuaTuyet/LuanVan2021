@@ -9,7 +9,7 @@ let dirPath = path.join(`${__dirname}/../../public/dist/img/`)
 class OrderController {
     //[GET] /order/
     index(req, res) {
-        const listOrder = modelOrder.list()
+            const listOrder = modelOrder.list()
             .then(list =>
                 res.render('order/list', {
                     list
@@ -20,21 +20,117 @@ class OrderController {
             })
     }
 
+    //[POST] /order/
+    sort(req, res){
+        console.log(req.body.sort);
+        if(req.body.sort){
+            req.session.sort = req.body.sort;
+        }
+        if(req.session.sort){
+            let sort = req.session.sort;
+            switch(sort){
+                case 'today':
+                    const sortToday = modelOrder.sortToday()
+                        sortToday.then(list =>
+                            res.render('order/list', {
+                                list,
+                                sort: "today",
+                                layout: false,
+                            }, (err, html)=> {
+                                res.send({html});
+                            })
+                        )
+                        .catch(err =>{
+                            console.log("Có lỗi: " + err);
+                        })
+                    break;
+                case 'yesterday':
+                    const sortYesterday = modelOrder.sortYesterday()
+                        sortYesterday.then(list =>
+                            res.render('order/list', {
+                                list,
+                                sort: "yesterday",
+                                layout: false,
+                            }, (err, html)=> {
+                                res.send({html});
+                            })
+                        )
+                        .catch(err =>{
+                            console.log("Có lỗi: " + err);
+                        })
+                    break;
+                case 'lastweek':
+                    const sortLastWeek = modelOrder.sortLastWeek()
+                        sortLastWeek.then(list =>
+                            res.render('order/list', {
+                                list,
+                                sort: "lastweek",
+                                layout: false,
+                            }, (err, html)=> {
+                                res.send({html});
+                            })
+                        )
+                        .catch(err =>{
+                            console.log("Có lỗi: " + err);
+                        })
+                    break;
+                case 'lastmonth':
+                    const sortLastMonth = modelOrder.sortLastMonth()
+                        sortLastMonth.then(list =>
+                            res.render('order/list', {
+                                list,
+                                sort: "lastmonth",
+                                layout: false,
+                            }, (err, html)=> {
+                                res.send({html});
+                            })
+                        )
+                        .catch(err =>{
+                            console.log("Có lỗi: " + err);
+                        })
+                    break;
+                case 'all':
+                    const sortAll = modelOrder.list();
+                        sortAll.then(list =>
+                            res.render('order/list', {
+                                list,
+                                sort: "all",
+                                layout: false,
+                            }, (err, html)=> {
+                                res.send({html});
+                            })
+                        )
+                        .catch(err =>{
+                            console.log("Có lỗi: " + err);
+                        })
+                    break;
+            }
+
+        }
+    }
+
     //[GET] /order/:id/detail
     detail(req, res) {
         let id = req.params.id;
-        const detaiOrder =modelOrder.detail(id);
-        const orderProduct = modelOrder.product(id);
-        Promise.all([detaiOrder, orderProduct])
-            .then(([detail, product]) =>{
-                res.render('order/detail', {
-                    detail,
-                    product
-                })
-            })
-            .catch(err =>{
-                console.log("Có lỗi: " + err);
-            })
+        modelOrder.findId(id, function(resultId){
+            if(resultId.length == 0){
+                res.redirect("/admin/order");
+            }
+            else{
+                const detaiOrder = modelOrder.detail(id);
+                const orderProduct = modelOrder.product(id);
+                Promise.all([detaiOrder, orderProduct])
+                    .then(([detail, product]) =>{
+                        res.render('order/detail', {
+                            detail,
+                            product
+                        })
+                    })
+                    .catch(err =>{
+                        console.log("Có lỗi: " + err);
+                    })
+            }
+        })
     }
 
     //[PATCH] /order/:id/changestatus
@@ -52,7 +148,7 @@ class OrderController {
                 const detail = modelOrder.getDetailOrder(id);
                 Promise.all([order, detail])
                     .then(([order, detail]) =>{
-                        const html = fs.readFileSync(path.join(`${__dirname}/../../resources/views/template.html`), 'utf8');
+                        const html = fs.readFileSync(path.join(`${__dirname}/../../../resources/views/template.html`), 'utf8');
                         const filename = id + '_doc' + '.pdf';
                         let array = [];
                         detail.forEach(d => {

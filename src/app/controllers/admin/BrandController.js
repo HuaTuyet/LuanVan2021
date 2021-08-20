@@ -81,15 +81,23 @@ class BrandController {
     //[GET] /brand/id/edit
     edit(req, res){
         let id = req.params.id;
-        modelBrand.detail(id)
-            .then(brand =>
-                res.render('brand/edit', { 
-                    brand: brand[0] 
-                })
-            )
-            .catch(err => {
-                console.log("Có lỗi: ", err);
-            })
+        modelBrand.findId(id, function(resultId){
+            if(resultId.length == 0){
+                res.redirect("/admin/brand")
+            }
+            else{
+                modelBrand.detail(id)
+                    .then(brand =>
+                        res.render('brand/edit', { 
+                            brand: brand[0] 
+                        })
+                    )
+                    .catch(err => {
+                        console.log("Có lỗi: ", err);
+                    })
+            }
+        })
+        
     }
 
     //[PUT] /brand/:id
@@ -100,16 +108,16 @@ class BrandController {
                 math: req.body.math,
                 tenth: req.body.tenth
             }
+            let id = req.params.id;
             if(req.file != undefined){
                 brand.tenhinh = req.file.filename;
+                modelBrand.detail(id)
+                    .then(brand => {
+                        let path = "brands/" + brand[0].tenhinh;
+                        deleteImages.deleteFile(path); 
+                    })
+                    .catch(err => {console.log('có lỗi!!' + err)})
             }
-            let id = req.params.id;
-            modelBrand.detail(id)
-                .then(brand => {
-                    let path = "brands/" + brand[0].tenhinh;
-                    deleteImages.deleteFile(path); 
-                })
-                .catch(err => {console.log('có lỗi!!' + err)})
             modelBrand.update(brand, id);
             res.redirect("/admin/brand");
         });

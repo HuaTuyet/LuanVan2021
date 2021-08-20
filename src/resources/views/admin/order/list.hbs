@@ -1,3 +1,4 @@
+<div id="order">
 <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -18,15 +19,24 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header d-flex align-items-center">
-                    Danh sách đơn đặt hàng. 
+                Danh sách đơn đặt hàng.
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-hover">
+                <strong> Xem: </strong> &nbsp;
+                <select class="mb-3" name="sort" id="cbo_sort">
+                    <option value="all" id="all" {{#if sort}}{{selectedCBO "all" this.sort}}{{/if}}>Tất cả các đơn hàng</option>
+                    <option value="today" id="today" {{#if sort}}{{selectedCBO "today" this.sort}}{{/if}}>Đơn hàng hôm nay</option>
+                    <option value="yesterday" id="yesterday" {{#if sort}}{{selectedCBO "yesterday" this.sort}}{{/if}}>Đơn hàng hôm qua</option>
+                    <option value="lastweek" id="lastweek" {{#if sort}}{{selectedCBO "lastweek" this.sort}}{{/if}}>Đơn hàng tuần trước</option>
+                    <option value="lastmonth" id="lastmonth" {{#if sort}}{{selectedCBO "lastmonth" this.sort}}{{/if}}>Đơn hàng tháng trước</option>
+                </select>
+                <table class="table table-bordered table-hover" >
                     <thead class="thead-dark">
                         <tr>
                             <th class="text-center">STT</th>
                             <th class="text-center" scope="col">Mã đơn hàng</th>
                             <th class="text-center" scope="col">Tên khách hàng</th>
+                            <th class="text-center" scope="col">Ngày đặt hàng</th>
                             <th class="text-center" scope="col">Trạng thái</th>
                             <th scope="col"></th>
                         </tr>
@@ -37,6 +47,7 @@
                             <td>{{sum @index 1}}</td>
                             <td>{{this.madh}}</td>
                             <td>{{this.tenkh}}</td>
+                            <td>{{dateFormat this.ngaydat "DD-MM-yyyy"}}</td>
                             <td>{{trangthai this.trangthai}}</td>
                             <td>
                                 <a href="/admin/order/{{this.madh}}/detail" class="btn btn-link">Xem chi tiết</a>
@@ -44,7 +55,7 @@
                         </tr>
                         {{else}}
                         <tr>
-                            <td colspan="4" class="text-center">
+                            <td colspan="6" class="text-center">
                                 Bạn chưa có đơn đặt hàng nào cả.
                             </td>
                         </tr>
@@ -55,3 +66,34 @@
         </div>
     </div>
 </div>
+</div>
+<script>
+    $( document ).ready(function() {
+        $("#cbo_sort").change(function(event) {
+            // Prevent the form from submitting via the browser.
+            event.preventDefault();
+            console.log(this.value);
+            console.log($("#cbo_sort").val());
+            
+            let cboData = {
+                sort: $("#cbo_sort").val()
+            };
+
+            $.ajax({
+                type : "POST",
+                contentType : "application/json",
+                url : window.location.pathname, //window.location + "/order",
+                data : JSON.stringify(cboData),
+                dataType : 'json',
+                success : function(data) {
+                    //$("#test").html(data.html);
+                    $("#order").html(data.html);
+                    
+                },
+                error : function(e) {
+                    console.log("ERROR: ", e);
+                }
+            })
+        });
+    })
+</script>

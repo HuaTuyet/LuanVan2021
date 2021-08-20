@@ -28,7 +28,7 @@
     {{/if}}
     <div class="card">
       <div class="card-header d-flex align-items-center">
-          Thêm mã giảm giá
+        Thêm mã giảm giá
         <a href="/admin/coupon" class="btn btn-outline-primary ml-auto">Quay về</a>
       </div>
       <div class="card-body">
@@ -51,14 +51,14 @@
           </div>
           <div class="form-group">
             <label for="hinhthucgiam">Hình thức giảm</label>
-            <select class="form-control" name="hinhthucgiam">
+            <select class="form-control" name="hinhthucgiam" id="hinhthucgiam">
               <option value="0">%</option>
               <option value="1" {{sosanhHT error.hinhthucgiam}} >VNĐ</option>
             </select>
           </div>
           <div class="form-group">
             <label for="mucdo">Mức độ</label>
-            <input type="number" class="form-control" min="0" name="mucdo" placeholder="Nhập mức độ" required {{#if error}} value="{{error.mucdo}}" {{/if}}>
+            <input type="number" class="form-control" name="mucdo" id="mucdo" placeholder="Nhập mức độ" required {{#if error}} value="{{error.mucdo}}" {{/if}}>
           </div>
           <button type="submit" class="btn btn-primary">Thêm mã giảm giá</button>
         </form>
@@ -66,3 +66,19 @@
     </div>
   </div>
 </div>
+<script>
+  $( document ).ready(function() {
+    $("#hinhthucgiam").change(function(event) {
+      // Prevent the form from submitting via the browser.
+      event.preventDefault();
+      if(this.value == "1"){
+        $("#mucdo").attr('min', 1000);
+        $("#mucdo").attr('max', 500000);
+      }
+      else{
+        $("#mucdo").attr('min', 1);
+        $("#mucdo").attr('max', 100);
+      }
+    }).change();
+  })
+</script>

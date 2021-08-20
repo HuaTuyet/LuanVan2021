@@ -7,7 +7,7 @@ module.exports = {
     hienthi:(a, b) => a == b ? "selected": " ",
     hienthimausac:(a, b) => a == b ? "checked": "",
     trangthai:(a) => Number(a) == 0 ? "Chờ xác nhận" : Number(a) == 1 ? "Đang chuẩn bị" : Number(a) == 2 ? "Đang giao" : Number(a) == 3 ? "Đã giao": "Đã hủy",
-    thanhtoan:(a) => a == "cod" ? "Thanh toán sau khi nhận hàng (COD)" : a== "tranfer" ? "Chuyển khoản ngân hàng" : "Thanh toán bằng thẻ ATM nội địa / thẻ Quốc Tế (Visa, MasterCard, JCB)",
+    thanhtoan:(a) => a == "cod" ? "Thanh toán sau khi nhận hàng (COD)" : a== "vnpay" ? "Thanh toán qua VNPay" : "Thanh toán bằng thẻ ATM nội địa / thẻ Quốc Tế (Visa, MasterCard, JCB)",
     thanhtien:(a, b) => Number(a) * Number(b),
     disabled:(a, b) => a == b ? "selected disabled":"",
     dateFormat: require('handlebars-dateformat'),
@@ -16,6 +16,7 @@ module.exports = {
     hienthicbox: (a) => Number(a),
     getmonth: (a) => a = new Date().getMonth() +1,
     getyear: (a) => a = new Date().getFullYear(),
+    selectedCBO: (a, b) => a == b ? "selected" : "",
 
     // =========================== CUSTOMER ============================
     formatCurrency: (cur) => new Intl.NumberFormat('vn-VN', { style: 'currency', currency: 'VND' }).format(cur),
