@@ -1,0 +1,9 @@
+<div class="container" style="padding-top: 120px; min-height: 64vh;">
+    {{#ifCondEqual code '00'}}
+    <p class="text-center">Giao dịch thành công</p>
+    <p class="text-center"><a href="/don-mua" class="btn btn-primary">Xem đơn hàng</a></p>
+    {{else}}
+    <p class="text-center" style="color: red">Giao dịch thất bại</p>
+    <p class="text-center"><a href="/thanh-toan" class="btn btn-primary">Về giỏ hàng</a></p>
+    {{/ifCondEqual}}
+</div>

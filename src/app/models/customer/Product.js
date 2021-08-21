@@ -161,6 +161,13 @@ exports.getRateFn = function(masp, result){
         result(data);
     })
 }
+exports.checkBoughtProduct = function(tentk, masp, result){
+    let sql = "SELECT ctdh.masp FROM chitietdonhang ctdh INNER JOIN donhang dh ON ctdh.madh = dh.madh WHERE dh.tentk = ? AND ctdh.masp = ?";
+    db.query(sql, [tentk, masp], function(err, data){
+        if(err) throw err;
+        result(data);
+    })
+}
 
 exports.postComment = function(cmt){
     let sql = "INSERT INTO binhluan SET ?";

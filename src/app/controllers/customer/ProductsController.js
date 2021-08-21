@@ -501,28 +501,35 @@ class ProductsController {
             let masp = req.body.masp;
             let tentk = req.session.user.tentk;
             let rate = {tentk, masp, sosao};
-            const dataRate = modelProduct.getRate(masp);
+            //const dataRate = modelProduct.getRate(masp);
 
-            dataRate.then((dataRate) => {
-                //Kiểm tra user đã từng đánh giá sản phẩm này chưa?
-                let flag = false;
-                for(let item in dataRate){
-                    if(dataRate[item].tentk === tentk){
-                        flag = true; break;
-                    }
+            modelProduct.checkBoughtProduct(tentk, masp, function(result){
+                if(result.length > 0){
+                    modelProduct.rating(rate, function(affectedRows){
+                        if(affectedRows > 0){
+                            modelProduct.getRateFn(masp, function(resultQuery){
+                                let tongsao = 0;
+                                for(let i in resultQuery){
+                                    tongsao += resultQuery[i].sosao
+                                }
+                                let tbsao = Math.round((tongsao / resultQuery.length)*10) / 10;
+                                res.json({luot: resultQuery.length, tbsao, login:true})
+                            })
+                        }
+                    }) 
+                } else {
+                    res.json({login:true, error: true}); console.log('ko danh gia dc')
                 }
-                modelProduct.rating(rate, function(affectedRows){
-                    if(affectedRows > 0){
-                        modelProduct.getRateFn(masp, function(resultQuery){
-                            let tongsao = 0;
-                            for(let i in resultQuery){
-                                tongsao += resultQuery[i].sosao
-                            }
-                            let tbsao = Math.round((tongsao / resultQuery.length)*10) / 10;
-                            res.json({luot: resultQuery.length, tbsao, login:true})
-                        })
-                    }
-                }) 
+            })
+
+            // dataRate.then((dataRate) => {
+                //Kiểm tra user đã từng đánh giá sản phẩm này chưa?
+                // let flag = false;
+                // for(let item in dataRate){
+                //     if(dataRate[item].tentk === tentk){
+                //         flag = true; break;
+                //     }
+                // }
                 //Nếu chưa thì thêm đánh giá
                 // if(!flag){
                 //     modelProduct.rating(rate, function(affectedRows){
@@ -538,10 +545,10 @@ class ProductsController {
                 //         }
                 //     })                   
                 // }
-            }) 
-            .catch(err => {
-                console.log("Loi: ", err);
-            })
+            // }) 
+            // .catch(err => {
+            //     console.log("Loi: ", err);
+            // })
     }
 }
 

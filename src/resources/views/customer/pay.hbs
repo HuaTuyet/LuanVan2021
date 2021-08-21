@@ -91,10 +91,6 @@
                 <label class="form-check-label" for="ghtc">{{this.tenvc}} : {{this.phivc}}</lable>
             </div>
             {{/each}}
-            {{!-- <div class="form-check">
-                <input class="form-check-input" type="radio" name="radDelivery" id="ghn" value="30000">
-                <label class="form-check-label" for="ghn">Giao hàng nhanh : 30,000</lable>
-            </div> --}}
         </div>
 
         <!--THANH TOÁN-->
@@ -105,13 +101,13 @@
                 <label class="form-check-label" for="cod">Thanh toán sau khi nhận hàng (COD)</lable>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="radPayment" id="bank" value="vnpay">
-                <label class="form-check-label" for="bank">Thanh toán qua VNPay</lable>
+                <input class="form-check-input" type="radio" name="radPayment" id="vnpay" value="vnpay">
+                <label class="form-check-label" for="vnpay">Thanh toán qua VNPay</lable>
             </div>
-            <div class="form-check">
+            {{!-- <div class="form-check">
                 <input class="form-check-input" type="radio" name="radPayment" id="card-atm" value="atm">
                 <label class="form-check-label" for="card-atm">Thanh toán bằng thẻ ATM nội địa / thẻ Quốc Tế (Visa, MasterCard, JCB)</lable>
-            </div>
+            </div> --}}
         </div>
     </div>
 </div>
